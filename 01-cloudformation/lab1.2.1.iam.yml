@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  Lab121user:
+    Type: 'AWS::IAM::User'
+    Properties: 
+      UserName: jmd-lab121-020201211
+  Lab121policy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: jmd-lab121-s3-020201211
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 
+              - 's3:GetObject'
+              - 's3:ListAllMyBuckets'
+              - 's3:ListBucket'
+            Resource: '*'
+      Users: 
+        - !Ref Lab121user
+Outputs:
+  LAb122:
+    Description: arn policy output
+    Value: !GetAtt Lab121user.Arn
+    Export:
+      Name: policy-arn
