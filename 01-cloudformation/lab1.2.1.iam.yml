@@ -20,7 +20,7 @@ Resources:
       Users: 
         - !Ref Lab121user
 Outputs:
-  LAb122:
+  Lab122:
     Description: arn policy output
     Value: !Ref Lab121managedpolicy
     Export:
