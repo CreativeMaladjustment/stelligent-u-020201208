@@ -1,0 +1,35 @@
+aws s3 mb s3://stelligent-u-jason.davis.labs
+aws s3 ls s3://stelligent-u-jason.davis.labs
+aws s3 cp notes.txt s3://stelligent-u-jason.davis.labs
+aws s3 cp . s3://stelligent-u-jason.davis.labs --recursive --include "file*"
+aws s3 sync . s3://stelligent-u-jason.davis.labs
+aws s3 sync tosync s3://stelligent-u-jason.davis.labs
+ - sync would be faster as it only sends files that are missing/changed, cp pushes all the files - so bandwidth and time constraints
+
+aws s3 sync tosync s3://stelligent-u-jason.davis.labs/tosync --exclude "private.*"
+
+aws s3 sync --acl public-read tosync s3://stelligent-u-jason.davis.labs/tosync --exclude "private.*"
+curl https://s3.amazonaws.com/stelligent-u-jason.davis.labs/tosync/file1
+
+aws s3 rm --recursive s3://stelligent-u-jason.davis.labs
+aws s3 rb --force s3://stelligent-u-jason.davis.labs
+
+aws s3 mb s3://stelligent-u-jason.davis.labs
+aws s3 sync --acl public-read tosync s3://stelligent-u-jason.davis.labs/tosync --exclude "private.*"
+
+aws s3 rm s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 cp --acl bucket-owner-full-control tosync/file2 s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 sync --acl bucket-owner-full-control tosync s3://stelligent-u-jason.davis.labs/tosync
+
+aws s3api put-object-acl --acl bucket-owner-full-control --bucket stelligent-u-jason.davis.labs --key tosync/file2
+
+aws s3api get-object-acl --bucket stelligent-u-jason.davis.labs --key tosync/file1
+aws s3api get-bucket-policy --bucket stelligent-u-jason.davis.labs
+
+
+aws cloudformation create-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-006 --region us-east-1
+aws s3 sync . s3://stelligent-u-224-jason.davis.labs/
+aws cloudformation create-stack --template-body file://./lab2.2.4.policy.yml --stack-name jmd-020201213-008 --region us-east-1                                                      
+
+curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/file1
+curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/private.txt
