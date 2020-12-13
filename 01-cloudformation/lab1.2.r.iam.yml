@@ -35,4 +35,4 @@ Outputs:
 # aws cloudformation create-stack --template-body file://./lab1.2.r.iam.yml --stack-name jmd-020201213-001 --region us-east-1
 
 # aws ssm get-parameter --name "jmd-lab12r-username"
-# aws ssm put-parameter --name "jmd-lab12r-username" --value "jmd-lab12r-020201213" --type String --tags "Key=lab12r,Value=can be removed anytime"
+# aws ssm put-parameter --name "jmd-lab12r-username" --value "jmd-lab12r-020201213" --type String --tags "Key=lab12r,Value=can be removed anytime" --capabilities CAPABILITY_NAMED_IAM

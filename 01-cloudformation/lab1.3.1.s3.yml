@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   LabBucketName: 
     Type: String
-    Default: 'fiendly-name-jmd-020201211'
+    Default: 'fiendly-name-jmd-020201213'
 Resources:
   Lab111:
     Type: 'AWS::S3::Bucket'
