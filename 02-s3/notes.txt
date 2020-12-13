@@ -33,3 +33,38 @@ aws cloudformation create-stack --template-body file://./lab2.2.4.policy.yml --s
 
 curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/file1
 curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/private.txt
+
+aws s3 rb --force s3://stelligent-u-224-jason.davis.labs
+aws cloudformation delete-stack --stack-name jmd-020201213-006
+
+lab 2.3.2 
+aws cloudformation create-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+aws cloudformation update-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+  # after enabling versions 
+aws s3 sync . s3://stelligent-u-224-jason.davis.labs/
+aws s3 cp tosync/file1 s3://stelligent-u-224-jason.davis.labs/tosync/file1
+
+aws s3api list-object-versions --bucket stelligent-u-224-jason.davis.labs --prefix "tosync/file1"
+aws s3api get-object --bucket stelligent-u-224-jason.davis.labs --key "tosync/file1" --version-id EME_dyCXtzpJRJNtZSV7suApFTNeVC7H file1out
+
+aws s3api delete-object --bucket stelligent-u-224-jason.davis.labs --key "tosync/file1" --version-id EME_dyCXtzpJRJNtZSV7suApFTNeVC7H
+
+aws s3api put-object-tagging --bucket stelligent-u-224-jason.davis.labs --key "tosync/file1" --tagging "TagSet=[{Key=rabbit,Value=1},{Key=bunny,Value=go}]"
+
+aws cloudformation update-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+# tagging and lifecycle
+
+aws cloudformation update-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+# added encryption
+aws s3 rm s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 cp tosync/file2 s3://stelligent-u-jason.davis.labs/tosync/file2 --sse=aws:kms
+
+
+aws cloudformation create-stack --template-body file://./lab2.2.4.policy.yml --stack-name jmd-020201213-011 --region us-east-1
+# added encryption required to policy
+
+aws s3api head-object --bucket stelligent-u-224-jason.davis.labs --key tosync/file2
+
+
+aws kms create-key --description "s3 key for lab exercise"
+aws kms create-alias --alias-name alias/s3jasondavislabs --target-key-id a6bde651-ea62-4200-8ddf-68142408c5c7

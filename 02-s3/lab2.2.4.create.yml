@@ -6,3 +6,38 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: "stelligent-u-224-jason.davis.labs"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: 'aws:kms'
+              KMSMasterKeyID: '3cc542c5-da5e-4782-88ed-bbf14b6342a2'
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+              Rules:
+                - Id: LabLifecycle
+                  AbortIncompleteMultipartUpload:
+                    DaysAfterInitiation: 3
+                  NoncurrentVersionExpirationInDays: 14
+                  Status: Enabled
+                  Transitions:
+                    - StorageClass: STANDARD_IA
+                      TransitionInDays: 30
+      Tags:
+        - Key: runner
+          Value: "runner"
+
+  # myKey:
+  #   Type: AWS::KMS::Key
+  #   Properties:
+  #     Description: An example symmetric CMK
+  #     KeyPolicy:
+  #       Version: '2012-10-17'
+  #       Id: key-default-1
+  #       Statement:
+  #       - Sid: Enable IAM User Permissions
+  #         Effect: Allow
+  #         Principal:
+  #         - !Sub arn:aws:iam::${AWS::AccountId}:user/jason.davis.labs
+  #         Action: kms:*
+  #         Resource: '*'

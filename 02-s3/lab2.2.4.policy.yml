@@ -28,3 +28,12 @@ Resources:
               AWS:
                 - !Sub arn:aws:iam::${AWS::AccountId}:user/jason.davis.labs
             Resource: !Sub arn:aws:s3:::stelligent-u-224-jason.davis.labs/tosync/private.txt
+          - Sid: Restrict to Default- or KMS-encryption
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:PutObject'
+            Resource:
+              - !Sub arn:aws:s3:::stelligent-u-224-jason.davis.labs/*
+            Condition:
+              StringNotEquals:
+                s3:x-amz-server-side-encryption: 'aws:kms'
