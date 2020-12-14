@@ -420,6 +420,7 @@ _Look through the [S3 encryption docs](https://docs.aws.amazon.com/AmazonS3/late
 What benefits might you gain by using a KMS key instead of an S3-managed key?_
 
 audit trail - who is using the key and who can use the key are able to be set
+more about the granular control of who can use the keys
 
 ##### Question: Customer Managed CMK
 
