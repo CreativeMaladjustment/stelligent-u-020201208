@@ -27,7 +27,7 @@ aws s3api get-object-acl --bucket stelligent-u-jason.davis.labs --key tosync/fil
 aws s3api get-bucket-policy --bucket stelligent-u-jason.davis.labs
 
 
-aws cloudformation create-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-006 --region us-east-1
+cloudformation create-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-006 --region us-east-1
 aws s3 sync . s3://stelligent-u-224-jason.davis.labs/
 aws cloudformation create-stack --template-body file://./lab2.2.4.policy.yml --stack-name jmd-020201213-008 --region us-east-1                                                      
 
@@ -68,3 +68,8 @@ aws s3api head-object --bucket stelligent-u-224-jason.davis.labs --key tosync/fi
 
 aws kms create-key --description "s3 key for lab exercise"
 aws kms create-alias --alias-name alias/s3jasondavislabs --target-key-id a6bde651-ea62-4200-8ddf-68142408c5c7
+
+aws kms create-alias --alias-name alias/s3jasondavislabs --target-key-id 13263b4a-a25d-43ca-96aa-dd2ae62d987d
+
+#needed to say which key to use so default is still the root key?
+aws s3 cp file25 s3://stelligent-u-224-jason.davis.labs/tosync/file26 --sse=aws:kms --sse-kms-key-id=13263b4a-a25d-43ca-96aa-dd2ae62d987d
