@@ -121,20 +121,29 @@ Add an object to your bucket:
 
 _How would you copy the contents of the directory to the top level of your bucket?_
 
+s3://bucket/ set the path to just / not /subfolders/
+
 ##### Question: Directory Copying
 
 _How would you copy the contents and include the directory name in the s3 object
 paths?_
 
+s3://bucket/path/
+
 ##### Question: Object Access
 
 _[Can anyone else see your file yet](https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-access-control.html)?_
+
+not until it is made public, or other iam roles/users in the account are allowed access
 
 For further reading, see the S3 [Access Policy Language Overview](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-policy-language-overview.html).
 
 ##### Question: Sync vs Copy
 
 _What makes "sync" a better choice than "cp" for some S3 uploads?_
+
+sync will avoid sending everything that is already in place reducing the bandwith needed
+also sending less copies up as versions to track?
 
 #### Lab 2.1.3: Exclude Private Objects When Uploading to a Bucket
 
@@ -180,6 +189,8 @@ directory with the "aws s3 sync" command.
 _After this, can you download one of your files from the bucket without using
 your API credentials?_
 
+yes via curl
+
 #### Lab 2.2.2: Use the CLI to Restrict Access to Private Data
 
 You just made "private.txt" publicly readable. Ensure that only the
@@ -191,11 +202,17 @@ permissions of the other files.
 _How could you use "aws s3 cp" or "aws s3 sync" command to modify the
 permissions on the file?_
 
+aws s3 cp --acl bucket-owner-full-control tosync/file2 s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 sync --acl bucket-owner-full-control tosync s3://stelligent-u-jason.davis.labs/tosync
+
+
 (Hint: see the list of [Canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl).)
 
 ##### Question: Changing Permissions
 
 _Is there a way you can change the permissions on the file without re-uploading it?_
+
+aws s3api put-object-acl --acl bucket-owner-full-control --bucket stelligent-u-jason.davis.labs --key tosync/file2
 
 #### Lab 2.2.3: Using the API from the CLI
 
@@ -224,9 +241,13 @@ file and read "private.txt".
 _What do you see when you try to read the existing bucket policy before you
 replace it?_
 
+everyone public access is read
+
 #### Question: Default Permissions
 
 _How do the default permissions differ from the policy you're setting?_
+
+null values for the public access after
 
 #### Lab 2.2.4: Using CloudFormation
 
@@ -295,9 +316,13 @@ Delete one of the objects that you changed.
 
 _Can you still retrieve old versions of the object you removed?_
 
+yes
+
 ##### Question: Deleting All Versions
 
 _How would you delete all versions?_
+
+delete each version :2 :3 etc.
 
 #### Lab 2.3.3: Tagging S3 Resources
 
@@ -309,6 +334,8 @@ through the CLI or the console.
 
 _Can you change a single tag on a bucket or object, or do you have to change
 all its tags at once?_
+
+can change the bucket tags and then each object tags
 
 (See `aws:cloudformation:stack-id` and other AWS-managed tags.)
 
@@ -330,6 +357,8 @@ _Management Lifecycle_ tab to double-check your settings.
 ##### Question: Improving Speed
 
 _Can you make any of these transitions more quickly?_
+
+can reduce some of the numbers but there are minimums like 1
 
 *See the [S3 lifecycle transitions doc](https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html).*
 
@@ -365,6 +394,8 @@ S3-managed key ("SSE-S3").
 
 _Do you need to re-upload all your files to get them encrypted?_
 
+yes
+
 #### Lab 2.4.2: SSE with KMS Keys
 
 Change your bucket policy to require KMS encryption for all objects.
@@ -388,10 +419,14 @@ key.
 _Look through the [S3 encryption docs](https://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html).
 What benefits might you gain by using a KMS key instead of an S3-managed key?_
 
+audit trail - who is using the key and who can use the key are able to be set
+
 ##### Question: Customer Managed CMK
 
 _Going further, what benefits might you gain by using a KMS key you created
 yourself?_
+
+self management - so you store the keys externally where you want them stored not required to be in aws?
 
 #### Lab 2.4.3: Using Your Own KMS Key
 
@@ -413,6 +448,8 @@ Use your own KMS key to encrypt files in S3.
 
 _Can you use the alias when uploading files?_
 
+yes
+
 ### Retrospective 2.4
 
 #### Question: Requiring Encryption
@@ -423,6 +460,8 @@ If so, how would you require encryption on all files?_
 #### Question: Multiple Keys
 
 _Can you use different keys for different objects?_
+
+yes
 
 ## Further Reading
 
