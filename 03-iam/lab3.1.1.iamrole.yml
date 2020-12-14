@@ -21,7 +21,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - iam:GetAccessKeyLastUsed
-                - iam:GetAccountAuthorizationDetails
+                - iam:Get*
+                - iam:List*
                 Resource: "arn:aws:iam::*"
       RoleName: "su-jdlabs-311"

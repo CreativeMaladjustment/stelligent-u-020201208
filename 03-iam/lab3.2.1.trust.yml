@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "lab 3.2.1 trust policy"
+
+Resources:
+  LabRole:
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: "Allow"
+            Principal: 
+              AWS: 
+                - arn:aws:iam::324320755747:user/jason.davis.labs
+            Action: 
+              - "sts:AssumeRole"
+      RoleName: "su-jdlabs-321"
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/ReadOnlyAccess'
+
+#   LabPolicy:
+#     Type: "AWS::IAM::ManagedPolicy"
+#     Properties: 
+#       Description: "added role 315"
+#       # ManagedPolicyName: su-jdlabs-mp-312
+#       PolicyDocument:
+#         Version: 2012-10-17
+#         Statement:
+#           - Effect: Allow
+#             Action:
+#             - iam:Get*
+#             - iam:List*
+#             - iam:SimulatePrincipalPolicy
+#             - ec2:DescribeImages
+#             - ec2:RunInstances
+#             - ec2:DescribeSecurityGroups
+#             Resource: "arn:aws:iam::*"
+#       # Roles:
+#       #   - !Ref LabRole
+#       #   - !Ref LabRole313
+
+# Outputs:
+#   LabRole:
+#     Description: arn role output
+#     # Value: !Ref Fn::GetAtt: [ "LabRole", "Arn" ]
+#     Value: !GetAtt LabRole.Arn
+#     Export:
+#       Name: LabRole-Arn
+#   LabRole313:
+#     Description: arn role313 output
+#     Value: !GetAtt LabRole313.Arn
+#     Export:
+#       Name: LabRole313-Arn

@@ -1,2 +1,11 @@
 aws cloudformation create-stack --template-body file://./lab3.1.1.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 aws iam list-roles
+aws iam get-role --role-name=su-jdlabs-311 
+
+
+aws cloudformation update-stack --template-body file://./lab3.1.2.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab3.1.3.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab3.1.4.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab3.1.5.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation describe-stack --stack-name jmd-020201214-000 --region us-east-1
+

@@ -168,6 +168,25 @@ stack's two roles in order to pass those values to the CLI function. You
 probably used the AWS web console to get the ARN for each role. What
 could you have done to your CFN template to make that unnecessary?_
 
+add outputs and get the cnf stack details to list the desired values.
+aws cloudformation describe-stacks --stack-name jmd-020201214-000 --region us-east-1
+```            "Outputs": [
+                {
+                    "OutputKey": "LabRole",
+                    "OutputValue": "arn:aws:iam::324320755747:role/su-jdlabs-311",
+                    "Description": "arn role output",
+                    "ExportName": "LabRole-Arn"
+                },
+                {
+                    "OutputKey": "LabRole313",
+                    "OutputValue": "arn:aws:iam::324320755747:role/su-jdlabs-313",
+                    "Description": "arn role313 output",
+                    "ExportName": "LabRole313-Arn"
+                }
+            ],
+```
+
+
 #### Task: Stack Outputs
 
 Institute that change from the Question above. Recreate the stack as per
