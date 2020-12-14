@@ -49,6 +49,6 @@ Resources:
   s3KeyAlias:
     Type: AWS::KMS::Alias
     Properties:
-        AliasName: alias/s3-jmd-lab
+      AliasName: alias/s3-jmd-lab
       TargetKeyId:
         Ref: LabKey
