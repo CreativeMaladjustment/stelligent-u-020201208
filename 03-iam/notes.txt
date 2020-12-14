@@ -7,5 +7,28 @@ aws cloudformation update-stack --template-body file://./lab3.1.2.iamrole.yml --
 aws cloudformation update-stack --template-body file://./lab3.1.3.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 aws cloudformation update-stack --template-body file://./lab3.1.4.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 aws cloudformation update-stack --template-body file://./lab3.1.5.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
-aws cloudformation describe-stack --stack-name jmd-020201214-000 --region us-east-1
+aws cloudformation describe-stacks --stack-name jmd-020201214-000 --region us-east-1
+aws cloudformation delete-stack --stack-name jmd-020201214-000
 
+
+Lab 3.2
+
+aws cloudformation create-stack --template-body file://./lab3.2.1.trust.yml --stack-name jmd-020201214-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab3.2.1.trust.yml --stack-name jmd-020201214-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws sts get-caller-identity
+aws sts assume-role --role-arn=arn:aws:iam::324320755747:role/su-jdlabs-321 --role-session-name=lab321
+ # for on cloud9 have to drop the managed creds/keys maybe?
+ 
+#from laptop this worked
+aws sts assume-role --role-arn arn:aws:iam::324320755747:role/jd-console-321 --role-session-name lab321 --profile temp
+ --- have to use the profile that has MFA access or it will fail.
+
+#Then have to use aws configure to create a new profile to use the assumed role.
+aws configure set aws_access_key_id TEXT --profile assumetemp
+aws configure set aws_secret_access_key TEXT --profile assumetemp
+aws configure set aws_session_token LONGTEXT --profile assumetemp
+
+aws sts get-caller-identity --profile assumetemp
+
+3.2.2 - could not create a bucket but could list them.
