@@ -1,0 +1,1 @@
+aws cloudformation create-stack --template-body file://./lab3.1.1.iamrole.yml --stack-name jmd-020201214-000 --region us-east-1

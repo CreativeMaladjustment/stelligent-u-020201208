@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "lab 3.1.1 iam role"
+
+Resources:
+  Type: AWS::IAM::Role
+  Properties: 
+    AssumeRolePolicyDocument: 
+      Version: "2012-10-17"
+      Statement: 
+        - Effect: "Allow"
+          Principal: 
+            Service: 
+              - "ec2.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+    Policies:
+      - PolicyName: iam-readonly
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+              - iam:GetAccessKeyLastUsed
+              - iam:GetAccountAuthorizationDetails
+              - iam:GetAccountPasswordPolicy
+              - iam:GetAccountSummary
+              - iam:GetContextKeysForCustomPolicy
+              - iam:GetContextKeysForPrincipalPolicy
+              - iam:GetCredentialReport
+              - iam:GetGroup
+              - iam:GetGroupPolicy
+              - iam:GetInstanceProfile
+              - iam:GetLoginProfile
+              - iam:GetOpenIDConnectProvider
+              - iam:GetOrganizationsAccessReport
+              - iam:GetPolicy
+              - iam:GetPolicyVersion
+              - iam:GetRole
+              - iam:GetRolePolicy
+              - iam:GetSAMLProvider
+              - iam:GetSSHPublicKey
+              - iam:GetServerCertificate
+              - iam:GetServiceLastAccessedDetails
+              - iam:GetServiceLastAccessedDetailsWithEntities
+              - iam:GetServiceLinkedRoleDeletionStatus
+              - iam:GetUser
+              - iam:GetUserPolicy
+              - iam:ListAccessKeys
+              - iam:ListAccountAliases
+              - iam:ListAttachedGroupPolicies
+              - iam:ListAttachedRolePolicies
+              - iam:ListAttachedUserPolicies
+              - iam:ListEntitiesForPolicy
+              - iam:ListGroupPolicies
+              - iam:ListGroups
+              - iam:ListGroupsForUser
+              - iam:ListInstanceProfiles
+              - iam:ListInstanceProfilesForRole
+              - iam:ListMFADevices
+              - iam:ListOpenIDConnectProviders
+              - iam:ListPolicies
+              - iam:ListPoliciesGrantingServiceAccess
+              - iam:ListPolicyVersions
+              - iam:ListRolePolicies
+              - iam:ListRoleTags
+              - iam:ListRoles
+              - iam:ListSAMLProviders
+              - iam:ListSSHPublicKeys
+              - iam:ListServerCertificates
+              - iam:ListServiceSpecificCredentials
+              - iam:ListSigningCertificates
+              - iam:ListUserPolicies
+              - iam:ListUserTags
+              - iam:ListUsers
+              - iam:ListVirtualMFADevice
+            #   Resource: "arn:aws:iam::${AWS::AccountId}:*"
+              Resource: "arn:aws:iam::*"
+    RoleName: "su-jdlabs-311"
