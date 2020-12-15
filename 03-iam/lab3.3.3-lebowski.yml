@@ -35,11 +35,9 @@ Resources:
                 Effect: Allow
                 Action: 
                   - s3:List*
-                  - s3:Get*
-                Resource: !Join [ "", [!GetAtt BucketB.Arn, "*"]]
+                  # - s3:Get*
+                Resource: !Join [ "/", [!GetAtt BucketB.Arn, "lebowski/*"]]
       RoleName: "su-jdlabs-331"
-      # ManagedPolicyArns:
-      #   - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
 
 
   BucketA:
