@@ -36,4 +36,20 @@ aws sts get-caller-identity --profile assumetemp
 
 3.2.3
 
-aws cloudformation update-stack --template-body file://./lab3.2.3.trust.yml --stack-name jmd-020201214-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab3.2.3.uploads3.yml --stack-name jmd-020201214-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+3.3.1
+aws cloudformation create-stack --template-body file://./lab3.3.1-s3-role.yml --stack-name jmd-020201215-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+sh switch-role-set-awsconfig.sh
+aws s3 ls s3://su-331a-jason.davis.labs --profile temprole
+aws s3 ls s3://su-331b-jason.davis.labs --profile temprole
+aws s3 cp file1 s3://su-331a-jason.davis.labs/ --profile temp
+aws s3 cp file1 s3://su-331b-jason.davis.labs/ --profile temp
+aws s3 cp file1 s3://su-331a-jason.davis.labs/ --profile temprole
+aws s3 cp file1 s3://su-331b-jason.davis.labs/ --profile temprole
+
+3.3.2
+aws cloudformation update-stack --template-body file://./lab3.3.2-resourcerestrictions.yml --stack-name jmd-020201215-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws s3 cp file1 s3://su-331a-jason.davis.labs/file3 --profile temprole
+aws s3 cp file1 s3://su-331b-jason.davis.labs/file3 --profile temprole
+
