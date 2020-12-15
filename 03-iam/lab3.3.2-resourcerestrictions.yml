@@ -22,19 +22,15 @@ Resources:
             Statement:
               - Sid: afull
                 Effect: Allow
-                Action: s3:*
-                Resource: "arn:aws:s3:::su-331a-jason.davis.labs"     
-            Statement:
-              - Sid: broa
-                Effect: Allow
                 Action: 
-                  - s3:list*
-                  - s3:get*
-                Resource: "arn:aws:s3:::su-331b-jason.davis.labs"
+                  - s3:List*
+                  - s3:Get*
+                  - s3:Put*
+                Resource: "arn:aws:s3:::su-331a-jason.davis.labs/*"     
       RoleName: "su-jdlabs-331"
-      # ManagedPolicyArns:
-        # - 'arn:aws:iam::aws:policy/ReadOnlyAccess'
-      #   - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/ReadOnlyAccess'
+
 
   BucketA:
     Type: AWS::S3::Bucket
