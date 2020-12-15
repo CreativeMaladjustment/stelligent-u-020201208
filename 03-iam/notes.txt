@@ -32,3 +32,8 @@ aws configure set aws_session_token LONGTEXT --profile assumetemp
 aws sts get-caller-identity --profile assumetemp
 
 3.2.2 - could not create a bucket but could list them.
+
+
+3.2.3
+
+aws cloudformation update-stack --template-body file://./lab3.2.3.trust.yml --stack-name jmd-020201214-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
