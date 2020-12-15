@@ -379,6 +379,8 @@ tests]](https://smartbear.com/learn/automated-testing/negative-testing/)
 that could be automated in order to confirm the permissions for the
 Role?_
 
+> believe could have checked buckets that were not part of the test... not at all exhaustive ... could have tried a few more paths for uploading and listing files or downloading even for the 3.3.3 lab
+
 #### Task: Positive and Negative Tests
 
 Code at least one new positive and one new negative test.
@@ -388,6 +390,10 @@ Code at least one new positive and one new negative test.
 _Is it possible to limit uploads of objects with a specific prefix (e.g.
 starting with "lebowski/") to an S3 bucket using IAM conditions? If not, how else
 could this be accomplished?_
+
+> add an additional policy that is on the resource level not a condition on string. 
+
+```Resource: !Join [ "/", [!GetAtt BucketB.Arn, "lebowski*"]]```
 
 #### Task: Limiting Uploads
 
