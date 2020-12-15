@@ -231,6 +231,10 @@ your User to assume that role.
 - Using the AWS CLI, assume that new role. If this fails, take note of
   the error you receive, diagnose the issue and fix it.
 
+> on local machine make sure to have --profile for the MFA temp profile
+in cloud9 getting error, might be related to temp creds
+
+
 *Hint: Instead of setting up a new profile in your \~/.aws/credentials
 file, use [aws sts assume-role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli).
 It's a valuable mechanism you'll use often through the API, and it's good to
