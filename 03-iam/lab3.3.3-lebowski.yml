@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "lab 3.2.1 trust policy"
+Description: "lab 3.3.3 trust resource"
 
 Resources:
   LabRole:
@@ -35,9 +35,19 @@ Resources:
                 Effect: Allow
                 Action: 
                   - s3:List*
-                  # - s3:Get*
-                Resource: !Join [ "/", [!GetAtt BucketB.Arn, "lebowski/*"]]
-      RoleName: "su-jdlabs-331"
+                  - s3:PutObject
+                Resource: !Join [ "", [!GetAtt BucketB.Arn, "*"]]
+                Condition: {"StringLike":{"s3:prefix":["lebowski*"]}}
+        - PolicyName: su-331b-upload
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: broa
+                Effect: Allow
+                Action: 
+                  - s3:PutObject
+                Resource: !Join [ "/", [!GetAtt BucketB.Arn, "lebowski*"]]
+      RoleName: "su-jdlabs-333"
 
 
   BucketA:
