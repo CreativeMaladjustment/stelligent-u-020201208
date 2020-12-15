@@ -290,6 +290,8 @@ Describe how that could easily be demonstrated with both a
 [positive and negative testing](https://www.guru99.com/positive-vs-negative-testing.html)
 approach._
 
+> not mixed / need to list the permissions gained or lost and test for those before and after role assumption. Positive would be testing what was expected to be lost or gained... negative test would be checking other things, maybe KMS key access or accessing a bucket that wasn't intended to be added
+
 ## Lesson 3.3: Fine-Grained Controls With Policies
 
 ### Principle 3.3
