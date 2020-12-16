@@ -1,0 +1,75 @@
+aws s3 mb s3://stelligent-u-jason.davis.labs
+aws s3 ls s3://stelligent-u-jason.davis.labs
+aws s3 cp notes.txt s3://stelligent-u-jason.davis.labs
+aws s3 cp . s3://stelligent-u-jason.davis.labs --recursive --include "file*"
+aws s3 sync . s3://stelligent-u-jason.davis.labs
+aws s3 sync tosync s3://stelligent-u-jason.davis.labs
+ - sync would be faster as it only sends files that are missing/changed, cp pushes all the files - so bandwidth and time constraints
+
+aws s3 sync tosync s3://stelligent-u-jason.davis.labs/tosync --exclude "private.*"
+
+aws s3 sync --acl public-read tosync s3://stelligent-u-jason.davis.labs/tosync --exclude "private.*"
+curl https://s3.amazonaws.com/stelligent-u-jason.davis.labs/tosync/file1
+
+aws s3 rm --recursive s3://stelligent-u-jason.davis.labs
+aws s3 rb --force s3://stelligent-u-jason.davis.labs
+
+aws s3 mb s3://stelligent-u-jason.davis.labs
+aws s3 sync --acl public-read tosync s3://stelligent-u-jason.davis.labs/tosync --exclude "private.*"
+
+aws s3 rm s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 cp --acl bucket-owner-full-control tosync/file2 s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 sync --acl bucket-owner-full-control tosync s3://stelligent-u-jason.davis.labs/tosync
+
+aws s3api put-object-acl --acl bucket-owner-full-control --bucket stelligent-u-jason.davis.labs --key tosync/file2
+
+aws s3api get-object-acl --bucket stelligent-u-jason.davis.labs --key tosync/file1
+aws s3api get-bucket-policy --bucket stelligent-u-jason.davis.labs
+
+
+cloudformation create-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-006 --region us-east-1
+aws s3 sync . s3://stelligent-u-224-jason.davis.labs/
+aws cloudformation create-stack --template-body file://./lab2.2.4.policy.yml --stack-name jmd-020201213-008 --region us-east-1                                                      
+
+curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/file1
+curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/private.txt
+
+aws s3 rb --force s3://stelligent-u-224-jason.davis.labs
+aws cloudformation delete-stack --stack-name jmd-020201213-006
+
+lab 2.3.2 
+aws cloudformation create-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+aws cloudformation update-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+  # after enabling versions 
+aws s3 sync . s3://stelligent-u-224-jason.davis.labs/
+aws s3 cp tosync/file1 s3://stelligent-u-224-jason.davis.labs/tosync/file1
+
+aws s3api list-object-versions --bucket stelligent-u-224-jason.davis.labs --prefix "tosync/file1"
+aws s3api get-object --bucket stelligent-u-224-jason.davis.labs --key "tosync/file1" --version-id EME_dyCXtzpJRJNtZSV7suApFTNeVC7H file1out
+
+aws s3api delete-object --bucket stelligent-u-224-jason.davis.labs --key "tosync/file1" --version-id EME_dyCXtzpJRJNtZSV7suApFTNeVC7H
+
+aws s3api put-object-tagging --bucket stelligent-u-224-jason.davis.labs --key "tosync/file1" --tagging "TagSet=[{Key=rabbit,Value=1},{Key=bunny,Value=go}]"
+
+aws cloudformation update-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+# tagging and lifecycle
+
+aws cloudformation update-stack --template-body file://./lab2.2.4.create.yml --stack-name jmd-020201213-010 --region us-east-1
+# added encryption
+aws s3 rm s3://stelligent-u-jason.davis.labs/tosync/file2
+aws s3 cp tosync/file2 s3://stelligent-u-jason.davis.labs/tosync/file2 --sse=aws:kms
+
+
+aws cloudformation create-stack --template-body file://./lab2.2.4.policy.yml --stack-name jmd-020201213-011 --region us-east-1
+# added encryption required to policy
+
+aws s3api head-object --bucket stelligent-u-224-jason.davis.labs --key tosync/file2
+
+
+aws kms create-key --description "s3 key for lab exercise"
+aws kms create-alias --alias-name alias/s3jasondavislabs --target-key-id a6bde651-ea62-4200-8ddf-68142408c5c7
+
+aws kms create-alias --alias-name alias/s3jasondavislabs --target-key-id 13263b4a-a25d-43ca-96aa-dd2ae62d987d
+
+#needed to say which key to use so default is still the root key?
+aws s3 cp file25 s3://stelligent-u-224-jason.davis.labs/tosync/file26 --sse=aws:kms --sse-kms-key-id=13263b4a-a25d-43ca-96aa-dd2ae62d987d

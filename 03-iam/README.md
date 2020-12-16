@@ -168,6 +168,25 @@ stack's two roles in order to pass those values to the CLI function. You
 probably used the AWS web console to get the ARN for each role. What
 could you have done to your CFN template to make that unnecessary?_
 
+add outputs and get the cnf stack details to list the desired values.
+aws cloudformation describe-stacks --stack-name jmd-020201214-000 --region us-east-1
+```            "Outputs": [
+                {
+                    "OutputKey": "LabRole",
+                    "OutputValue": "arn:aws:iam::324320755747:role/su-jdlabs-311",
+                    "Description": "arn role output",
+                    "ExportName": "LabRole-Arn"
+                },
+                {
+                    "OutputKey": "LabRole313",
+                    "OutputValue": "arn:aws:iam::324320755747:role/su-jdlabs-313",
+                    "Description": "arn role313 output",
+                    "ExportName": "LabRole313-Arn"
+                }
+            ],
+```
+
+
 #### Task: Stack Outputs
 
 Institute that change from the Question above. Recreate the stack as per
@@ -211,6 +230,10 @@ your User to assume that role.
 
 - Using the AWS CLI, assume that new role. If this fails, take note of
   the error you receive, diagnose the issue and fix it.
+
+> on local machine make sure to have --profile for the MFA temp profile
+in cloud9 getting error, might be related to temp creds
+
 
 *Hint: Instead of setting up a new profile in your \~/.aws/credentials
 file, use [aws sts assume-role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli).
@@ -266,6 +289,8 @@ mixed with those of the role being assumed?
 Describe how that could easily be demonstrated with both a
 [positive and negative testing](https://www.guru99.com/positive-vs-negative-testing.html)
 approach._
+
+> not mixed / need to list the permissions gained or lost and test for those before and after role assumption. Positive would be testing what was expected to be lost or gained... negative test would be checking other things, maybe KMS key access or accessing a bucket that wasn't intended to be added
 
 ## Lesson 3.3: Fine-Grained Controls With Policies
 
@@ -356,6 +381,8 @@ tests]](https://smartbear.com/learn/automated-testing/negative-testing/)
 that could be automated in order to confirm the permissions for the
 Role?_
 
+> believe could have checked buckets that were not part of the test... not at all exhaustive ... could have tried a few more paths for uploading and listing files or downloading even for the 3.3.3 lab
+
 #### Task: Positive and Negative Tests
 
 Code at least one new positive and one new negative test.
@@ -365,6 +392,10 @@ Code at least one new positive and one new negative test.
 _Is it possible to limit uploads of objects with a specific prefix (e.g.
 starting with "lebowski/") to an S3 bucket using IAM conditions? If not, how else
 could this be accomplished?_
+
+> add an additional policy that is on the resource level not a condition on string. 
+
+```Resource: !Join [ "/", [!GetAtt BucketB.Arn, "lebowski*"]]```
 
 #### Task: Limiting Uploads
 

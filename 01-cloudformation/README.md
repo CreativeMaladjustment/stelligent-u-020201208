@@ -160,13 +160,19 @@ name.
 
 _Why do we prefer the YAML format for CFN templates?_
 
+less meta data structure / yaml is cleaner
+
 #### Question: Protecting Resources
 
 _What else can you do to prevent resources in a stack from being deleted?_
 
+set Deletion policy attribute per resource
+
 See [DeletionPolicy](https://aws.amazon.com/premiumsupport/knowledge-center/cloudformation-accidental-updates/).
 
 _How is that different from applying Termination Protection?_
+
+protecting the stack vs individual resources with in it. Status of the entire stack will not change until the protection is removed. 
 
 #### Task: String Substitution
 
@@ -317,6 +323,8 @@ functionality. Query S3 to ensure that the buckets have been deleted.
 
 _Can you list 4 features of CloudFormation that help make a CFN template
 portable code?_
+
+using the variables for aws account and region etc, not hard coding these values makes the code portable
 
 #### Task: DRYer Code
 
