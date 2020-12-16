@@ -2,9 +2,9 @@ AWSTemplateFormatVersion: 2010-09-09
 Description:  "lesson 4"
 
 Parameters:
-  LatestAmiId:
-    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  # LatestAmiId:
+  #   Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+  #   Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
   ec2amiid: 
     Type: String
   instancetype:
@@ -73,11 +73,9 @@ Resources:
       Type: AWS::EC2::Route
       Properties:
         RouteTableId: !Ref NATPublicRouteTable
-        NatGatewayId: NAT
+        NatGatewayId: !Ref NAT
         DestinationCidrBlock: '0.0.0.0/0'
-        NatGatewayId:
-          Ref: NAT
-          
+
   NATEC2Instance: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -85,6 +83,7 @@ Resources:
       InstanceType: !Ref instancetype
       KeyName: !Ref keypairname
       SubnetId: !ImportValue "jmd-020201215-001-natsubnet"
+      SecurityGroupIds: [ !Ref InstanceSecurityGroup ]
 
 Outputs:
   IID:

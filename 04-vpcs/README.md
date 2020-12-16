@@ -249,14 +249,28 @@ existing instance stack.
 
 _Can you find a way to ssh to this instance?_
 
+> ssh to the bastion host and from there with pem key ssh to private ip of new instance
+```
+ssh a.pem 172.0.2.140
+```
+
 ##### Question: Egress
 
 _If you can ssh to it, can you send traffic out?_
+
+> yes
+```
+[ec2-user@ip-172-0-2-140 ~]$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=1.45 ms
+```
 
 ##### Question: Deleting the Gateway
 
 _If you delete the NAT gateway, what happens to the ssh session on your private
 instance?_
+
+> ping stops / but ssh session remains connected
 
 ##### Question: Recreating the Gateway
 
@@ -264,6 +278,8 @@ _If you recreate the NAT gateway and detach the Elastic IP from the public EC2
 instance, can you still reach the instance from the outside?_
 
 Test it out with the AWS console.
+
+> dissasociate eip - cannot reach instance from outside anymore
 
 #### Lab 4.1.8: Network ACL
 
@@ -280,6 +296,8 @@ First, add one on the public subnet:
 ##### Question: EC2 Connection
 
 _Can you still reach your EC2 instances?_
+
+> not until i added the elastic ip back in
 
 Add another ACL to your private subnet:
 
