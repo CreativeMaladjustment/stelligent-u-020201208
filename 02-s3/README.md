@@ -192,7 +192,9 @@ directory with the "aws s3 sync" command.
 _After this, can you download one of your files from the bucket without using
 your API credentials?_
 
-yes via curl
+> yes via curl in this example the contents of the file1 was simply "foo" so curl prints that as the only output.
+```curl https://s3.amazonaws.com/stelligent-u-224-jason.davis.labs/tosync/file1
+foo```
 
 #### Lab 2.2.2: Use the CLI to Restrict Access to Private Data
 
