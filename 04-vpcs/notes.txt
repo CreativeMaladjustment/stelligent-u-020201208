@@ -14,14 +14,18 @@ aws cloudformation describe-stacks --stack-name jmd-020201215-001 --region us-ea
 
 aws cloudformation create-stack --template-body file://./lab4.1.4-ec2i.yml --stack-name jmd-020201215-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 aws cloudformation create-stack --template-body file://./lab4.1.4-ec2i.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+aws cloudformation update-stack --template-body file://./lab4.1.4-ec2i.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
 
 ssh -i "lab413-su-jmd.pem" ec2-user@172.0.1.172
 
 4.1.5
-aws cloudformation update-stack --template-body file://./lab4.1.5-sg.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab4.1.5-sg.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
 
 4.1.6
 aws cloudformation update-stack --template-body file://./lab4.1.6-eip.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
 
 #aws cloudformation delete-stack --stack-name jmd-020201215-002
 #aws cloudformation delete-stack --stack-name jmd-020201215-001
+
+4.1.7
+aws cloudformation update-stack --template-body file://./lab4.1.7-natg.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1

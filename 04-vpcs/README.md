@@ -176,13 +176,50 @@ reachable from anywhere outside your VPC.
 
 _Can you ping your instance now?_
 
+> yes 
+```
+jason.davis.labs:~/environment/su-jmd-020201208/04-vpcs (wip/04) $ ping 3.216.247.203
+PING 3.216.247.203 (3.216.247.203) 56(84) bytes of data.
+64 bytes from 3.216.247.203: icmp_seq=1 ttl=254 time=0.560 ms
+64 bytes from 3.216.247.203: icmp_seq=2 ttl=254 time=0.644 ms
+^C
+--- 3.216.247.203 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1013ms
+rtt min/avg/max/mdev = 0.560/0.602/0.644/0.042 ms
+```
+
+
 ##### Question: SSH
 
 _Can you ssh into your instance now?_
 
+> yes
+```
+jason.davis.labs:~/environment/su-jmd-020201208/04-vpcs (wip/04) $ ssh -i "lab413-su-jmd.pem" ec2-user@3.216.247.203
+The authenticity of host '3.216.247.203 (3.216.247.203)' can't be established.
+ECDSA key fingerprint is SHA256:MrkzvdEHMzlMTlN891k8cDp7Gh2kFCTkCt/F5+DOM7g.
+ECDSA key fingerprint is MD5:18:cc:e9:e4:32:18:a6:e3:19:4c:9e:e9:0f:4e:8c:7b.
+Are you sure you want to continue connecting (yes/no)?
+```
+
 ##### Question: Traffic
 
 _If you can ssh, can you send any traffic (e.g. curl) out to the Internet?_
+
+> yes 
+```
+[ec2-user@ip-172-0-1-140 ~]$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=113 time=0.830 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=113 time=2.98 ms
+^C
+--- 8.8.8.8 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1025ms
+rtt min/avg/max/mdev = 0.830/1.907/2.984/1.077 ms
+[ec2-user@ip-172-0-1-140 ~]$ nslookup google.com
+Server:         172.0.0.2
+Address:        172.0.0.2#53
+```
 
 At this point, you've made your public EC2 instance an [ssh bastion](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html).
 We'll make use of that to explore your network below.

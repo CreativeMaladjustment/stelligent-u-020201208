@@ -32,6 +32,20 @@ Resources:
           Value: "4.1"
         - Key: stelligent-u-lab
           Value: "4.1.1"
+
+  NATSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !ImportValue "jmd-020201215-001-vpc"
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 172.0.2.0/24
+      Tags:
+        - Key: user
+          Value: "jason.davis.labs"
+        - Key: stelligent-u-lesson
+          Value: "4.1"
+        - Key: stelligent-u-lab
+          Value: "4.1.7"
           
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -70,6 +84,14 @@ Resources:
         GatewayId:
           Ref: InternetGateway
 
+  SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: Subnet
+      RouteTableId:
+        Ref: PublicRouteTable
+        
 Outputs:
   VPC:
     Description: vpc for other CF templates
@@ -81,3 +103,13 @@ Outputs:
     Value: !Ref Subnet
     Export:
       Name: !Sub ${AWS::StackName}-subnet
+  NATSubnet:
+    Description: natsubnet for other CF templates
+    Value: !Ref NATSubnet
+    Export:
+      Name: !Sub ${AWS::StackName}-natsubnet
+  PublicRouteTable:
+    Description: routetable for other CF templates
+    Value: !Ref PublicRouteTable
+    Export:
+      Name: !Sub ${AWS::StackName}-routetable
