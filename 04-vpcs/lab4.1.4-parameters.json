@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "ec2amiid",
+    "ParameterValue": "ami-03368e982f317ae48"
+  },
+  {
+    "ParameterKey": "instancetype",
+    "ParameterValue": "t2.small"
+  },
+  {
+    "ParameterKey": "keypairname",
+    "ParameterValue": "lab413-su-jmd"
+  }
+]

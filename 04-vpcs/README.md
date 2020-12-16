@@ -133,10 +133,20 @@ Launch an EC2 instance into your VPC.
 
 _After you launch your new stack, can you ssh to the instance?_
 
+> no, no route to the instance only a private ip on a subnet that the default (where i am at) can route to. Also no security group to allow ingress traffic...
+```
+ssh -i "lab413-su-jmd.pem" ec2-user@172.0.1.172
+ssh: connect to host 172.0.1.172 port 22: Connection timed out
+```
+
 ##### Question: Verify Connectivity
 
 _Is there a way that you can verify Internet connectivity from the instance
 without ssh'ing to it?_
+
+> i thought console access but nothing would connect... Wonder if an ami that had something running on startup which would connect to the internet would show traffic in cloudwatch or in a packet capture...
+
+> console error - To connect using the EC2 Instance Connect browser-based client, the instance must have a public IPv4 address.
 
 #### Lab 4.1.5: Security Group
 
@@ -147,6 +157,8 @@ Add a security group to your EC2 stack:
 ##### Question: Connectivity
 
 _Can you ssh to your instance yet?_
+
+> nope connection timed out - no route from default vpc to this private ip wanting a public ip... 
 
 #### Lab 4.1.6: Elastic IP
 
