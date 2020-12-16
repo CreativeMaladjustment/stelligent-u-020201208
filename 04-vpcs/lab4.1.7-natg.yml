@@ -57,24 +57,24 @@ Resources:
           - Key: stelligent-u-lab
             Value: "4.1.7"
 
-  # NATPublicRouteTable:
-  #   Type: AWS::EC2::RouteTable
-  #   Properties:
-  #     VpcId: !ImportValue "jmd-020201215-001-vpc"
-  #     Tags:
-  #       - Key: user
-  #         Value: "jason.davis.labs"
-  #       - Key: stelligent-u-lesson
-  #         Value: "4.1"
-  #       - Key: stelligent-u-lab
-  #         Value: "4.1.7"
+  NATPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !ImportValue "jmd-020201215-001-vpc"
+      Tags:
+        - Key: user
+          Value: "jason.davis.labs"
+        - Key: stelligent-u-lesson
+          Value: "4.1"
+        - Key: stelligent-u-lab
+          Value: "4.1.7"
 
   NATPublicRoute:
       Type: AWS::EC2::Route
       Properties:
-        RouteTableId: !ImportValue "jmd-020201215-001-routetable"
+        RouteTableId: !Ref NATPublicRouteTable
         NatGatewayId: NAT
-        DestinationCidrBlock: '172.0.2.0/24'
+        DestinationCidrBlock: '0.0.0.0/0'
         NatGatewayId:
           Ref: NAT
           
