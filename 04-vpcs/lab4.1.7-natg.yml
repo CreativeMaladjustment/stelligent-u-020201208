@@ -69,13 +69,14 @@ Resources:
   #       - Key: stelligent-u-lab
   #         Value: "4.1.7"
 
-  # NATPublicRoute:
-  #     Type: AWS::EC2::Route
-  #     Properties:
-  #       RouteTableId: !Ref NATPublicRouteTable
-  #       DestinationCidrBlock: '0.0.0.0/0'
-  #       NatGatewayId:
-  #         Ref: NAT
+  NATPublicRoute:
+      Type: AWS::EC2::Route
+      Properties:
+        RouteTableId: !ImportValue "jmd-020201215-001-routetable"
+        NatGatewayId: NAT
+        DestinationCidrBlock: '172.0.2.0/24'
+        NatGatewayId:
+          Ref: NAT
           
   NATEC2Instance: 
     Type: AWS::EC2::Instance
