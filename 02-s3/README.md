@@ -121,14 +121,17 @@ Add an object to your bucket:
 
 _How would you copy the contents of the directory to the top level of your bucket?_
 
-s3://bucket/ set the path to just / not /subfolders/
+> s3://bucket/ set the path to just / not /subfolders/
+```aws s3 cp data/file3 s3://stelligent-u-jason.davis.labs/file3```
+
 
 ##### Question: Directory Copying
 
 _How would you copy the contents and include the directory name in the s3 object
 paths?_
 
-s3://bucket/path/
+> s3://bucket/path/
+```aws s3 cp data/ s3://stelligent-u-jason.davis.labs/data/  --recursive```
 
 ##### Question: Object Access
 
