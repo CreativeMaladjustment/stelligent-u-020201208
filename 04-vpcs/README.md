@@ -369,12 +369,17 @@ Elastic IP.
 
 _Can you ping this instance from the public instance you created earlier?_
 
+> yes, after putting subnets into the route table...
+
 ##### Question: Private to Public
 
 _Can you ping your public instance from this private instance? Which IPs are
 reachable, the public instance's private IP or its public IP, or both?_
 
 Use traceroute to see where traffic flows to both the public and private IPs.
+
+> from 172.16.1.55  to 10.10.1.8 --- traceroute shows no hops looks like udp is not allowed
+
 
 #### Lab 4.2.3: VPC Endpoint Gateway to S3
 
@@ -410,11 +415,16 @@ document where you're at and what's not working for you, then move on.
 Even though this is a valuable foundation, we have more important things for
 you to learn._
 
+> route table doesn't have "Confirm that there's a route to Amazon S3 using the gateway VPC endpoint." from the guide / not sure how to add this in cnf
+
+
 ### Retrospective 4.2
 
 #### Question: Corporate Networks
 
 _How would you integrate your VPC with a corporate network?_
+
+> direct connect / allow only corporate public ip in to vpc / add a site to site VPN... / a vpn appliance? 
 
 ## Further Reading
 

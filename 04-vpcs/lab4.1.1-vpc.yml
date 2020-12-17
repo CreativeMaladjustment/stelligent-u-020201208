@@ -194,7 +194,7 @@ Resources:
       RuleAction: allow
       CidrBlock: 10.10.0.0/16
       RuleNumber: 133
-      Protocol: "1"
+      Protocol: "-1"
       Icmp:
         Code: "-1"
         Type: "-1"
