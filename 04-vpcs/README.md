@@ -310,6 +310,8 @@ Add another ACL to your private subnet:
 
 _Verify again that you can reach your instance._
 
+> state less - had to allow inbound from the 172.0.2.0/24 into 172.0.1.0 subnet.
+
 ### Retrospective 4.1
 
 For more information, read the [AWS Documentation on VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)

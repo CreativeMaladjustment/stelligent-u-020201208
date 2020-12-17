@@ -4,11 +4,35 @@
     "ParameterValue": "ami-03368e982f317ae48"
   },
   {
+    "ParameterKey": "r2ec2amiid",
+    "ParameterValue": "ami-09558250a3419e7d0"
+  },
+  {
     "ParameterKey": "instancetype",
     "ParameterValue": "t2.small"
   },
   {
     "ParameterKey": "keypairname",
     "ParameterValue": "lab413-su-jmd"
+  },
+  {
+    "ParameterKey": "r1cidr",
+    "ParameterValue": "10.10.0.0/16"
+  },
+  {
+    "ParameterKey": "r2cidr",
+    "ParameterValue": "10.10.0.0/16"
+  },
+  {
+    "ParameterKey": "r1vpcid",
+    "ParameterValue": "vpc-0968e5182a833cf5f"
+  },
+  {
+    "ParameterKey": "r2vpcid",
+    "ParameterValue": "vpc-0042fa6b3e1dd5438"
+  },
+  {
+    "ParameterKey": "r1peerid",
+    "ParameterValue": "pcx-0e41ccd260c4c3dac"
   }
 ]
