@@ -47,7 +47,7 @@ Resources:
         - Key: stelligent-u-lesson
           Value: "4.1"
         - Key: stelligent-u-lab
-          Value: "4.1.1"
+          Value: "4.1.1 upd"
 
   NATSubnet:
     Type: AWS::EC2::Subnet
@@ -92,6 +92,18 @@ Resources:
           Value: "4.1"
         - Key: stelligent-u-lab
           Value: "4.1.2"
+
+  PublicRouteTableSubnetAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref Subnet
+
+  PublicRouteTableSubnetAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref NATSubnet
 
   PublicRoute:
       Type: AWS::EC2::Route
@@ -175,7 +187,6 @@ Resources:
       Icmp:
         Code: "-1"
         Type: "-1"
-      RuleAction: allow
   InboundRuleandbackagainicmpPeer:
     Type: AWS::EC2::NetworkAclEntry
     Properties:
@@ -187,7 +198,6 @@ Resources:
       Icmp:
         Code: "-1"
         Type: "-1"
-      RuleAction: allow
   OutboundRule:
     Type: AWS::EC2::NetworkAclEntry
     Properties:

@@ -52,6 +52,12 @@ Resources:
       RouteTableId: !Ref PEERRouteTable
       VpcPeeringConnectionId: !Ref VPCPeeringConnection
 
+  PEERRouteTableSubnetAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PEERRouteTable
+      SubnetId: !Ref Subnet
+
   Subnet:
     Type: AWS::EC2::Subnet
     Properties:
