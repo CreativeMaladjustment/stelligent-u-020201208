@@ -146,6 +146,8 @@ without ssh'ing to it?_
 
 > i thought console access but nothing would connect... Wonder if an ami that had something running on startup which would connect to the internet would show traffic in cloudwatch or in a packet capture...
 
+> aws systems management has other options in the execute actions the AWSSupport-SetupIPMonitoringFromVPC document can be used to ping out... https://aws.amazon.com/blogs/networking-and-content-delivery/debugging-tool-for-network-connectivity-from-amazon-vpc/
+
 > console error - To connect using the EC2 Instance Connect browser-based client, the instance must have a public IPv4 address.
 
 #### Lab 4.1.5: Security Group
