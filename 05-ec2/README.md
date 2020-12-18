@@ -141,6 +141,8 @@ Windows Server 2012 R2:
 - Query the stack's events using the AWS CLI. What happened to your
   original EC2 Windows instance?
 
+> win was terminated still around but will be gone soon 
+
 #### Lab 5.1.4: Teardown
 
 There is usually some delay between initiating an instance's termination
@@ -148,6 +150,8 @@ and the instance being considered eliminated altogether.
 
 - Delete your Stack. Immediately after initiating Stack deletion, see
   if you can query your instance states.
+
+> state pending
 
 ### Retrospective 5.1
 
@@ -159,11 +163,20 @@ back and change your lab's code and repeat that lab: parameterize the
 CFN template to accept both Linux and Windows AMI IDs, and provide the
 values via a scripted mechanism.
 
+> used this initially and then fed the values into the json
+```
+paramater set by LatestAmiId:
+Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+```
+
 #### Question: Resource Replacement
 
 _When updating a Stack containing an EC2 instance,
 [what other changes](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html)
 will cause the same thing to occur as in Lab 5.1.3?_
+
+> many but changes that cause a new ID are ones that will cause same thing to occur.
 
 ## Lesson 5.2: Instance Access
 

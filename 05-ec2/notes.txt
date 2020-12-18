@@ -7,3 +7,22 @@ curl http://169.254.169.254/latest/meta-data/network
 NIMAC=`curl http://169.254.169.254/latest/meta-data/network/interfaces/macs`
 curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/$NIMAC/subnet-id
 
+5.1.2
+
+aws cloudformation wait stack-create-complete --stack-name $(aws cloudformation create-stack --template-body file://./lab5.1.2.yml --stack-name jmd-020201217-002 --region us-east-1 | jq .StackId)
+aws cloudformation wait stack-create-complete --stack-name $(aws cloudformation update-stack --template-body file://./lab5.1.2.yml --stack-name jmd-020201217-002 --region us-east-1 | jq .StackId)
+### not looking for arn like the example... but want to keep the jq :) 
+
+SN=jmd-020201217-002 && aws cloudformation create-stack --template-body file://./lab5.1.2.yml --stack-name $SN && aws cloudformation wait stack-create-complete --stack-name $SN
+SN=jmd-020201217-002 && aws cloudformation update-stack --template-body file://./lab5.1.2.yml --stack-name $SN && aws cloudformation wait stack-create-complete --stack-name $SN
+
+aws cloudformation describe-stack-resources --stack-name $SN
+aws cloudformation describe-stack-instance --stack-name $SN
+
+aws cloudformation describe-stack-resources --stack-name $SN | jq .StackResources[2].PhysicalResourceId
+"i-0c9295daab307c938"
+aws cloudformation describe-stack-resources --stack-name $SN | jq .StackResources[4].PhysicalResourceId
+"i-0ca5adefb532de377"
+
+aws ec2 describe-instances --instance-ids i-0c9295daab307c938 i-0ca5adefb532de377
+
