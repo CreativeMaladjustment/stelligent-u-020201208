@@ -25,8 +25,8 @@ Resources:
     Properties:
       AutoScalingGroupName: lab615-su-jmd
       MinSize: "1"
-      MaxSize: "1"
-      DesiredCapacity: "1"
+      MaxSize: "5"
+      DesiredCapacity: "5"
       # LaunchConfigurationName: !Ref LaunchConfig
       LaunchTemplate:
         LaunchTemplateId: !Ref LaunchTemplate

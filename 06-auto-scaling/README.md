@@ -246,6 +246,12 @@ resource ID? Given that name, [describe your ASG](https://docs.aws.amazon.com/cl
 Find the Instance ID. Can you filter the output to print only the Instance ID
 value?_
 
+> aws cloudformation describe-stack-resources --stack-name jmd-020201221-003
+lab615-su-jmd
+aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name lab615-su-jmd
+aws autoscaling describe-auto-scaling-instances --region us-east-1 --output text --query "AutoScalingInstances[?AutoScalingGroupName=='lab615-su-jmd'].InstanceId"
+--- final answers
+
 (You can use the `--query` option, but you can also use
 [jq](https://stedolan.github.io/jq/). Both are useful in different scenarios.)
 
@@ -258,6 +264,9 @@ the new instance launch.
 _How long did it take for the new instance to spin up? How long before it was
 marked as healthy?_
 
+> aws ec2 terminate-instances --instance-ids i-0c0e635c3be5c6450
+23 seconds based on instance activity
+
 #### Lab 6.2.2: Scale Out
 
 Watch your stack and your ASG in the web console as you do this lab.
@@ -269,9 +278,13 @@ then update the stack.
 
 _Did it work? If it didn't, what else do you have to increase?_
 
+> max as well as desired. 
+
 ##### Question: Update Delay
 
 _How quickly after your stack update did you see the ASG change?_
+
+> seconds, before the stack update was registed as done the ASG was adding instances.
 
 #### Lab 6.2.3: Manual Interference
 
@@ -279,6 +292,8 @@ Take one of your instances [out of your ASG manually](http://docs.aws.amazon.com
 using the CLI. Observe Auto Scaling as it launches a replacement
 instance. Take note of what it does with the instance you marked
 unhealthy.
+
+> aws autoscaling set-instance-health --instance-id i-0a1a3b20e478e312d --health-status Unhealthy  --- it was terminated and then replaced. 
 
 #### Lab 6.2.4: Troubleshooting Features
 

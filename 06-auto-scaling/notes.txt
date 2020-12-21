@@ -20,3 +20,12 @@ aws cloudformation delete-stack --stack-name jmd-020201221-002
 
 #613
 aws cloudformation update-stack --template-body file://./lab613.yml --stack-name jmd-020201221-002 --region us-east-1 --capabilities CAPABILITY_IAM 
+
+#621
+aws cloudformation describe-stack-resources --stack-name jmd-020201221-003
+lab615-su-jmd
+aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name lab615-su-jmd
+sudo yum install jq
+
+aws autoscaling describe-auto-scaling-instances --region us-east-1 --output text --query "AutoScalingInstances[?AutoScalingGroupName=='lab615-su-jmd'].InstanceId"
+
