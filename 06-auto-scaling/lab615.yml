@@ -9,7 +9,7 @@ Resources:
       LaunchTemplateData:
         KeyName: lab6-su-jmd
         SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
+          - !GetAtt InstanceSecurityGroup.GroupId
         ImageId: "ami-0149237d81c73e609"
         InstanceType: t2.small
   # LaunchConfig: 
@@ -23,7 +23,7 @@ Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      AutoScalingGroupName: lab612-su-jmd
+      AutoScalingGroupName: lab615-su-jmd
       MinSize: "1"
       MaxSize: "1"
       DesiredCapacity: "1"
