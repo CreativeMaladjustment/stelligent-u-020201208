@@ -425,6 +425,22 @@ snapshot.
 
 Use the AWS CLI to describe the newly-created EBS Snapshot. Save the output.
 
+```
+jason.davis.labs:~/environment/su-jmd-020201208/05-ec2 (wip/05) $ aws ec2 create-snapshot --volume-id vol-06ab0fc4160aaf706 --description "This is my rabbit volume snapshot"                                                                                   
+{
+    "Description": "This is my rabbit volume snapshot",
+    "Encrypted": false,
+    "OwnerId": "324320755747",
+    "Progress": "",
+    "SnapshotId": "snap-07b2884e8bac6138b",
+    "StartTime": "2020-12-21T18:52:33.000Z",
+    "State": "pending",
+    "VolumeId": "vol-06ab0fc4160aaf706",
+    "VolumeSize": 4,
+    "Tags": []
+}
+```
+
 #### Lab 5.4.3: Attaching Snapshots
 
 Repeat Lab 5.3.1, but modify the EBS volume to utilize the EBS Snapshot ID
@@ -440,6 +456,17 @@ using a recent snapshot, reducing or avoiding Volume data loss.
 
 SSH into the instance. _Can you find the file that you wrote to your
 secondary ESB Volume?_
+
+> yes it is there
+
+```
+ubuntu@ip-172-31-15-53:/mnt/xvdh$ ls -ial
+total 28
+   2 drwxr-xr-x 3 root root  4096 Dec 21 18:49 .
+4128 drwxr-xr-x 3 root root  4096 Dec 21 18:49 ..
+  11 drwx------ 2 root root 16384 Dec 21 18:49 lost+found
+  12 -rw-r--r-- 1 root root     4 Dec 21 18:49 rabbit
+```
 
 #### Lab 5.4.4: Instance Snapshots
 

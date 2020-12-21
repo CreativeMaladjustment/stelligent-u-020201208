@@ -45,3 +45,8 @@ ssh -i lab544-su-jmd.pem ubuntu@34.197.141.205
 aws ec2 create-snapshot --volume-id vol-03901129a6e2c921e --description "This is my rabbit volume snapshot"
 # added NixRestore (or uncomment it, and set it to use the snapshoid from command above)
 aws cloudformation update-stack --template-body file://./lab5.4.4.nix.yml --stack-name jmd-020201221-002 --region us-east-1
+
+ssh -i lab544-su-jmd.pem ubuntu@23.22.224.216
+
+lsblk -o KNAME,TYPE,SIZE,MODEL
+
