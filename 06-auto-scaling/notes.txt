@@ -16,3 +16,4 @@ aws autoscaling create-auto-scaling-group --auto-scaling-group-name lab611-su-jm
 
 #612
 aws cloudformation create-stack --template-body file://./lab612.yml --stack-name jmd-020201221-002 --region us-east-1 --capabilities CAPABILITY_IAM
+aws cloudformation delete-stack --stack-name jmd-020201221-002
