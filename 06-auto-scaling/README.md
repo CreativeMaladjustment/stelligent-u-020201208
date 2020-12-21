@@ -190,6 +190,8 @@ parameters you need to.
 _What config info or resources do you have to provide in addition to what
 Launch Configurations require?_
 
+> no added detail, other than switching from LaunchConfigurationName to LaunchTemplate with a version ID... 
+
 You'll see both launch configs and launch templates in your client
 engagements. Templates were [introduced in Nov 2017](https://aws.amazon.com/about-aws/whats-new/2017/11/introducing-launch-templates-for-amazon-ec2-instances/)
 and should start to become more common as time goes by. They're more
@@ -206,6 +208,8 @@ associated with those. Then tear your stack down.
 
 _After you tear down the stack, do all the associated resources go away?
 What's left?_
+
+> all go away, just took some time. 
 
 ### Retrospective 6.1
 
