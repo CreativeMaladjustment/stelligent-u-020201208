@@ -25,8 +25,20 @@ Resources:
       AutoScalingRollingUpdate:
         MinInstancesInService: '1'
         MaxBatchSize: '1'
-        AutoScalingReplacingUpdate:
-          WillReplace: True
+        PauseTime: PT12M5S
+        WaitOnResourceSignals: true
+        SuspendProcesses:
+          - HealthCheck
+          - ReplaceUnhealthy
+          - AZRebalance
+          - AlarmNotification
+          - ScheduledActions
+    # UpdatePolicy:
+    #   AutoScalingRollingUpdate:
+    #     MinInstancesInService: '1'
+    #     MaxBatchSize: '1'
+    #     AutoScalingReplacingUpdate:
+    #       WillReplace: True
 
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
