@@ -44,7 +44,6 @@ Resources:
           SnapshotId: snap-0fb6e09b8240cd858
           VolumeSize: 4
           VolumeType: gp2
-          Iops: 1000
           DeleteOnTermination: false
       LaunchTemplate: 
         LaunchTemplateId: !ImportValue "jmd-020201221-001-launchtemplate"
