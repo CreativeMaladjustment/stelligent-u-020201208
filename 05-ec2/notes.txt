@@ -29,3 +29,16 @@ aws ec2 describe-instances --instance-ids i-0c9295daab307c938 i-0ca5adefb532de37
 
 5.4.4
 aws cloudformation create-stack --template-body file://./lab5.4.4.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM
+aws cloudformation update-stack --template-body file://./lab5.4.4.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM
+aws cloudformation delete-stack --stack-name jmd-020201221-001
+
+aws cloudformation create-stack --template-body file://./lab5.4.4.nix.yml --stack-name jmd-020201221-002 --region us-east-1
+
+
+#need a new key
+aws ec2 create-key-pair --key-name lab544-su-jmd --query 'KeyMaterial' --output text > lab544-su-jmd.pem
+chmod 400 lab544-su-jmd.pem
+ssh-keygen -y -f lab544-su-jmd.pem
+
+ssh -i lab544-su-jmd.pem ubuntu@3.233.67.183
+
