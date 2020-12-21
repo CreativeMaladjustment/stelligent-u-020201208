@@ -29,3 +29,6 @@ sudo yum install jq
 
 aws autoscaling describe-auto-scaling-instances --region us-east-1 --output text --query "AutoScalingInstances[?AutoScalingGroupName=='lab615-su-jmd'].InstanceId"
 
+aws autoscaling enter-standby --instance-ids i-081b9e36444855120 --auto-scaling-group-name lab615-su-jmd --should-decrement-desired-capacity
+aws autoscaling describe-auto-scaling-instances --instance-ids i-081b9e36444855120
+aws autoscaling exit-standby --instance-ids i-081b9e36444855120 --auto-scaling-group-name lab615-su-jmd
