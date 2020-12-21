@@ -178,6 +178,8 @@ _When updating a Stack containing an EC2 instance,
 will cause the same thing to occur as in Lab 5.1.3?_
 
 > many but changes that cause a new ID are ones that will cause same thing to occur, with the instance being deleted/removed and recreated.
+AvailabilityZone - CpuOptions - ElasticGpuSpecifications - ElasticInferenceAccelerators - EnclaveOptions - HibernationOptions - HostResourceGroupArn - ImageId- Ipv6AddressCount - Ipv6Addresses - KeyName - LaunchTemplate - LicenseSpecifications - NetworkInterfaces - PlacementGroupName - PrivateIpAddress - SecurityGroups - SubnetId
+changes to those values in the stack will cause instance to be replaced. 
 
 ## Lesson 5.2: Instance Access
 
