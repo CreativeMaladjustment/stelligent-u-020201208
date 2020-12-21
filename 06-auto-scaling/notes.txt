@@ -1,0 +1,12 @@
+#need a new key
+aws ec2 create-key-pair --key-name lab6-su-jmd --query 'KeyMaterial' --output text > lab6.pem
+chmod 400 lab6.pem
+ssh-keygen -y -f lab6.pem
+
+ssh -i lab6.pem ubuntu@
+
+aws cloudformation create-stack --template-body file://./lab611.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+aws ssm get-parameters-by-path --path "/aws/service/"
+
+# ami-0149237d81c73e609
