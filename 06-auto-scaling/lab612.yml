@@ -6,7 +6,8 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: "ami-0149237d81c73e609"
-      SecurityGroups: !GetAtt InstanceSecurityGroup.GroupId
+      SecurityGroups: 
+      - Ref: "InstanceSecurityGroup"
       InstanceType: "t2.micro"
       KeyName: "lab6-su-jmd"
   AutoScalingGroup:
