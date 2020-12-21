@@ -26,3 +26,6 @@ aws cloudformation describe-stack-resources --stack-name $SN | jq .StackResource
 
 aws ec2 describe-instances --instance-ids i-0c9295daab307c938 i-0ca5adefb532de377
 
+
+5.4.4
+aws cloudformation create-stack --template-body file://./lab5.4.4.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM

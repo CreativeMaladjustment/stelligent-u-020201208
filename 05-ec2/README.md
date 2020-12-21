@@ -151,7 +151,7 @@ and the instance being considered eliminated altogether.
 - Delete your Stack. Immediately after initiating Stack deletion, see
   if you can query your instance states.
 
-> state pending
+> state pending is what is said afterwords when query of instance states is done. 
 
 ### Retrospective 5.1
 
@@ -164,6 +164,7 @@ CFN template to accept both Linux and Windows AMI IDs, and provide the
 values via a scripted mechanism.
 
 > used this initially and then fed the values into the json
+
 ```
 paramater set by LatestAmiId:
 Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
@@ -176,7 +177,7 @@ _When updating a Stack containing an EC2 instance,
 [what other changes](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html)
 will cause the same thing to occur as in Lab 5.1.3?_
 
-> many but changes that cause a new ID are ones that will cause same thing to occur.
+> many but changes that cause a new ID are ones that will cause same thing to occur, with the instance being deleted/removed and recreated.
 
 ## Lesson 5.2: Instance Access
 
