@@ -1,0 +1,56 @@
+aws cloudformation create-stack --template-body file://./lab4.1.1-vpc.yml --stack-name jmd-020201215-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --template-body file://./lab4.1.1-vpc.yml --stack-name jmd-020201215-001 --region us-east-1
+
+4.1.3
+
+aws ec2 create-key-pair --key-name lab413-su-jmd --query 'KeyMaterial' --output text > lab413-su-jmd.pem
+chmod 400 lab413-su-jmd.pem
+ssh-keygen -y -f lab413-su-jmd.pem
+
+4.1.4
+
+aws cloudformation describe-stacks --stack-name jmd-020201215-001 --region us-east-1
+   # confirm that subnet is a string
+
+aws cloudformation create-stack --template-body file://./lab4.1.4-ec2i.yml --stack-name jmd-020201215-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --template-body file://./lab4.1.4-ec2i.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+aws cloudformation update-stack --template-body file://./lab4.1.4-ec2i.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+
+ssh -i "lab413-su-jmd.pem" ec2-user@172.0.1.172
+
+4.1.5
+aws cloudformation update-stack --template-body file://./lab4.1.5-sg.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+
+4.1.6
+aws cloudformation update-stack --template-body file://./lab4.1.6-eip.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+
+#aws cloudformation delete-stack --stack-name jmd-020201215-002
+#aws cloudformation delete-stack --stack-name jmd-020201215-001
+
+4.1.7
+aws cloudformation update-stack --template-body file://./lab4.1.7-natg.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+aws cloudformation create-stack --template-body file://./lab4.1.7-natg.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-1
+
+aws cloudformation describe-stacks --stack-name jmd-020201215-001 --region us-east-1
+aws cloudformation describe-stacks --stack-name jmd-020201215-002 --region us-east-1
+
+### network acls are stateless - so the from 
+
+4.2.1
+aws cloudformation create-stack --template-body file://./lab4.2.1-vpc.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-001 --region us-east-2
+aws cloudformation update-stack --template-body file://./lab4.2.1-vpc.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-001 --region us-east-2
+
+aws cloudformation create-stack --template-body file://./lab4.2.1-peer-r1.yml  --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-003 --region us-east-1
+
+4.2.2
+aws cloudformation create-stack --template-body file://./lab4.2.2-ec2.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-2
+aws cloudformation update-stack --template-body file://./lab4.2.2-ec2.yml --parameters file://./lab4.1.4-parameters.json --stack-name jmd-020201215-002 --region us-east-2
+
+aws cloudformation describe-stacks --stack-name jmd-020201215-002 --region us-east-2                                     
+
+aws ec2 create-key-pair --key-name lab413-su-jmdr2 --query 'KeyMaterial' --region us-east-2 --output text > lab413-su-jmdr2.pem
+chmod 400 lab413-su-jmdr2.pem
+ssh-keygen -y -f lab413-su-jmdr2.pem
+
+4.2.2
+aws cloudformation create-stack --template-body file://./lab4.2.3-vpcEG.yml --stack-name jmd-020201215-002 --region us-east-1

@@ -133,10 +133,22 @@ Launch an EC2 instance into your VPC.
 
 _After you launch your new stack, can you ssh to the instance?_
 
+> no, no route to the instance only a private ip on a subnet that the default (where i am at) can route to. Also no security group to allow ingress traffic...
+```
+ssh -i "lab413-su-jmd.pem" ec2-user@172.0.1.172
+ssh: connect to host 172.0.1.172 port 22: Connection timed out
+```
+
 ##### Question: Verify Connectivity
 
 _Is there a way that you can verify Internet connectivity from the instance
 without ssh'ing to it?_
+
+> i thought console access but nothing would connect... Wonder if an ami that had something running on startup which would connect to the internet would show traffic in cloudwatch or in a packet capture...
+
+> aws systems management has other options in the execute actions the AWSSupport-SetupIPMonitoringFromVPC document can be used to ping out... https://aws.amazon.com/blogs/networking-and-content-delivery/debugging-tool-for-network-connectivity-from-amazon-vpc/
+
+> console error - To connect using the EC2 Instance Connect browser-based client, the instance must have a public IPv4 address.
 
 #### Lab 4.1.5: Security Group
 
@@ -147,6 +159,8 @@ Add a security group to your EC2 stack:
 ##### Question: Connectivity
 
 _Can you ssh to your instance yet?_
+
+> nope connection timed out - no route from default vpc to this private ip wanting a public ip... 
 
 #### Lab 4.1.6: Elastic IP
 
@@ -164,13 +178,50 @@ reachable from anywhere outside your VPC.
 
 _Can you ping your instance now?_
 
+> yes 
+```
+jason.davis.labs:~/environment/su-jmd-020201208/04-vpcs (wip/04) $ ping 3.216.247.203
+PING 3.216.247.203 (3.216.247.203) 56(84) bytes of data.
+64 bytes from 3.216.247.203: icmp_seq=1 ttl=254 time=0.560 ms
+64 bytes from 3.216.247.203: icmp_seq=2 ttl=254 time=0.644 ms
+^C
+--- 3.216.247.203 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1013ms
+rtt min/avg/max/mdev = 0.560/0.602/0.644/0.042 ms
+```
+
+
 ##### Question: SSH
 
 _Can you ssh into your instance now?_
 
+> yes
+```
+jason.davis.labs:~/environment/su-jmd-020201208/04-vpcs (wip/04) $ ssh -i "lab413-su-jmd.pem" ec2-user@3.216.247.203
+The authenticity of host '3.216.247.203 (3.216.247.203)' can't be established.
+ECDSA key fingerprint is SHA256:MrkzvdEHMzlMTlN891k8cDp7Gh2kFCTkCt/F5+DOM7g.
+ECDSA key fingerprint is MD5:18:cc:e9:e4:32:18:a6:e3:19:4c:9e:e9:0f:4e:8c:7b.
+Are you sure you want to continue connecting (yes/no)?
+```
+
 ##### Question: Traffic
 
 _If you can ssh, can you send any traffic (e.g. curl) out to the Internet?_
+
+> yes 
+```
+[ec2-user@ip-172-0-1-140 ~]$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=113 time=0.830 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=113 time=2.98 ms
+^C
+--- 8.8.8.8 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1025ms
+rtt min/avg/max/mdev = 0.830/1.907/2.984/1.077 ms
+[ec2-user@ip-172-0-1-140 ~]$ nslookup google.com
+Server:         172.0.0.2
+Address:        172.0.0.2#53
+```
 
 At this point, you've made your public EC2 instance an [ssh bastion](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html).
 We'll make use of that to explore your network below.
@@ -200,14 +251,28 @@ existing instance stack.
 
 _Can you find a way to ssh to this instance?_
 
+> ssh to the bastion host and from there with pem key ssh to private ip of new instance
+```
+ssh a.pem 172.0.2.140
+```
+
 ##### Question: Egress
 
 _If you can ssh to it, can you send traffic out?_
+
+> yes
+```
+[ec2-user@ip-172-0-2-140 ~]$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=1.45 ms
+```
 
 ##### Question: Deleting the Gateway
 
 _If you delete the NAT gateway, what happens to the ssh session on your private
 instance?_
+
+> ping stops / but ssh session remains connected
 
 ##### Question: Recreating the Gateway
 
@@ -215,6 +280,8 @@ _If you recreate the NAT gateway and detach the Elastic IP from the public EC2
 instance, can you still reach the instance from the outside?_
 
 Test it out with the AWS console.
+
+> dissasociate eip - cannot reach instance from outside anymore
 
 #### Lab 4.1.8: Network ACL
 
@@ -232,6 +299,8 @@ First, add one on the public subnet:
 
 _Can you still reach your EC2 instances?_
 
+> not until i added the elastic ip back in
+
 Add another ACL to your private subnet:
 
 - Only allow traffic from the public subnet.
@@ -242,6 +311,8 @@ Add another ACL to your private subnet:
   public subnet.
 
 _Verify again that you can reach your instance._
+
+> state less - had to allow inbound from the 172.0.2.0/24 into 172.0.1.0 subnet.
 
 ### Retrospective 4.1
 
@@ -300,12 +371,17 @@ Elastic IP.
 
 _Can you ping this instance from the public instance you created earlier?_
 
+> yes, after putting subnets into the route table...
+
 ##### Question: Private to Public
 
 _Can you ping your public instance from this private instance? Which IPs are
 reachable, the public instance's private IP or its public IP, or both?_
 
 Use traceroute to see where traffic flows to both the public and private IPs.
+
+> from 172.16.1.55  to 10.10.1.8 --- traceroute shows no hops looks like udp is not allowed
+
 
 #### Lab 4.2.3: VPC Endpoint Gateway to S3
 
@@ -341,11 +417,16 @@ document where you're at and what's not working for you, then move on.
 Even though this is a valuable foundation, we have more important things for
 you to learn._
 
+> route table doesn't have "Confirm that there's a route to Amazon S3 using the gateway VPC endpoint." from the guide / not sure how to add this in cnf
+
+
 ### Retrospective 4.2
 
 #### Question: Corporate Networks
 
 _How would you integrate your VPC with a corporate network?_
+
+> direct connect / allow only corporate public ip in to vpc / add a site to site VPN... / a vpn appliance? 
 
 ## Further Reading
 
