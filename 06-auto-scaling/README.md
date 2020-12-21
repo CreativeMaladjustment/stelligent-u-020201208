@@ -139,7 +139,7 @@ created for you in Lab 6.1.1.
 _What config info or resources did you have to create explicitly that Amazon
 created for you when launching an ASG from an existing instance?_
 
-> had to list availability zones - had to create the launchconfig - 
+> had to list availability zones by way of subnet IDs - had to create the launchconfig - 
 
 #### Lab 6.1.3: Launch Config Changes
 
@@ -149,6 +149,8 @@ t2.small. Update your stack.
 ##### Question: Stack Updates
 
 _After updating your stack, did your running instance get replaced or resized?_
+
+> no - same size not terminated or replaced... 
 
 Terminate the instance in your ASG.
 
