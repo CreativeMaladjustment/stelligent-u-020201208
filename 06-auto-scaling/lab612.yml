@@ -18,17 +18,9 @@ Resources:
       MaxSize: "1"
       DesiredCapacity: "1"
       LaunchConfigurationName: !Ref LaunchConfig
-      # LaunchTemplate:
-      #   LaunchTemplateId: !Ref myLaunchTemplate
-      #   Version: !GetAtt myLaunchTemplate.LatestVersionNumber
-      # VPCZoneIdentifier:
-      #   - !Ref myPublicSubnet1
-      #   - !Ref myPublicSubnet2
-      # MetricsCollection: 
-      #   - Granularity: "1Minute"
-      #     Metrics: 
-      #       - "GroupMinSize"
-      #       - "GroupMaxSize"
+      VPCZoneIdentifier:
+        - "subnet-0017c4a5e72ed567f"
+        - "subnet-06e941239860097ef"
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
