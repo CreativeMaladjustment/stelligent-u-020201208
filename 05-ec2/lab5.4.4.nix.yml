@@ -39,7 +39,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties: 
       BlockDeviceMappings:
-      - DeviceName: /dev/sdc
+      - DeviceName: /dev/sdf
         Ebs:
           SnapshotId: snap-0fb6e09b8240cd858
           VolumeSize: 4
