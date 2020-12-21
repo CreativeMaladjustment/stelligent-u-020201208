@@ -11,12 +11,6 @@ Resources:
       InstanceType: "t2.medium"
       KeyName: "lab6-su-jmd"
   AutoScalingGroup:
-    UpdatePolicy:
-      AutoScalingRollingUpdate:
-        # MinInstancesInService: '1'
-        # MaxBatchSize: '1'
-        AutoScalingReplacingUpdate:
-          WillReplace: True
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: lab612-su-jmd
@@ -27,6 +21,13 @@ Resources:
       VPCZoneIdentifier:
         - "subnet-0017c4a5e72ed567f"
         - "subnet-06e941239860097ef"
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: '1'
+        MaxBatchSize: '1'
+        AutoScalingReplacingUpdate:
+          WillReplace: True
+
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
