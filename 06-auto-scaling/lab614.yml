@@ -23,7 +23,7 @@ Resources:
         - "subnet-06e941239860097ef"
     UpdatePolicy:
       AutoScalingRollingUpdate:
-        MinInstancesInService: '1'
+        MinInstancesInService: '0'
         MaxBatchSize: '1'
         PauseTime: PT12M5S
         WaitOnResourceSignals: true
