@@ -158,6 +158,8 @@ Terminate the instance in your ASG.
 
 _Is the replacement instance the new size or the old?_
 
+> replacement instance is the new size t2.small
+
 #### Lab 6.1.4: ASG Update Policy
 
 Change the
@@ -174,6 +176,8 @@ replaced this time?_
 ##### Question: Launch Config
 
 _Did the launch config change or was it replaced?_
+
+> it is replaced, and the event is logged in the cloudformation stack not just in the asg. 
 
 #### Lab 6.1.5: Launch Template
 
