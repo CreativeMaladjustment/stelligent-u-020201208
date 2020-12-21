@@ -108,9 +108,13 @@ Group (ASG): [ask Amazon to create one for us from a running instance](https://d
 
 _What was created in addition to the new Auto Scaling Group?_
 
+> A Launch configuration: lab611-su-jmd was also created. As well as instance i-03910d6ad03a58296 and a link to the autoscaling role... 
+
 ##### Question: Parameters
 
 _What parameters did Amazon record in the resources it created for you?_
+
+> a tag "aws:autoscaling:groupName" with the name of the ASG "lab611-su-jmd" --- the instance same sg/az/keyname values... 
 
 #### Lab 6.1.2: Launch Config and ASG in CFN
 

@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description:  "lesson 6"
+
+Resources:
+  LaunchConfig: 
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: "ami-0149237d81c73e609"
+      SecurityGroups: !Ref InstanceSecurityGroup
+      InstanceType: "t2.micro"
+      KeyName: "lab6-su-jmd"
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: lab612-su-jmd
+      MinSize: "1"
+      MaxSize: "1"
+      DesiredCapacity: "1"
+      LaunchConfigurationName: !Ref LaunchConfig
+      # LaunchTemplate:
+      #   LaunchTemplateId: !Ref myLaunchTemplate
+      #   Version: !GetAtt myLaunchTemplate.LatestVersionNumber
+      # VPCZoneIdentifier:
+      #   - !Ref myPublicSubnet1
+      #   - !Ref myPublicSubnet2
+      # MetricsCollection: 
+      #   - Granularity: "1Minute"
+      #     Metrics: 
+      #       - "GroupMinSize"
+      #       - "GroupMaxSize"
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: Allow ping and ssh
+        VpcId: "vpc-0610446fafca4df10"
+        SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0

@@ -3,10 +3,16 @@ aws ec2 create-key-pair --key-name lab6-su-jmd --query 'KeyMaterial' --output te
 chmod 400 lab6.pem
 ssh-keygen -y -f lab6.pem
 
-ssh -i lab6.pem ubuntu@
+ssh -i lab6.pem ubuntu@18.208.26.186
 
 aws cloudformation create-stack --template-body file://./lab611.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM
 
 aws ssm get-parameters-by-path --path "/aws/service/"
 
 # ami-0149237d81c73e609
+
+aws autoscaling create-auto-scaling-group --auto-scaling-group-name lab611-su-jmd --instance-id i-037b74c4c7c6cc943 --min-size 1 --max-size 1
+#--vpc-zone-identifier "subnet-5ea0c127,subnet-6194ea3b,subnet-c934b782"
+
+#612
+aws cloudformation create-stack --template-body file://./lab612.yml --stack-name jmd-020201221-002 --region us-east-1 --capabilities CAPABILITY_IAM
