@@ -36,3 +36,6 @@ aws autoscaling exit-standby --instance-ids i-081b9e36444855120 --auto-scaling-g
 #631
 
 aws cloudformation create-stack --template-body file://./lab631.yml --stack-name jmd-020201222-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+stress --cpu 8 --io 4 --vm 2 --vm-bytes 128M --timeout 300s
+

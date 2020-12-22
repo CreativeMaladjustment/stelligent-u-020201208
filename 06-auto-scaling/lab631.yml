@@ -10,7 +10,7 @@ Resources:
         KeyName: lab6-su-jmd
         SecurityGroupIds:
           - !GetAtt InstanceSecurityGroup.GroupId
-        ImageId: "ami-0149237d81c73e609"
+        ImageId: "ami-007a4d852ac16f59e"
         InstanceType: t2.small
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -82,7 +82,7 @@ Resources:
   Bastion: 
     Type: AWS::EC2::Instance
     Properties: 
-      ImageId: "ami-0149237d81c73e609"
+      ImageId: "ami-007a4d852ac16f59e"
       InstanceType: "t2.micro"
       KeyName: "lab6-su-jmd"
       SubnetId: "subnet-0017c4a5e72ed567f"
