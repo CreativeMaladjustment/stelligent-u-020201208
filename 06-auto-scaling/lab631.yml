@@ -78,3 +78,16 @@ Resources:
           FromPort: -1
           ToPort: -1
           CidrIp: 0.0.0.0/0
+
+  Bastion: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-0149237d81c73e609"
+      InstanceType: "t2.micro"
+      KeyName: "lab6-su-jmd"
+      SubnetId: "subnet-0017c4a5e72ed567f"
+      SecurityGroupIds: [ !Ref InstanceSecurityGroup ]
+  EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref Bastion
