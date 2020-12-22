@@ -32,3 +32,7 @@ aws autoscaling describe-auto-scaling-instances --region us-east-1 --output text
 aws autoscaling enter-standby --instance-ids i-081b9e36444855120 --auto-scaling-group-name lab615-su-jmd --should-decrement-desired-capacity
 aws autoscaling describe-auto-scaling-instances --instance-ids i-081b9e36444855120
 aws autoscaling exit-standby --instance-ids i-081b9e36444855120 --auto-scaling-group-name lab615-su-jmd
+
+#631
+
+aws cloudformation create-stack --template-body file://./lab631.yml --stack-name jmd-020201222-001 --region us-east-1 --capabilities CAPABILITY_IAM

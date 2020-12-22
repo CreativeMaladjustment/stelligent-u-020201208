@@ -108,13 +108,13 @@ Group (ASG): [ask Amazon to create one for us from a running instance](https://d
 
 _What was created in addition to the new Auto Scaling Group?_
 
-> A Launch configuration: lab611-su-jmd was also created. As well as instance i-03910d6ad03a58296 and a link to the autoscaling role... 
+> In addition to the Auto Scaling Group a Launch Configuration: lab611-su-jmd was also created. As well as instance i-03910d6ad03a58296 and a link to the autoscaling role from the auto scaling group. 
 
 ##### Question: Parameters
 
 _What parameters did Amazon record in the resources it created for you?_
 
-> a tag "aws:autoscaling:groupName" with the name of the ASG "lab611-su-jmd" --- the instance same sg/az/keyname values... 
+> Amazon added a tag "aws:autoscaling:groupName" with the name of the ASG "lab611-su-jmd" also the instance parameters for security group, availability zone and which key name to use were set.
 
 #### Lab 6.1.2: Launch Config and ASG in CFN
 
@@ -139,7 +139,7 @@ created for you in Lab 6.1.1.
 _What config info or resources did you have to create explicitly that Amazon
 created for you when launching an ASG from an existing instance?_
 
-> had to list availability zones by way of subnet IDs - had to create the launchconfig - 
+> I had to list availability zones by way of subnet IDs in the template and needed to create the launchconfig, these were things done by Amazon from the single command line for creating the Auto Scaling Group.
 
 #### Lab 6.1.3: Launch Config Changes
 
@@ -150,7 +150,7 @@ t2.small. Update your stack.
 
 _After updating your stack, did your running instance get replaced or resized?_
 
-> no - same size not terminated or replaced... 
+> The instance did not get replaced or have the size change with the update made to the launch configutation.
 
 Terminate the instance in your ASG.
 
@@ -158,7 +158,7 @@ Terminate the instance in your ASG.
 
 _Is the replacement instance the new size or the old?_
 
-> replacement instance is the new size t2.small
+> With only terminating the instance in the auto scaling group the replacement instance is now the new size a t2.small.
 
 #### Lab 6.1.4: ASG Update Policy
 
@@ -177,7 +177,7 @@ replaced this time?_
 
 _Did the launch config change or was it replaced?_
 
-> it is replaced, and the event is logged in the cloudformation stack not just in the asg. 
+> The launch config is replaced, and the event for this change is logged in the cloudformation stack not just in the auto scaling group. 
 
 #### Lab 6.1.5: Launch Template
 
@@ -190,7 +190,7 @@ parameters you need to.
 _What config info or resources do you have to provide in addition to what
 Launch Configurations require?_
 
-> no added detail, other than switching from LaunchConfigurationName to LaunchTemplate with a version ID... 
+> No added detail, other than switching from LaunchConfigurationName to LaunchTemplate with a version ID was needed when moving from launch configuration to a launch template.
 
 You'll see both launch configs and launch templates in your client
 engagements. Templates were [introduced in Nov 2017](https://aws.amazon.com/about-aws/whats-new/2017/11/introducing-launch-templates-for-amazon-ec2-instances/)
@@ -209,7 +209,7 @@ associated with those. Then tear your stack down.
 _After you tear down the stack, do all the associated resources go away?
 What's left?_
 
-> all go away, just took some time. 
+> All the associated resources go away, it just took some time long minutes. 
 
 ### Retrospective 6.1
 
@@ -246,11 +246,12 @@ resource ID? Given that name, [describe your ASG](https://docs.aws.amazon.com/cl
 Find the Instance ID. Can you filter the output to print only the Instance ID
 value?_
 
-> aws cloudformation describe-stack-resources --stack-name jmd-020201221-003
+> Using these commands we can get the resource ID and filter the output to get just the instance ids associated with the auto scaling group.
+aws cloudformation describe-stack-resources --stack-name jmd-020201221-003
 lab615-su-jmd
 aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name lab615-su-jmd
 aws autoscaling describe-auto-scaling-instances --region us-east-1 --output text --query "AutoScalingInstances[?AutoScalingGroupName=='lab615-su-jmd'].InstanceId"
---- final answers
+--- This last command is the "final answer" and will list the instance ids based on the auto scaling group name. 
 
 (You can use the `--query` option, but you can also use
 [jq](https://stedolan.github.io/jq/). Both are useful in different scenarios.)
@@ -264,8 +265,7 @@ the new instance launch.
 _How long did it take for the new instance to spin up? How long before it was
 marked as healthy?_
 
-> aws ec2 terminate-instances --instance-ids i-0c0e635c3be5c6450
-23 seconds based on instance activity
+> This command was used to kill the instance. "aws ec2 terminate-instances --instance-ids i-0c0e635c3be5c6450" It appeared to take 23 seconds based on instance activity to replace and become healthy.
 
 #### Lab 6.2.2: Scale Out
 
@@ -278,13 +278,13 @@ then update the stack.
 
 _Did it work? If it didn't, what else do you have to increase?_
 
-> max as well as desired. 
+> Changing only the max or only the desired number of instances did not work, both had to be changed. This allowed the ASG to know that there was a new desired state as well as the desired number being equal or less than the maximum number of instances allowed in the ASG.
 
 ##### Question: Update Delay
 
 _How quickly after your stack update did you see the ASG change?_
 
-> seconds, before the stack update was registed as done the ASG was adding instances.
+> It was quite quick, only seconds, actually before the stack update was registed as done in cloudforamtion the ASG was already adding instances.
 
 #### Lab 6.2.3: Manual Interference
 
@@ -293,7 +293,9 @@ using the CLI. Observe Auto Scaling as it launches a replacement
 instance. Take note of what it does with the instance you marked
 unhealthy.
 
-> aws autoscaling set-instance-health --instance-id i-0a1a3b20e478e312d --health-status Unhealthy  --- it was terminated and then replaced. 
+> This command was used to mark one of the instances as unhealthy. 
+"aws autoscaling set-instance-health --instance-id i-0a1a3b20e478e312d --health-status Unhealthy"
+It was terminated and then replaced. 
 
 #### Lab 6.2.4: Troubleshooting Features
 
@@ -331,6 +333,8 @@ commands you run.
 #### Question: CloudWatch
 
 _How would you use AWS CloudWatch to help monitor your ASG?_
+
+> CloudWatch can be used to monitor the utilization of the instances in the auto scaling group as well as the stability of those instances. If instances are terminating unexpectedly that can indicate an issue with the code being run or the patch level of the operating system in the image. If CPU or other resources are maxing out for long periods of time this can indicate over all system performance and the ASG can be set to add more instances to handle the load. 
 
 You can read more [here](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-monitoring.html)
 about CloudWatch monitoring with ASGs.
