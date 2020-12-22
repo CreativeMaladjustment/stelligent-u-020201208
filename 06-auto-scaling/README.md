@@ -461,7 +461,7 @@ an instance is added.
 
 _After you stop consuming CPU, how long does it take now before scale-in?_
 
-> scaled up due to cpu at 2:12 - stopped stress at 2:14 - 
+> scaled up due to cpu at 2:12 - stopped stress at 2:14 - at 2:33 no scale in.
 
 ### Retrospective 6.3
 
