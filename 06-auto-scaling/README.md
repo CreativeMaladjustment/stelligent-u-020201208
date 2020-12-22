@@ -434,15 +434,22 @@ update your stack again.*
 _Is your resulting configuration more or less complicated than the one that
 uses a simple policy?_
 
+> With the scale in being a different type of policy it is more complicated. 
+
 Consume CPU the way you did in lab 1, then stop.
 
 ##### Question: Scale-Out Delay
 
 _How long do you have to let it run before you see the group scale out?_
 
+> It took about a minutes before it scaled up. 
+
 ##### Question: Scale-In Delay
 
 _How much time passes after you stop before it scales back in?_
+
+> Actually the scale up for a 3rd instance was in progress. Also due to this setting "Instances need:
+300 seconds to warm up before including in metric" there is a 5 minute gap between the instance being online and the metrics being updated, so about 7 minutes before the scale in action is able to take effect.
 
 #### Lab 6.3.4: Target Tracking Scale-In
 
@@ -453,6 +460,8 @@ an instance is added.
 ##### Question: Changing Delay
 
 _After you stop consuming CPU, how long does it take now before scale-in?_
+
+> scaled up due to cpu at 2:12 - stopped stress at 2:14 - 
 
 ### Retrospective 6.3
 
