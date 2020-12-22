@@ -11,7 +11,8 @@ Resources:
         SecurityGroupIds:
           - !GetAtt InstanceSecurityGroup.GroupId
         ImageId: "ami-007a4d852ac16f59e"
-        InstanceType: t2.small
+        InstanceType: m4.large
+        #t2.small
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -48,6 +49,16 @@ Resources:
         Ref: "AutoScalingGroup"
       ScalingAdjustment: 1
 
+  ScalingPolicyNegative: 
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties: 
+      AdjustmentType: "ChangeInCapacity"
+      PolicyType: "SimpleScaling"
+      Cooldown: "300"
+      AutoScalingGroupName: 
+        Ref: "AutoScalingGroup"
+      ScalingAdjustment: -1
+
   CPUAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -63,6 +74,22 @@ Resources:
       - Name: "AutoScalingGroupName"
         Value: !Ref AutoScalingGroup
       ComparisonOperator: "GreaterThanThreshold"
+
+  CPUAlarmNegative:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      MetricName: "CPUUtilization"
+      Namespace: "AWS/EC2"
+      Statistic: "Average"
+      Period: 60
+      EvaluationPeriods: 2
+      Threshold: 40
+      AlarmActions: 
+        - !Ref ScalingPolicyNegative
+      Dimensions:
+      - Name: "AutoScalingGroupName"
+        Value: !Ref AutoScalingGroup
+      ComparisonOperator: "LessThanThreshold"
 
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup

@@ -374,11 +374,15 @@ and use that command to spike the load.)
 
 _After the scaling interval, do you see a new instance created?_
 
+> After the cpu was above 60% for 2 minutes the ASG did scale up.
+
 Stop the CPU-consuming process.
 
 ##### Question: Scale-In
 
 _After the load has been low for a few minutes, do you see any instances terminated?_
+
+> No the auto scaling group isn't set to scale back down to a minimum number of instances. 
 
 #### Lab 6.3.2: Simple Scale-In
 
@@ -394,14 +398,20 @@ Update your stack.
 
 _Do you see more instances than the configured "desired capacity"?_
 
+> Yes with the new alarm and policy the desired capacity returns.
+
 ##### Question: Termination Order
 
 _If an instance is automatically terminated, which is it, the last one created
 or the first?_
 
+> appears to be the first one created that is terminated leaving the newest in place.
+
 ##### Question: Termination Policy
 
 _Can you change your policies to alter which instance gets terminated first?_
+
+> No i do not see an option to chage the policy to state which gets terminated first.
 
 #### Lab 6.3.3: Target Tracking policy
 

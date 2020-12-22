@@ -38,4 +38,6 @@ aws autoscaling exit-standby --instance-ids i-081b9e36444855120 --auto-scaling-g
 aws cloudformation create-stack --template-body file://./lab631.yml --stack-name jmd-020201222-001 --region us-east-1 --capabilities CAPABILITY_IAM
 
 stress --cpu 8 --io 4 --vm 2 --vm-bytes 128M --timeout 300s
+stress --cpu 300 --timeout 3000s --backoff 0 -v
+## switched to M4.large because burst cpu didn't get over 60% on the t2.small
 
