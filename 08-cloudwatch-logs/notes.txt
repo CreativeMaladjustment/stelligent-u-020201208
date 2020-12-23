@@ -1,1 +1,7 @@
+aws logs create-log-group --log-group-name jason.davis.c9logs
+aws logs create-log-stream --log-group-name jason.davis.c9logs --log-stream-name c9.training
+aws logs describe-log-groups --log-group-name jason.davis.c9logs
+aws logs describe-log-streams --log-group-name jason.davis.c9logs --log-stream-name-prefix c9
+
+
 aws cloudformation create-stack --template-body file://./lab8.yml --stack-name jmd-020201223-001 --region us-east-1 --capabilities CAPABILITY_IAM
