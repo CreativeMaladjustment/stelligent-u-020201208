@@ -19,8 +19,8 @@ Resources:
       LaunchConfigurationName: !Ref WebServersLC
       MaxSize: '3'
       MinSize: '3'
-      TargetGroupArns:
-        - !Ref TargetGroup
+      TargetGroupARNs:
+        - !Ref TargetGrp
 
   WebLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -37,13 +37,22 @@ Resources:
         - 'subnet-0afa76fe8bbd0e116'
       Type: 'application'
 
-TargetGroup:
-  Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  Properties:
-    VpcId: 'vpc-0610446fafca4df10'
-    TargetType: instance
-    Port: 80
-    Protocol: HTTP
+  TargetGrp:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: 'vpc-0610446fafca4df10'
+      TargetType: 'instance'
+      Port: '80'
+      Protocol: 'HTTP'
+
+  # TargetGroup:
+  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #   Properties:
+  #     HealthCheckEnabled: false
+  #     Name: MyTargets
+  #     TargetType: lambda
+  #     Targets:
+  #     - Id: !GetAtt [ MyLambdaFunction, Arn ]
     
   WebServersLC:
     Type: 'AWS::AutoScaling::LaunchConfiguration'
