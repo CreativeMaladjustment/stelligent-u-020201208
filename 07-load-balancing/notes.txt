@@ -13,3 +13,12 @@ ssh -i lab6.pem ubuntu@18.208.26.186
 curl http://automationforthepeople-1133169868.us-east-1.elb.amazonaws.com/
 <p>Automation for the People</p>
 
+openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+used for common name: automationforthepeople-1133169868.us-east-1.elb.amazonaws.com
+
+openssl x509 -text -noout -in certificate.pem
+
+aws acm import-certificate --certificate certificate.pem --private-key key.pem
+# this didn't work but using the console did... cli said cert field contains more than one certificate... 
+
+arn:aws:acm:us-east-1:324320755747:certificate/efac7b6d-af1a-47a9-83b7-e3c9003dd52b

@@ -69,6 +69,8 @@ many instances with an ALB.
 _What is the benefit of breaking up the load balancer into specific listeners
 and target groups?_
 
+Allows for microservice architectures, one load balancer can forward requests to different target groups which can be serving up different functions of business logic. 
+
 #### Lab 7.1.2: Health Checks
 
 Now, let's update our health check to see what happens when things go
@@ -92,9 +94,13 @@ haywire!
 _What can be controlled with the interval/healthy threshold/unhealthy threshold
 settings?_
 
+> These settings will allow for different services that need longer to respond to remain healthy, also for those that are more critical to be checked more often and marked unhealth when not responding.
+
 ##### Question: ASG Behavior
 
 _What's happening to the instances in the ASG? How do you know?_
+
+> The instances in the ASG are replaced when the target group notices they are unhealthy. An additional layer of assurance that the instances are responding as exepcted not just from the ASG. 
 
 #### Lab 7.1.3: Secure Sockets
 
