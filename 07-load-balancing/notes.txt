@@ -1,1 +1,3 @@
 aws cloudformation create-stack --template-body file://./lab711.yml --stack-name jmd-020201223-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+curl AutomationForThePeople-1074408464.us-east-1.elb.amazonaws.com
