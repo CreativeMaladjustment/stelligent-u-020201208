@@ -1,12 +1,18 @@
 AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  
 Resources:
   WebServerAsg:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:
       AutoScalingGroupName: 'AutomationBoxes'
       VPCZoneIdentifier:
-        - 'REPLACE_WITH_PUBLIC_SUBNET_IN_AZ1' # Find public subnets within the default VPC or 
-        - 'REPLACE_WITH_PUBLIC_SUBNET_IN_AZ2'
+        - 'subnet-06e941239860097ef' # Find public subnets within the default VPC or 
+        - 'subnet-0afa76fe8bbd0e116'
       DesiredCapacity: '3'
       HealthCheckType: 'ELB'
       HealthCheckGracePeriod: 30 
@@ -14,14 +20,24 @@ Resources:
       MaxSize: '3'
       MinSize: '3'
 
+  # TargetGroup:
+  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #   Properties:
+  #     HealthCheckEnabled: false
+  #     Name: MyTargets
+  #     TargetType: lambda
+  #     Targets:
+  #     - Id: !GetAtt [ WebServerAsg, Arn ]
+
   WebServersLC:
     Type: 'AWS::AutoScaling::LaunchConfiguration'
     Properties:
-      ImageId: 'REPLACE_WITH_AMAZON_LINUXV1_AMI'
+      ImageId: !Ref LatestAmiId
+#      ImageId: 'REPLACE_WITH_AMAZON_LINUXV1_AMI'
       InstanceType: 't2.micro'
       LaunchConfigurationName: 'SimpleWebServerLC'
       SecurityGroups:
-        - 'REPLACE'
+        - !Ref WebSecurityGroup
       UserData: 
         Fn::Base64:
           Fn::Sub: |
@@ -62,3 +78,22 @@ Resources:
               nginx:
                 enabled: 'true'
                 ensureRunning: 'true'
+
+  WebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: Allow ping and ssh
+        VpcId: "vpc-0610446fafca4df10"
+        SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
