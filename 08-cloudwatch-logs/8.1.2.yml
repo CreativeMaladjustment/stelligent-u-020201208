@@ -2,8 +2,8 @@ AWSTemplateFormatVersion: "2010-09-09"
 Mappings:
   RegionMap:
     us-east-1:
-      vpcId: vpc-da3c10bc
-      subnetId: subnet-ec6f2c89
+      vpcId: vpc-0610446fafca4df10
+      subnetId: subnet-0017c4a5e72ed567f
       imageId: ami-04169656fea786776
     us-east-2:
       vpcId: vpc-9aa942f3
@@ -21,6 +21,7 @@ Resources:
   LaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
+      KeyName: lab8-su-jmd
       LaunchTemplateName: EC2LaunchTemplate
       LaunchTemplateData:
         InstanceType: t2.nano
@@ -98,3 +99,23 @@ Resources:
     Properties: 
       GroupDescription: Topic 5 - EC2 Lab
       VpcId: !FindInMap [ RegionMap, !Ref "AWS::Region", vpcId ]
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+          
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "stelligent-u-812-jason.davis.labs"
+      LifecycleConfiguration:
+              Rules:
+                - Id: LabLifecycle
+                  AbortIncompleteMultipartUpload:
+                    DaysAfterInitiation: 3
+                  NoncurrentVersionExpirationInDays: 14
+                  Status: Enabled
+                  Transitions:
+                    - StorageClass: STANDARD_IA
+                      TransitionInDays: 30
