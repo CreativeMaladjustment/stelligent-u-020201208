@@ -19,16 +19,32 @@ Resources:
       LaunchConfigurationName: !Ref WebServersLC
       MaxSize: '3'
       MinSize: '3'
+      TargetGroupArns:
+        - !Ref TargetGroup
 
-  # TargetGroup:
-  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  #   Properties:
-  #     HealthCheckEnabled: false
-  #     Name: MyTargets
-  #     TargetType: lambda
-  #     Targets:
-  #     - Id: !GetAtt [ WebServerAsg, Arn ]
+  WebLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+      IpAddressType: 'ipv4'
+      Name: 'AutomationForThePeople'
+      Scheme: 'internet-facing'
+      SecurityGroups: 
+        - !Ref WebSecurityGroup
+      # SubnetMappings: 
+      #   - SubnetMapping
+      Subnets: 
+        - 'subnet-06e941239860097ef'
+        - 'subnet-0afa76fe8bbd0e116'
+      Type: 'application'
 
+TargetGroup:
+  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  Properties:
+    VpcId: 'vpc-0610446fafca4df10'
+    TargetType: instance
+    Port: 80
+    Protocol: HTTP
+    
   WebServersLC:
     Type: 'AWS::AutoScaling::LaunchConfiguration'
     Properties:
