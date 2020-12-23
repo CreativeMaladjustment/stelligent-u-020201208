@@ -1,0 +1,1 @@
+aws cloudformation create-stack --template-body file://./lab8.yml --stack-name jmd-020201223-001 --region us-east-1 --capabilities CAPABILITY_IAM
