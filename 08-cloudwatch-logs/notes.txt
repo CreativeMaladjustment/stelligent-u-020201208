@@ -9,7 +9,7 @@ aws ec2 create-key-pair --key-name lab8-su-jmd --query 'KeyMaterial' --output te
 chmod 400 lab8.pem
 ssh-keygen -y -f lab8.pem
 
-ssh -i lab8.pem ubuntu@18.208.26.186
+ssh -i lab8.pem ubuntu@3.238.9.44
 
 aws cloudformation create-stack --template-body file://./8.1.2.yml --stack-name jmd-020201223-001 --region us-east-1 --capabilities CAPABILITY_IAM
 

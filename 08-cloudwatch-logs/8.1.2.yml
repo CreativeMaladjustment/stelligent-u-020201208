@@ -18,12 +18,26 @@ Mappings:
       subnetId: subnet-ebc60ca0
       imageId: ami-51537029
 Resources:
+  EC2Wizard: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region", imageId ]
+      InstanceType: t2.small
+      KeyName: lab8-su-jmd
+      SubnetId: !FindInMap [ RegionMap, !Ref "AWS::Region", subnetId ]
+      SecurityGroupIds: [ !Ref SecurityGroup ]
+  EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref EC2Wizard
   LaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
-      KeyName: lab8-su-jmd
       LaunchTemplateName: EC2LaunchTemplate
       LaunchTemplateData:
+        # KeyName: lab8-su-jmd
+        # SecurityGroupIds:
+        #   - !GetAtt SecurityGroup.GroupId
         InstanceType: t2.nano
         IamInstanceProfile: 
           Name: !Ref InstanceProfile
@@ -58,21 +72,22 @@ Resources:
         LaunchTemplateId: !Ref LaunchTemplate
         Version: "1"
       ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region", imageId ]
-    CreationPolicy:
-      ResourceSignal:    
-        Count: 1
-        Timeout: PT5M
+    # CreationPolicy:
+    #   ResourceSignal:    
+    #     Count: 1
+    #     Timeout: PT5M
     Metadata: 
       AWS::CloudFormation::Init: 
         config: 
           sources: 
             /etc/cloudwatchagent: https://s3.amazonaws.com/amazoncloudwatch-agent/linux/amd64/latest/AmazonCloudWatchAgent.zip
+            /etc/cloudwatchconfig: https://s3.amazonaws.com/stelligent-u-812-jason.davis.labs/wizard-812-config-withsyslog.json
           commands:
             installCloudwatch: 
               command: ./install.sh
               cwd: /etc/cloudwatchagent
             launchCloudwatch: 
-              command: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s
+              command: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c -c file:/etc/cloudwatchconfig/wizard-812-config.json -s
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties: 
