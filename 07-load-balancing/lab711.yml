@@ -50,12 +50,13 @@ Resources:
         #   Query: "#{query}"
         #   StatusCode: "HTTP_301"
      LoadBalancerArn: !Ref WebLoadBalancer
-     Port: 80
-     Protocol: "HTTP"
+    # Port: 80
+    # Protocol: "HTTP"
 
   TargetGrp:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
+      HealthCheckPath: "/index.html"
       VpcId: 'vpc-0610446fafca4df10'
       TargetType: 'instance'
       Port: '80'
