@@ -52,3 +52,8 @@ aws cloudformation create-stack --template-body file://./lab822.yml --stack-name
 
 awslogs get su-jmd-020201224  | grep jason.davis.labs
 
+#task sns
+
+aws cloudformation update-stack --template-body file://./lab8task.yml --stack-name jmd-020201224-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+

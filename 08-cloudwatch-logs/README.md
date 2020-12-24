@@ -209,6 +209,11 @@ _What type of events might be important to track in an AWS account? If
 you were automating mitigating actions for the events, what might they
 be and what AWS resource(s) would you use?_
 
+> Events which might be important to track in the AWS account revolve around IAM first. Things like creating users or changes to them and the roles they have access to or what policies are attached to them. Changes to network access in security groups and NACLs, VPN access or VPC peering. Also for the revenue generating systems changes in resources such that might impact performance. 
+
+> Mitigating actions, so things that might trigger an automated response. These might be terminating an EC2 instance if it is seen as doing something wrong, accessing something it shouldn't. Undoing changes to IAM, or removing new policies if they are not generated with disabling the monitoring it shows a lack of understanding of the environment.
+
+
 #### Task
 
 Dig out the CloudFormation template you used to create the CloudTrail
@@ -217,3 +222,5 @@ subscription that will email you when any changes to EC2 instances are
 made. Test this mechanism by creating and modifying new EC2 instances.
 Make sure to clean up the CloudFormation stacks and any other resources
 when you are done.
+
+> in lab8task*.yml --- got an email on instance state change
