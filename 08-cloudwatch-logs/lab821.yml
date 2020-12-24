@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "stelligent-u-821-jason.davis.labs"
+      LifecycleConfiguration:
+              Rules:
+                - Id: LabLifecycle
+                  AbortIncompleteMultipartUpload:
+                    DaysAfterInitiation: 3
+                  NoncurrentVersionExpirationInDays: 14
+                  Status: Enabled
+                  Transitions:
+                    - StorageClass: STANDARD_IA
+                      TransitionInDays: 30
