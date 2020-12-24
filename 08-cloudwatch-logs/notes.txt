@@ -47,3 +47,8 @@ vs
             Resource: "arn:aws:s3:::stelligent-u-821-jason.davis.labs/*"
 
 
+#822
+aws cloudformation create-stack --template-body file://./lab822.yml --stack-name jmd-020201224-002 --region us-east-1 --capabilities CAPABILITY_IAM
+
+awslogs get su-jmd-020201224  | grep jason.davis.labs
+
