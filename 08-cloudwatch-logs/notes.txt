@@ -34,3 +34,4 @@ aws logs delete-log-group --log-group-name jason.davis.c9logs
 
 #8.2.1
 
+aws cloudformation create-stack --template-body file://./lab821.yml --stack-name jmd-020201224-001 --region us-east-1 --capabilities CAPABILITY_IAM

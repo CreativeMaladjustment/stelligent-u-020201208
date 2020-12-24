@@ -2,6 +2,12 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 Resources:
 
+  LogGroup: 
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: "su-jmd-020201224"
+      RetentionInDays: 7
+
   Bucket:
     Type: AWS::S3::Bucket
     Properties:
