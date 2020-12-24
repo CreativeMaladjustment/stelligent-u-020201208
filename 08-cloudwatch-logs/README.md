@@ -147,6 +147,8 @@ limitations are.*
 - Instead of keeping data in CW Logs forever, can you do anything else
   with them? What might a useful lifecycle for logs look like?
 
+> Logs can be retained for 1 day to 10 years or 3653 days. Cloudwatch logs can be written to kenisis however for longer storage they can be exported to an S3 bucket and over time with policies set right they can be pushed into glacier and kept for a very long time affordably. 
+
 ## Lesson 8.2: CloudWatch Logs with CloudTrail events
 
 ### Principle 8.2

@@ -13,8 +13,24 @@ ssh -i lab8.pem ubuntu@3.238.9.44
 
 aws cloudformation create-stack --template-body file://./8.1.2.yml --stack-name jmd-020201223-001 --region us-east-1 --capabilities CAPABILITY_IAM
 
+
+#813
+
 pip install awslogs
 
 awslogs get jason.davis.c9logs c9.training --start="5m ago"
 awslogs get jason.davis.c9logs c9.training --start="20m ago"
 awslogs get jason.davis.c9logs c9.training --start="1h ago"
+
+#814
+
+aws logs put-retention-policy --log-group-name jason.davis.c9logs --retention-in-days 60
+aws logs describe-log-groups --log-group-name jason.davis.c9logs
+   #shows up in retentionInDays field.
+
+#815
+aws logs delete-log-group --log-group-name jason.davis.c9logs
+
+
+#8.2.1
+
