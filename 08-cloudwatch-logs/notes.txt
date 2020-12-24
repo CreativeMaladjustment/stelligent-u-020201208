@@ -35,3 +35,15 @@ aws logs delete-log-group --log-group-name jason.davis.c9logs
 #8.2.1
 
 aws cloudformation create-stack --template-body file://./lab821.yml --stack-name jmd-020201224-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+
+Note:
+policy resource needed /* becasue it is for objects. Error in cloudformation was
+Action does not apply to any resource(s) in statement (Service: Amazon S3; Status Code: 400; Error Code: MalformedPolicy; Request ID: A09DDD30CECCF15B; S3 Extended Request ID:
+            Action: "s3:PutObject"
+            Resource: "arn:aws:s3:::stelligent-u-821-jason.davis.labs"
+vs
+            Action: "s3:PutObject"
+            Resource: "arn:aws:s3:::stelligent-u-821-jason.davis.labs/*"
+
+
