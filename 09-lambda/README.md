@@ -66,6 +66,8 @@ Create and test a simple AWS Lambda function using the Lambda console.
 
 - Review the options you have for testing and running Lambdas.
 
+> test button was neat for being able to add in json text to send to the function and repeat... save for later tests.
+
 - When you're done, delete the Lambda.
 
 #### Lab 9.1.2: Lambda behind API Gateway
