@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "lab 9.1.2 lambda"
+Description: "lab 9.1.3 lambda from s3"
 
 Resources:
   LambdaRole:
@@ -19,14 +19,12 @@ Resources:
       FunctionName: su-jmd-020201228
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
-      Handler: index.lab912
+      Handler: lambda_function.lab913
       Code:
-        ZipFile: |
-          import json
-          def lab912(event, context):
-              print("value1 = " + event['key1'])
-              return event['key1']
-
+        S3Bucket: "stelligent-u-913-jmd"
+        S3Key: "deployment-package.zip"
+        #"00e5451f-7a92-4cbd-832a-6fd42aa66b54"
+ 
   ApiGateway:
     Type: AWS::ApiGateway::RestApi
     Properties:

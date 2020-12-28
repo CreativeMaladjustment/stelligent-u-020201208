@@ -31,5 +31,17 @@ aws cloudformation update-stack --template-body file://./lab912a.yml --stack-nam
 
 curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://d5s6djld3k.execute-api.us-east-1.amazonaws.com/jmd
 
+#913
+
+aws cloudformation create-stack --template-body file://./lab913.yml --stack-name jmd-020201228-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+cp lab913.py lambda_function.py
+zip deployment-package.zip lambda_function.py
+rm lambda_function.py
+
+aws s3 cp deployment-package.zip s3://stelligent-u-913-jmd/ --sse=aws:kms --sse-kms-key-id=00e5451f-7a92-4cbd-832a-6fd42aa66b54
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://lkxs26gb46.execute-api.us-east-1.amazonaws.com/jmd
+
 #92
 
