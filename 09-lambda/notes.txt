@@ -28,3 +28,6 @@ aws apigateway test-invoke-method --rest-api-id d5s6djld3k --resource-id h0558gy
 
 
 aws cloudformation update-stack --template-body file://./lab912a.yml --stack-name jmd-020201228-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://d5s6djld3k.execute-api.us-east-1.amazonaws.com/jmd
+
