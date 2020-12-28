@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "lab 9.2.1 lambda w dynamoDB"
+Description: "lab 9.1.2 lambda"
 
 Resources:
   LambdaRole:
