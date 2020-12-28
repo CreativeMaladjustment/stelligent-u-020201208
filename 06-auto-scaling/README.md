@@ -108,9 +108,13 @@ Group (ASG): [ask Amazon to create one for us from a running instance](https://d
 
 _What was created in addition to the new Auto Scaling Group?_
 
+> In addition to the Auto Scaling Group a Launch Configuration: lab611-su-jmd was also created. As well as instance i-03910d6ad03a58296 and a link to the autoscaling role from the auto scaling group. 
+
 ##### Question: Parameters
 
 _What parameters did Amazon record in the resources it created for you?_
+
+> Amazon added a tag "aws:autoscaling:groupName" with the name of the ASG "lab611-su-jmd" also the instance parameters for security group, availability zone and which key name to use were set.
 
 #### Lab 6.1.2: Launch Config and ASG in CFN
 
@@ -135,6 +139,8 @@ created for you in Lab 6.1.1.
 _What config info or resources did you have to create explicitly that Amazon
 created for you when launching an ASG from an existing instance?_
 
+> I had to list availability zones by way of subnet IDs in the template and needed to create the launchconfig, these were things done by Amazon from the single command line for creating the Auto Scaling Group.
+
 #### Lab 6.1.3: Launch Config Changes
 
 Modify your launch config by increasing your instances from t2.micro to
@@ -144,11 +150,15 @@ t2.small. Update your stack.
 
 _After updating your stack, did your running instance get replaced or resized?_
 
+> The instance did not get replaced or have the size change with the update made to the launch configutation.
+
 Terminate the instance in your ASG.
 
 ##### Question: Replacement Instance
 
 _Is the replacement instance the new size or the old?_
+
+> With only terminating the instance in the auto scaling group the replacement instance is now the new size a t2.small.
 
 #### Lab 6.1.4: ASG Update Policy
 
@@ -167,6 +177,8 @@ replaced this time?_
 
 _Did the launch config change or was it replaced?_
 
+> The launch config is replaced, and the event for this change is logged in the cloudformation stack not just in the auto scaling group. 
+
 #### Lab 6.1.5: Launch Template
 
 Finally, replace your launch config with a [Launch Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-launchtemplate.html),
@@ -177,6 +189,8 @@ parameters you need to.
 
 _What config info or resources do you have to provide in addition to what
 Launch Configurations require?_
+
+> No added detail, other than switching from LaunchConfigurationName to LaunchTemplate with a version ID was needed when moving from launch configuration to a launch template.
 
 You'll see both launch configs and launch templates in your client
 engagements. Templates were [introduced in Nov 2017](https://aws.amazon.com/about-aws/whats-new/2017/11/introducing-launch-templates-for-amazon-ec2-instances/)
@@ -194,6 +208,8 @@ associated with those. Then tear your stack down.
 
 _After you tear down the stack, do all the associated resources go away?
 What's left?_
+
+> All the associated resources go away, it just took some time long minutes. 
 
 ### Retrospective 6.1
 
@@ -230,6 +246,13 @@ resource ID? Given that name, [describe your ASG](https://docs.aws.amazon.com/cl
 Find the Instance ID. Can you filter the output to print only the Instance ID
 value?_
 
+> Using these commands we can get the resource ID and filter the output to get just the instance ids associated with the auto scaling group.
+aws cloudformation describe-stack-resources --stack-name jmd-020201221-003
+lab615-su-jmd
+aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name lab615-su-jmd
+aws autoscaling describe-auto-scaling-instances --region us-east-1 --output text --query "AutoScalingInstances[?AutoScalingGroupName=='lab615-su-jmd'].InstanceId"
+--- This last command is the "final answer" and will list the instance ids based on the auto scaling group name. 
+
 (You can use the `--query` option, but you can also use
 [jq](https://stedolan.github.io/jq/). Both are useful in different scenarios.)
 
@@ -242,6 +265,8 @@ the new instance launch.
 _How long did it take for the new instance to spin up? How long before it was
 marked as healthy?_
 
+> This command was used to kill the instance. "aws ec2 terminate-instances --instance-ids i-0c0e635c3be5c6450" It appeared to take 23 seconds based on instance activity to replace and become healthy.
+
 #### Lab 6.2.2: Scale Out
 
 Watch your stack and your ASG in the web console as you do this lab.
@@ -253,9 +278,13 @@ then update the stack.
 
 _Did it work? If it didn't, what else do you have to increase?_
 
+> Changing only the max or only the desired number of instances did not work, both had to be changed. This allowed the ASG to know that there was a new desired state as well as the desired number being equal or less than the maximum number of instances allowed in the ASG.
+
 ##### Question: Update Delay
 
 _How quickly after your stack update did you see the ASG change?_
+
+> It was quite quick, only seconds, actually before the stack update was registed as done in cloudforamtion the ASG was already adding instances.
 
 #### Lab 6.2.3: Manual Interference
 
@@ -263,6 +292,10 @@ Take one of your instances [out of your ASG manually](http://docs.aws.amazon.com
 using the CLI. Observe Auto Scaling as it launches a replacement
 instance. Take note of what it does with the instance you marked
 unhealthy.
+
+> This command was used to mark one of the instances as unhealthy. 
+"aws autoscaling set-instance-health --instance-id i-0a1a3b20e478e312d --health-status Unhealthy"
+It was terminated and then replaced. 
 
 #### Lab 6.2.4: Troubleshooting Features
 
@@ -300,6 +333,8 @@ commands you run.
 #### Question: CloudWatch
 
 _How would you use AWS CloudWatch to help monitor your ASG?_
+
+> CloudWatch can be used to monitor the utilization of the instances in the auto scaling group as well as the stability of those instances. If instances are terminating unexpectedly that can indicate an issue with the code being run or the patch level of the operating system in the image. If CPU or other resources are maxing out for long periods of time this can indicate over all system performance and the ASG can be set to add more instances to handle the load. 
 
 You can read more [here](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-monitoring.html)
 about CloudWatch monitoring with ASGs.
@@ -339,11 +374,15 @@ and use that command to spike the load.)
 
 _After the scaling interval, do you see a new instance created?_
 
+> After the cpu was above 60% for 2 minutes the ASG did scale up.
+
 Stop the CPU-consuming process.
 
 ##### Question: Scale-In
 
 _After the load has been low for a few minutes, do you see any instances terminated?_
+
+> No the auto scaling group isn't set to scale back down to a minimum number of instances. 
 
 #### Lab 6.3.2: Simple Scale-In
 
@@ -359,14 +398,20 @@ Update your stack.
 
 _Do you see more instances than the configured "desired capacity"?_
 
+> Yes with the new alarm and policy the desired capacity returns.
+
 ##### Question: Termination Order
 
 _If an instance is automatically terminated, which is it, the last one created
 or the first?_
 
+> appears to be the first one created that is terminated leaving the newest in place.
+
 ##### Question: Termination Policy
 
 _Can you change your policies to alter which instance gets terminated first?_
+
+> No i do not see an option to chage the policy to state which gets terminated first.
 
 #### Lab 6.3.3: Target Tracking policy
 
@@ -389,15 +434,22 @@ update your stack again.*
 _Is your resulting configuration more or less complicated than the one that
 uses a simple policy?_
 
+> With the scale in being a different type of policy it is more complicated. 
+
 Consume CPU the way you did in lab 1, then stop.
 
 ##### Question: Scale-Out Delay
 
 _How long do you have to let it run before you see the group scale out?_
 
+> It took about a minutes before it scaled up. 
+
 ##### Question: Scale-In Delay
 
 _How much time passes after you stop before it scales back in?_
+
+> Actually the scale up for a 3rd instance was in progress. Also due to this setting "Instances need:
+300 seconds to warm up before including in metric" there is a 5 minute gap between the instance being online and the metrics being updated, so about 7 minutes before the scale in action is able to take effect.
 
 #### Lab 6.3.4: Target Tracking Scale-In
 
@@ -408,6 +460,8 @@ an instance is added.
 ##### Question: Changing Delay
 
 _After you stop consuming CPU, how long does it take now before scale-in?_
+
+> scaled up due to cpu at 2:12 - stopped stress at 2:14 - at 2:33 scale in happened. So this took about 20 minutes to reduce back down to one instance.
 
 ### Retrospective 6.3
 

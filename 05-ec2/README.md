@@ -103,6 +103,12 @@ Describe these instance attributes by querying the Cloud9 environment's
 
 Save your queries (but not the outputs) in your source code.
 
+> curl http://169.254.169.254/latest/meta-data/ami-id
+curl http://169.254.169.254/latest/meta-data/instance-type
+curl http://169.254.169.254/latest/meta-data/local-ipv4
+curl http://169.254.169.254/latest/meta-data/security-groups
+curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/$(curl http://169.254.169.254/latest/meta-data/mac)/subnet-id
+
 #### Lab 5.1.2: Launch Two EC2 Instances
 
 Create a CFN template that launches a simple EC2 instance when the stack
