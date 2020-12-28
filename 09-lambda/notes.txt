@@ -31,3 +31,5 @@ aws cloudformation update-stack --template-body file://./lab912a.yml --stack-nam
 
 curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://d5s6djld3k.execute-api.us-east-1.amazonaws.com/jmd
 
+#92
+
