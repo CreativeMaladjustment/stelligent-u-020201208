@@ -43,5 +43,24 @@ aws s3 cp deployment-package.zip s3://stelligent-u-913-jmd/ --sse=aws:kms --sse-
 
 curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://lkxs26gb46.execute-api.us-east-1.amazonaws.com/jmd
 
+mkdir app
+cp lab913.py app/lambda_function.py
+aws cloudformation package --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-package-func.yml --s3-bucket stelligent-u-913-jmd --output-template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml
+#output
+Uploading to 8ab0fcae9d238ebd5634bd2dc3e57cd1  9160 / 9160.0  (100.00%)
+Successfully packaged artifacts and wrote output template to file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml.
+Execute the following command to deploy the packaged template
+aws cloudformation deploy --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml --stack-name <YOUR STACK NAME>
+
+aws cloudformation deploy --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml --stack-name jmd-020201228-003 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation describe-stack-events --stack-name jmd-020201228-003
+
+aws cloudformation deploy --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml --stack-name jmd-020201228-005 --capabilities CAPABILITY_NAMED_IAM
+
+
+### had to comment the CodeUri line... 
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://5kalaqvdmh.execute-api.us-east-1.amazonaws.com/jmd
+
 #92
 
