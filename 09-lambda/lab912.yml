@@ -26,29 +26,44 @@ Resources:
             message = 'Hello AWS!'
             return message
 
-  Deployment:
-    Type: 'AWS::ApiGateway::Deployment'
-    Properties:
-      RestApiId: !Ref MyApi
-      Description: My deployment
-      StageName: DummyStage
-
-  RestApi:
+  ApiGateway:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      EndpointConfiguration:
-        Types:
-          - String
-      Name: su-jmd-020201228
-      
-  Method:
-    Type: 'AWS::ApiGateway::Method'
+      Description: hello aws api gw
+      FailOnWarnings: true
+      Name: jmd
+  LambdaPermission:
+    Type: AWS::Lambda::Permission
     Properties:
-      RestApiId: !Ref MyApi
-      ResourceId: !GetAtt 
-        - MyApi
-        - RootResourceId
-      HttpMethod: GET
-      AuthorizationType: NONE
-      Integration:
-        Type: MOCK
+      FunctionName: !GetAtt LambdaFunction.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/POST/"
+  APIMethod: 
+    Type: AWS::ApiGateway::Method
+    Properties: 
+      HttpMethod: "POST"
+      RestApiId: !Ref "ApiGateway"
+      ResourceId: !GetAtt "ApiGateway.RootResourceId"
+      AuthorizationType: "NONE"
+      MethodResponses:
+        - StatusCode: 200
+      Integration: 
+        Type: "AWS"
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        IntegrationHttpMethod: "POST"
+        IntegrationResponses:
+          - StatusCode: 200
+  APIDeployment: 
+    DependsOn: APIMethod
+    Type: AWS::ApiGateway::Deployment
+    Properties: 
+      RestApiId: !Ref "ApiGateway"
+      StageName: "jmd"
+
+Outputs:
+  apiURL:
+    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/su-jmd-020201228-api
+
+  lambdaArn:
+    Value: !GetAtt LambdaFunction.Arn
