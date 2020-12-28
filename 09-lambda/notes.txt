@@ -25,3 +25,6 @@ curl https://d5s6djld3k.execute-api.us-east-1.amazonaws.com/jmd
 aws apigateway get-resources --rest-api-id d5s6djld3k
 aws apigateway get-resource --rest-api-id d5s6djld3k --resource-id h0558gylc3
 aws apigateway test-invoke-method --rest-api-id d5s6djld3k --resource-id h0558gylc3 --http-method POST --path-with-query-string '/'
+
+
+aws cloudformation update-stack --template-body file://./lab912a.yml --stack-name jmd-020201228-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
