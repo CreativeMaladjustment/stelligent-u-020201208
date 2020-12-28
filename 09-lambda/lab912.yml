@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "lab 9.1.2 lambda"
+
+Resources:
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: su-jmd-020201228
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+            
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: su-jmd-020201228
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.7
+      Handler: index.lab911hello
+      Code:
+        ZipFile: |
+          def lab911hello(event, context):
+            message = 'Hello AWS!'
+            return message
+
+  Deployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    Properties:
+      RestApiId: !Ref MyApi
+      Description: My deployment
+      StageName: DummyStage
+
+  RestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      EndpointConfiguration:
+        Types:
+          - String
+      Name: su-jmd-020201228
+      
+  Method:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref MyApi
+      ResourceId: !GetAtt 
+        - MyApi
+        - RootResourceId
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
