@@ -1,0 +1,52 @@
+curl http://169.254.169.254/latest/meta-data/ami-id
+curl http://169.254.169.254/latest/meta-data/instance-type
+curl http://169.254.169.254/latest/meta-data/public-ipv4
+curl http://169.254.169.254/latest/meta-data/security-groups
+curl http://169.254.169.254/latest/meta-data/network
+
+NIMAC=`curl http://169.254.169.254/latest/meta-data/network/interfaces/macs`
+curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/$NIMAC/subnet-id
+
+5.1.2
+
+aws cloudformation wait stack-create-complete --stack-name $(aws cloudformation create-stack --template-body file://./lab5.1.2.yml --stack-name jmd-020201217-002 --region us-east-1 | jq .StackId)
+aws cloudformation wait stack-create-complete --stack-name $(aws cloudformation update-stack --template-body file://./lab5.1.2.yml --stack-name jmd-020201217-002 --region us-east-1 | jq .StackId)
+### not looking for arn like the example... but want to keep the jq :) 
+
+SN=jmd-020201217-002 && aws cloudformation create-stack --template-body file://./lab5.1.2.yml --stack-name $SN && aws cloudformation wait stack-create-complete --stack-name $SN
+SN=jmd-020201217-002 && aws cloudformation update-stack --template-body file://./lab5.1.2.yml --stack-name $SN && aws cloudformation wait stack-create-complete --stack-name $SN
+
+aws cloudformation describe-stack-resources --stack-name $SN
+aws cloudformation describe-stack-instance --stack-name $SN
+
+aws cloudformation describe-stack-resources --stack-name $SN | jq .StackResources[2].PhysicalResourceId
+"i-0c9295daab307c938"
+aws cloudformation describe-stack-resources --stack-name $SN | jq .StackResources[4].PhysicalResourceId
+"i-0ca5adefb532de377"
+
+aws ec2 describe-instances --instance-ids i-0c9295daab307c938 i-0ca5adefb532de377
+
+
+5.4.4
+aws cloudformation create-stack --template-body file://./lab5.4.4.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM
+aws cloudformation update-stack --template-body file://./lab5.4.4.yml --stack-name jmd-020201221-001 --region us-east-1 --capabilities CAPABILITY_IAM
+aws cloudformation delete-stack --stack-name jmd-020201221-001
+
+aws cloudformation create-stack --template-body file://./lab5.4.4.nix.yml --stack-name jmd-020201221-002 --region us-east-1
+
+
+#need a new key
+aws ec2 create-key-pair --key-name lab544-su-jmd --query 'KeyMaterial' --output text > lab544-su-jmd.pem
+chmod 400 lab544-su-jmd.pem
+ssh-keygen -y -f lab544-su-jmd.pem
+
+ssh -i lab544-su-jmd.pem ubuntu@34.197.141.205
+
+aws ec2 create-snapshot --volume-id vol-03901129a6e2c921e --description "This is my rabbit volume snapshot"
+# added NixRestore (or uncomment it, and set it to use the snapshoid from command above)
+aws cloudformation update-stack --template-body file://./lab5.4.4.nix.yml --stack-name jmd-020201221-002 --region us-east-1
+
+ssh -i lab544-su-jmd.pem ubuntu@23.22.224.216
+
+lsblk -o KNAME,TYPE,SIZE,MODEL
+

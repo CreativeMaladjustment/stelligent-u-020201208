@@ -147,6 +147,8 @@ Windows Server 2012 R2:
 - Query the stack's events using the AWS CLI. What happened to your
   original EC2 Windows instance?
 
+> win was terminated still around but will be gone soon 
+
 #### Lab 5.1.4: Teardown
 
 There is usually some delay between initiating an instance's termination
@@ -154,6 +156,8 @@ and the instance being considered eliminated altogether.
 
 - Delete your Stack. Immediately after initiating Stack deletion, see
   if you can query your instance states.
+
+> state pending is what is said afterwords when query of instance states is done. 
 
 ### Retrospective 5.1
 
@@ -165,11 +169,23 @@ back and change your lab's code and repeat that lab: parameterize the
 CFN template to accept both Linux and Windows AMI IDs, and provide the
 values via a scripted mechanism.
 
+> used this initially and then fed the values into the json
+
+```
+paramater set by LatestAmiId:
+Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+```
+
 #### Question: Resource Replacement
 
 _When updating a Stack containing an EC2 instance,
 [what other changes](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html)
 will cause the same thing to occur as in Lab 5.1.3?_
+
+> many but changes that cause a new ID are ones that will cause same thing to occur, with the instance being deleted/removed and recreated.
+AvailabilityZone - CpuOptions - ElasticGpuSpecifications - ElasticInferenceAccelerators - EnclaveOptions - HibernationOptions - HostResourceGroupArn - ImageId- Ipv6AddressCount - Ipv6Addresses - KeyName - LaunchTemplate - LicenseSpecifications - NetworkInterfaces - PlacementGroupName - PrivateIpAddress - SecurityGroups - SubnetId
+changes to those values in the stack will cause instance to be replaced. 
 
 ## Lesson 5.2: Instance Access
 
@@ -417,6 +433,22 @@ snapshot.
 
 Use the AWS CLI to describe the newly-created EBS Snapshot. Save the output.
 
+```
+jason.davis.labs:~/environment/su-jmd-020201208/05-ec2 (wip/05) $ aws ec2 create-snapshot --volume-id vol-06ab0fc4160aaf706 --description "This is my rabbit volume snapshot"                                                                                   
+{
+    "Description": "This is my rabbit volume snapshot",
+    "Encrypted": false,
+    "OwnerId": "324320755747",
+    "Progress": "",
+    "SnapshotId": "snap-07b2884e8bac6138b",
+    "StartTime": "2020-12-21T18:52:33.000Z",
+    "State": "pending",
+    "VolumeId": "vol-06ab0fc4160aaf706",
+    "VolumeSize": 4,
+    "Tags": []
+}
+```
+
 #### Lab 5.4.3: Attaching Snapshots
 
 Repeat Lab 5.3.1, but modify the EBS volume to utilize the EBS Snapshot ID
@@ -432,6 +464,17 @@ using a recent snapshot, reducing or avoiding Volume data loss.
 
 SSH into the instance. _Can you find the file that you wrote to your
 secondary ESB Volume?_
+
+> yes it is there
+
+```
+ubuntu@ip-172-31-15-53:/mnt/xvdh$ ls -ial
+total 28
+   2 drwxr-xr-x 3 root root  4096 Dec 21 18:49 .
+4128 drwxr-xr-x 3 root root  4096 Dec 21 18:49 ..
+  11 drwx------ 2 root root 16384 Dec 21 18:49 lost+found
+  12 -rw-r--r-- 1 root root     4 Dec 21 18:49 rabbit
+```
 
 #### Lab 5.4.4: Instance Snapshots
 
