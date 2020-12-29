@@ -8,18 +8,6 @@ Resources:
       LogGroupName: !Sub "${AWS::StackName}"
       RetentionInDays: 7
       
-  Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: "stelligent-u-922-jason.davis.labs"
-      Tags:
-        - Key: user
-          Value: "jason.davis.labs"
-        - Key: stelligent-u-lesson
-          Value: "9"
-        - Key: stelligent-u-lab
-          Value: "9.2.2"
-
   BucketStack:
     Type: AWS::S3::Bucket
     Properties:
@@ -38,7 +26,7 @@ Resources:
       CloudWatchLogsLogGroupArn: !GetAtt LogGroup.Arn
       CloudWatchLogsRoleArn: !GetAtt RoleCloudWatch.Arn
       IsLogging: True
-      S3BucketName: !Ref Bucket
+      S3BucketName: "stelligent-u-922-jason.davis.labs-transfer"
       TrailName: String
 
   EventRule: 
@@ -58,9 +46,9 @@ Resources:
             # - CopyObject
             - PutObject
             # - CompleteMultipartUpload
-          requestParameters:
-            bucketName:
-              - !Ref BucketStack
+          # requestParameters:
+          #   bucketName:
+          #     - !GetAtt BucketStack.Arn
             # key:
             #   - !Ref SourceObjectKey
       State: "ENABLED"
@@ -84,23 +72,6 @@ Resources:
                 - "cloudtrail.amazonaws.com"
             Action: 
               - "sts:AssumeRole"
-              
-  BucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: "stelligent-u-922-jason.davis.labs"
-      PolicyDocument:
-        Statement:
-          - Sid: "CloudTrail020201229"
-            Effect: "Allow"
-            Principal: '*'
-            Action: "s3:GetBucketAcl"
-            Resource: "arn:aws:s3:::stelligent-u-922-jason.davis.labs"
-          - Sid: "CloudTrailWrite020201224"
-            Effect: "Allow"
-            Principal: '*'
-            Action: "s3:PutObject"
-            Resource: "arn:aws:s3:::stelligent-u-922-jason.davis.labs/*"
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
