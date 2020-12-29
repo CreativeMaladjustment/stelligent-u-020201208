@@ -64,3 +64,8 @@ curl --header "Content-Type: application/json" --request POST --data '{"key1":"H
 
 #92
 
+aws cloudformation create-stack --template-body file://./lab921.yml --stack-name jmd-020201229-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"0","key2":"Hello AWS..."}' https://97r1pt0826.execute-api.us-east-1.amazonaws.com/jmd
+
+
