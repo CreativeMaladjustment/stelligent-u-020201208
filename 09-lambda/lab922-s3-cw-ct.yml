@@ -29,6 +29,22 @@ Resources:
       S3BucketName: !Ref Bucket
       TrailName: String
 
+  EventRule: 
+    Type: AWS::Events::Rule
+    Properties: 
+      Description: "s3 put something"
+      Name: "lab922-s3put"
+      EventPattern:
+        source:
+          - aws.s3
+        detail:
+          - eventSource: "s3.amazonaws.com"
+          - eventName: "PutObject"
+      State: "ENABLED"
+      Targets: 
+        - Arn: !Ref LambdaFunction
+          Id: "lambda-to-dynamoDB"
+
   RoleCloudWatch:
     Type: AWS::IAM::Role
     Properties: 
