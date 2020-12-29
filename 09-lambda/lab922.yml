@@ -19,6 +19,18 @@ Resources:
           Value: "9"
         - Key: stelligent-u-lab
           Value: "9.2.2"
+
+  BucketStack:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}"
+      Tags:
+        - Key: user
+          Value: "jason.davis.labs"
+        - Key: stelligent-u-lesson
+          Value: "9"
+        - Key: stelligent-u-lab
+          Value: "9.2.2"
           
   TrailOfLogs:
     Type: AWS::CloudTrail::Trail
@@ -37,9 +49,20 @@ Resources:
       EventPattern:
         source:
           - aws.s3
+        detail-type:
+          - 'AWS API Call via CloudTrail'
         detail:
-          - eventSource: "s3.amazonaws.com"
-          - eventName: "PutObject"
+          eventSource:
+            - s3.amazonaws.com
+          eventName:
+            # - CopyObject
+            - PutObject
+            # - CompleteMultipartUpload
+          requestParameters:
+            bucketName:
+              - !Ref BucketStack
+            # key:
+            #   - !Ref SourceObjectKey
       State: "ENABLED"
       Targets: 
         - Arn: !Ref LambdaFunction
@@ -71,8 +94,6 @@ Resources:
           - Sid: "CloudTrail020201229"
             Effect: "Allow"
             Principal: '*'
-            # Principal: 
-            # - Service: "cloudtrail.amazonaws.com"
             Action: "s3:GetBucketAcl"
             Resource: "arn:aws:s3:::stelligent-u-922-jason.davis.labs"
           - Sid: "CloudTrailWrite020201224"
@@ -86,14 +107,14 @@ Resources:
     Properties:
       TableName: "lab922-example-table"
       AttributeDefinitions:
-      - AttributeName: "id"
-        AttributeType: "N"
-      - AttributeName: "text"
+      - AttributeName: "bucketName"
+        AttributeType: "S"
+      - AttributeName: "key"
         AttributeType: "S"
       KeySchema:
-      - AttributeName: "id"
+      - AttributeName: "bucketName"
         KeyType: HASH
-      - AttributeName: "text"
+      - AttributeName: "key"
         KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
@@ -128,7 +149,7 @@ Resources:
       FunctionName: !Sub "${AWS::StackName}"
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
-      Handler: index.lab921
+      Handler: index.lab922
       Timeout: 900
       Code:
         ZipFile: |
@@ -136,11 +157,11 @@ Resources:
           from pprint import pprint
           import boto3
           dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-          table = dynamodb.Table('lab921-example-table')
-          def lab921(event, context):
+          table = dynamodb.Table('lab922-example-table')
+          def lab922(event, context):
             record = {
-              'id': int(event['key1']),
-              'name': event['key2']
+              'bucketName': int(event['bucketName']),
+              'key': event['key']
             }
             response=table.put_item(Item=record)
             return response
