@@ -69,5 +69,10 @@ aws cloudformation create-stack --template-body file://./lab921.yml --stack-name
 curl --header "Content-Type: application/json" --request POST --data '{"key1":"0","key2":"Hello AWS..."}' https://97r1pt0826.execute-api.us-east-1.amazonaws.com/jmd
 
 echo foo > file1
-for i in {001..999}; do aws s3 cp file1 s3://jmd-020201229-002/file$i && sleep 60; done
+for i in {001..999}; do aws s3 cp file1 s3://jmd-020201229-002/file$i && sleep 20; done
+
+9.2.2 notes
+needed a second loggroup for the lambda to write to - with the name of the lambda in the loggroup prepended with /aws/lambda
+once that was made was able to work through what the json looked like from cloudwatch being sent to the lambda with a few print statements which logged to cloudwatch.
+the for loop above was useful to keep logs coming in during this work.
 
