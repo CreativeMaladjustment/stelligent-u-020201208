@@ -20,7 +20,7 @@ Resources:
         - Key: stelligent-u-lab
           Value: "9.2.2"
           
-  TrailOfLogs:
+  TrailLogs:
     Type: AWS::CloudTrail::Trail
     Properties: 
       CloudWatchLogsLogGroupArn: !GetAtt LogGroup.Arn
@@ -53,7 +53,7 @@ Resources:
             #   - !Ref SourceObjectKey
       State: "ENABLED"
       Targets: 
-        - Arn: !Ref LambdaFunction
+        - Arn: !GetAtt LambdaFunction.Arn
           Id: "lambda-to-dynamoDB"
 
   RoleCloudWatch:

@@ -15,9 +15,10 @@ Resources:
           Value: "9.2.2"
 
   BucketPolicy:
+    DependsOn: Bucket
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: "stelligent-u-922-jason.davis.labs"
+      Bucket: "stelligent-u-922-jason.davis.labs-transfer"
       PolicyDocument:
         Statement:
           - Sid: "CloudTrail020201229"
