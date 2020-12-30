@@ -145,7 +145,7 @@ Resources:
             body={}
             eventbody={}
             eventbody = {"event": event}
-            body = json.dumps(body)
+            body = json.dumps(eventbody)
             print(event)
             print(body)
             record = {
