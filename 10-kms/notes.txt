@@ -1,0 +1,3 @@
+aws cloudformation create-stack --template-body file://./lab1011.yml --stack-name jmd-020201230-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+
