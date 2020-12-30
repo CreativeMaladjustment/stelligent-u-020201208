@@ -156,15 +156,12 @@ Resources:
           def lab922(event, context):
             bodyrecord = json.dumps(event['detail']['resources'][0]['ARN'])
             bucketnamerecord = json.dumps(event['detail']['resources'][-1]['ARN'])
-            print(event)
-            print("jello160")
-            print(bodyrecord)
-            print("jello162")
-            print(bucketnamerecord)
             print("jello164")
+            bodyrecord_str = bodyrecord.replace('"arn:aws:s3:::', '')            
+            bucketnamerecord_str = bucketnamerecord.replace('"arn:aws:s3:::', '')            
             record = {
-              'bucketName': bucketnamerecord,
-              'key': bodyrecord
+              'bucketName': bucketnamerecord_str,
+              'key': bodyrecord_str
             }
             response=table.put_item(Item=record)
             return response
