@@ -154,18 +154,22 @@ Resources:
           dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
           table = dynamodb.Table('lab922-example-table')
           def lab922(event, context):
-            body={}
-            body = {"event": event}
-            body = json.dumps(body)
+            bodyrecord = json.dumps(event['detail']['resources'][0]['ARN'])
+            bucketnamerecord = json.dumps(event['detail']['resources'][-1]['ARN'])
             print(event)
-            print(body)
-            print("jello")
+            print("jello160")
+            print(bodyrecord)
+            print("jello162")
+            print(bucketnamerecord)
+            print("jello164")
             record = {
-              'bucketName': "bucket",
-              'key': event.detail.resources
+              'bucketName': bucketnamerecord,
+              'key': bodyrecord
             }
             response=table.put_item(Item=record)
             return response
+
+#event.detail.resources
 
 # 'bucketName': int(event['bucketName']),
 # 'key': event['key']
