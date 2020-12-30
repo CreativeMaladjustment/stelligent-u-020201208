@@ -76,3 +76,7 @@ needed a second loggroup for the lambda to write to - with the name of the lambd
 once that was made was able to work through what the json looked like from cloudwatch being sent to the lambda with a few print statements which logged to cloudwatch.
 the for loop above was useful to keep logs coming in during this work.
 
+#9.2.3
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://9n7t8xyxrj.execute-api.us-east-1.amazonaws.com/jmd
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"s3bucket","key2":"HelloAWS4"}' https://9n7t8xyxrj.execute-api.us-east-1.amazonaws.com/jmd
