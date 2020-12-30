@@ -68,4 +68,6 @@ aws cloudformation create-stack --template-body file://./lab921.yml --stack-name
 
 curl --header "Content-Type: application/json" --request POST --data '{"key1":"0","key2":"Hello AWS..."}' https://97r1pt0826.execute-api.us-east-1.amazonaws.com/jmd
 
+echo foo > file1
+for i in {001..999}; do aws s3 cp file1 s3://jmd-020201229-002/file$i && sleep 60; done
 

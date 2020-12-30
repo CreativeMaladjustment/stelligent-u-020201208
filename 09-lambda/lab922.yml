@@ -36,16 +36,16 @@ Resources:
       S3BucketName: "stelligent-u-922-jason.davis.labs-transfer"
       TrailName: !Sub "${AWS::StackName}"
 
-  # EventRule: 
-  #   Type: AWS::Events::Rule
-  #   Properties: 
-  #     Description: "s3 put something"
-  #     Name: "lab922-s3put"
-  #     EventPattern:
-  #       source:
-  #         - aws.s3
-  #       detail-type:
-  #         - 'AWS API Call via CloudTrail'
+  EventRule: 
+    Type: AWS::Events::Rule
+    Properties: 
+      Description: "s3 put something"
+      Name: "lab922-s3put"
+      EventPattern:
+        source:
+          - aws.s3
+        detail-type:
+          - 'AWS API Call via CloudTrail'
   #       detail:
   #         eventSource:
   #           - s3.amazonaws.com
@@ -58,10 +58,10 @@ Resources:
   #         #     - !GetAtt BucketStack.Arn
   #           # key:
   #           #   - !Ref SourceObjectKey
-  #     State: "ENABLED"
-  #     Targets: 
-  #       - Arn: !GetAtt LambdaFunction.Arn
-  #         Id: "lambda-to-dynamoDB"
+      State: "ENABLED"
+      Targets: 
+        - Arn: !GetAtt LambdaFunction.Arn
+          Id: "lambda-to-dynamoDB"
 
   RoleCloudWatch:
     Type: AWS::IAM::Role
