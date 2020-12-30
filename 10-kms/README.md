@@ -73,7 +73,7 @@ did you have permission to decrypt?_
 
 _Why is it beneficial to use a KMS Alias?_
 
-> Using an alias makes a more human readable and memorable key to use for encryption and decryption. Likely this helps make sure the right key is used depending on how use friendly the alias is named.
+> Using an alias makes a more human readable and memorable key to use for encryption and decryption. Likely this helps make sure the right key is used depending on how use friendly the alias is named. During key rotation the alias would be maintaied while the key-id would change.
 
 ## Lesson 10.2: Implementation of KMS Keys in S3
 
