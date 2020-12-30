@@ -69,6 +69,8 @@ many instances with an ALB.
 _What is the benefit of breaking up the load balancer into specific listeners
 and target groups?_
 
+Allows for microservice architectures, one load balancer can forward requests to different target groups which can be serving up different functions of business logic. 
+
 #### Lab 7.1.2: Health Checks
 
 Now, let's update our health check to see what happens when things go
@@ -92,9 +94,13 @@ haywire!
 _What can be controlled with the interval/healthy threshold/unhealthy threshold
 settings?_
 
+> These settings will allow for different services that need longer to respond to remain healthy, also for those that are more critical to be checked more often and marked unhealth when not responding.
+
 ##### Question: ASG Behavior
 
 _What's happening to the instances in the ASG? How do you know?_
+
+> The instances in the ASG are replaced when the target group notices they are unhealthy. An additional layer of assurance that the instances are responding as exepcted not just from the ASG. 
 
 #### Lab 7.1.3: Secure Sockets
 
@@ -122,10 +128,16 @@ Let's fix that bad health check endpoint and add an https listener.
 
 _What is the trade off of going with a more secure SSL policy?_
 
+> The management of the ssl cert, it seems most orgs loose track of their certs and their renewal. I suppose there could be folks out there with legacy browsers that might not support the latest security policy requirements and thus some customers might be excluded or if an internal applicaiton IT might have systems to upgrade or replace. 
+based on the chart on this page the default accepts older versions of the TLS Protocols v1 and v1.1 while the FS-1-s-Res-2020-10 policy would accept only v1.2 a newer version of the protocol and likely more secure than the past two.
+
+Similar for Ciphers but more for complexity than for how recent they are. So the sha256 and sha384 algorithms vs weaker forms of encryption.
 ##### Question: Certificate Management
 
 _We imported a local certificate into ACM, what other options do you have? How
 do those processes work?_
+
+> Another option in ACM is to requests a public certificate that Amazon would manage for us. If we have a custom domain we would be able to request the certificate for that domain. 
 
 #### Lab 7.1.4: Cleanup
 
@@ -139,6 +151,8 @@ do those processes work?_
 Discuss with your mentor: *What are some of the common cloud architectures
 where you would want to implement an ALB?*
 
+> With ALBs we are able to have more than a single instance serving up content. We eleminate a single source of failure by having a group of instances responding. During upgrades of software we can do a rolling update which also reduces or avoids downtime. During busy times we can add instances and increase performance of the system in general balancing the traffic to all of the instances or nodes available. 
+The classic LB is layer 4 so transport (network tcp) only. This would redirect traffic based on host alone. The ALB would allow for this layer 4 routing as well as layer 7 which is application layer. The ALB is thus aware of HTTP vs HTTPS and other headers or the path of the request to the webserver.
 ## Further reading
 
 - [Run Containerized Microservices with Amazon ECS and Application Load Balancer](https://aws.amazon.com/blogs/compute/microservice-delivery-with-amazon-ecs-and-application-load-balancers/)
