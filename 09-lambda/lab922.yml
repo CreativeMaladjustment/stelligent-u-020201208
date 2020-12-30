@@ -1,6 +1,13 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Resources:
+  LambdaInvokePermissionForEvents:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt LambdaFunction.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt EventRule.Arn
 
   LogGroup: 
     Type: AWS::Logs::LogGroup
@@ -144,11 +151,3 @@ Resources:
 
               # 'bucketName': int(event['bucketName']),
               # 'key': event['key']
-
-PtLabsLambdaInvokePermissionForEvents:
-    Type: AWS::lambda::Permission
-    Properties:
-      FunctionName: !GetAtt LambdaFunction.Arn
-      Action: “lambda:InvokeFunction”
-      Principal: “events.amazonaws.com”
-      SourceArn: !GetAtt EventRule.Arn
