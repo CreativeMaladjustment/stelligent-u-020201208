@@ -8,7 +8,7 @@ Resources:
       LogGroupName: "su-jmd-020201224"
       RetentionInDays: 7
 
-  TrailOfLogs:
+  TrailLogs:
     Type: AWS::CloudTrail::Trail
     Properties: 
       CloudWatchLogsLogGroupArn: !GetAtt LogGroup.Arn
