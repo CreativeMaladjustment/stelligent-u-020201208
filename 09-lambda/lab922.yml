@@ -94,16 +94,16 @@ Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "lab922-example-table"
+      TableName: "lab922-example-table-001"
       AttributeDefinitions:
       - AttributeName: "bucketName"
         AttributeType: "S"
-      - AttributeName: "key"
+      - AttributeName: "object"
         AttributeType: "S"
       KeySchema:
       - AttributeName: "bucketName"
         KeyType: HASH
-      - AttributeName: "key"
+      - AttributeName: "object"
         KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
@@ -152,23 +152,17 @@ Resources:
           from pprint import pprint
           import boto3
           dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-          table = dynamodb.Table('lab922-example-table')
+          table = dynamodb.Table('lab922-example-table-000')
           def lab922(event, context):
             bodyrecord = json.dumps(event['detail']['resources'][0]['ARN'])
             bucketnamerecord = json.dumps(event['detail']['resources'][-1]['ARN'])
-            print("jello164")
             bodyrecord_str = bodyrecord.replace('arn:aws:s3:::', '')            
             bucketnamerecord_str = bucketnamerecord.replace('arn:aws:s3:::', '')            
-            bodyrecord_str = bodyrecord.replace_str('"', '')            
+            bodyrecord_str = bodyrecord_str.replace('"', '')            
             bucketnamerecord_str = bucketnamerecord_str.replace('"', '')            
             record = {
               'bucketName': bucketnamerecord_str,
-              'key': bodyrecord_str
+              'object': bodyrecord_str
             }
             response=table.put_item(Item=record)
             return response
-
-#event.detail.resources
-
-# 'bucketName': int(event['bucketName']),
-# 'key': event['key']
