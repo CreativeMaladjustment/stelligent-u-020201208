@@ -68,22 +68,22 @@ Resources:
         - Arn: !GetAtt LambdaFunction.Arn
           Id: "lambda-to-dynamoDB"
 
-  # RoleCloudWatch:
-  #   Type: AWS::IAM::Role
-  #   Properties: 
-  #     ManagedPolicyArns:
-  #       - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
-  #       - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
-  #     AssumeRolePolicyDocument: 
-  #       Version: "2012-10-17"
-  #       Statement: 
-  #         - 
-  #           Effect: "Allow"
-  #           Principal: 
-  #             Service: 
-  #               - "cloudtrail.amazonaws.com"
-  #           Action: 
-  #             - "sts:AssumeRole"
+  RoleCloudWatch:
+    Type: AWS::IAM::Role
+    Properties: 
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "cloudtrail.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
