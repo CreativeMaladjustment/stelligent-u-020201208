@@ -46,18 +46,16 @@ Resources:
           - aws.s3
         detail-type:
           - 'AWS API Call via CloudTrail'
-  #       detail:
-  #         eventSource:
-  #           - s3.amazonaws.com
-  #         eventName:
-  #           # - CopyObject
-  #           - PutObject
-  #           # - CompleteMultipartUpload
-  #         # requestParameters:
-  #         #   bucketName:
-  #         #     - !GetAtt BucketStack.Arn
-  #           # key:
-  #           #   - !Ref SourceObjectKey
+        detail:
+          eventSource:
+            - s3.amazonaws.com
+          eventName:
+            # - CopyObject
+            - PutObject
+            # - CompleteMultipartUpload
+          requestParameters:
+            bucketName:
+              - !Ref BucketStack
       State: "ENABLED"
       Targets: 
         - Arn: !GetAtt LambdaFunction.Arn
@@ -138,8 +136,19 @@ Resources:
           table = dynamodb.Table('lab922-example-table')
           def lab922(event, context):
             record = {
-              'bucketName': int(event['bucketName']),
-              'key': event['key']
+              'bucketName': "bucket",
+              'key': "keyname-recordset"
             }
             response=table.put_item(Item=record)
             return response
+
+              # 'bucketName': int(event['bucketName']),
+              # 'key': event['key']
+
+PtLabsLambdaInvokePermissionForEvents:
+    Type: AWS::lambda::Permission
+    Properties:
+      FunctionName: !GetAtt LambdaFunction.Arn
+      Action: “lambda:InvokeFunction”
+      Principal: “events.amazonaws.com”
+      SourceArn: !GetAtt EventRule.Arn
