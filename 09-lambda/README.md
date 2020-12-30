@@ -179,6 +179,8 @@ Write another Lambda function that will query the DynamoDB table:
 *Can you think of practical ways an organization can use Lambda in
 reaction to AWS resource changes?*
 
+> more than just alert about the change or log it, an organization can take action. If resources are created without tags they could be added for billing or the resource could be removed if it doesn't meet some standard or naming convention. When a new user is created like first.last.labs a lambda could be fired off to give them certain roles or create a cloud9 environment for them.
+
 ## Further Reading
 
 - Read about [Capital One's Cloud Custodian project](https://stelligent.com/2017/05/15/cloud-custodian-cleans-up-your-cloud-clutter/)
