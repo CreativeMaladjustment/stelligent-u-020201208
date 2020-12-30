@@ -14,6 +14,12 @@ Resources:
     Properties: 
       LogGroupName: !Sub "${AWS::StackName}"
       RetentionInDays: 7
+
+  LambLogGroup: 
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}"
+      RetentionInDays: 7
       
   BucketStack:
     Type: AWS::S3::Bucket
@@ -130,7 +136,7 @@ Resources:
                 Action:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroup}:log-stream:${AWS::AccountId}_CloudTrail_${AWS::Region}*"
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LambLogGroup}:log-stream:*"
 
   LambdaFunction:
     Type: AWS::Lambda::Function
@@ -161,5 +167,5 @@ Resources:
             response=table.put_item(Item=record)
             return response
 
-              # 'bucketName': int(event['bucketName']),
-              # 'key': event['key']
+# 'bucketName': int(event['bucketName']),
+# 'key': event['key']
