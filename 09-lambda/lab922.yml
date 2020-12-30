@@ -155,14 +155,14 @@ Resources:
           table = dynamodb.Table('lab922-example-table')
           def lab922(event, context):
             body={}
-            eventbody={}
-            eventbody = {"event": event}
-            body = json.dumps(eventbody)
+            body = {"event": event}
+            body = json.dumps(body)
             print(event)
             print(body)
+            print("jello")
             record = {
               'bucketName': "bucket",
-              'key': body
+              'key': event.detail.resources
             }
             response=table.put_item(Item=record)
             return response
