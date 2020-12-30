@@ -1,0 +1,59 @@
+aws logs create-log-group --log-group-name jason.davis.c9logs
+aws logs create-log-stream --log-group-name jason.davis.c9logs --log-stream-name c9.training
+aws logs describe-log-groups --log-group-name jason.davis.c9logs
+aws logs describe-log-streams --log-group-name jason.davis.c9logs --log-stream-name-prefix c9
+
+
+#need a new key
+aws ec2 create-key-pair --key-name lab8-su-jmd --query 'KeyMaterial' --output text > lab8.pem
+chmod 400 lab8.pem
+ssh-keygen -y -f lab8.pem
+
+ssh -i lab8.pem ubuntu@3.238.9.44
+
+aws cloudformation create-stack --template-body file://./8.1.2.yml --stack-name jmd-020201223-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+
+#813
+
+pip install awslogs
+
+awslogs get jason.davis.c9logs c9.training --start="5m ago"
+awslogs get jason.davis.c9logs c9.training --start="20m ago"
+awslogs get jason.davis.c9logs c9.training --start="1h ago"
+
+#814
+
+aws logs put-retention-policy --log-group-name jason.davis.c9logs --retention-in-days 60
+aws logs describe-log-groups --log-group-name jason.davis.c9logs
+   #shows up in retentionInDays field.
+
+#815
+aws logs delete-log-group --log-group-name jason.davis.c9logs
+
+
+#8.2.1
+
+aws cloudformation create-stack --template-body file://./lab821.yml --stack-name jmd-020201224-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+
+Note:
+policy resource needed /* becasue it is for objects. Error in cloudformation was
+Action does not apply to any resource(s) in statement (Service: Amazon S3; Status Code: 400; Error Code: MalformedPolicy; Request ID: A09DDD30CECCF15B; S3 Extended Request ID:
+            Action: "s3:PutObject"
+            Resource: "arn:aws:s3:::stelligent-u-821-jason.davis.labs"
+vs
+            Action: "s3:PutObject"
+            Resource: "arn:aws:s3:::stelligent-u-821-jason.davis.labs/*"
+
+
+#822
+aws cloudformation create-stack --template-body file://./lab822.yml --stack-name jmd-020201224-002 --region us-east-1 --capabilities CAPABILITY_IAM
+
+awslogs get su-jmd-020201224  | grep jason.davis.labs
+
+#task sns
+
+aws cloudformation update-stack --template-body file://./lab8task.yml --stack-name jmd-020201224-001 --region us-east-1 --capabilities CAPABILITY_IAM
+
+
