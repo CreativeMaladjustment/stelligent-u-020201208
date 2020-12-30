@@ -67,9 +67,13 @@ Use the KMS CLI to now decrypt a ciphertext file.
 _For decrypting the ciphertext file, why didn't you have to specify a key? How
 did you have permission to decrypt?_
 
+> I wondered this also and assume the meta data about which key to use was in the output of the file. Thus when the decrypt was used it knew which key to use and if i had IAM rights to it allowed me to decrypt.
+
 #### Question: KMS Alias
 
 _Why is it beneficial to use a KMS Alias?_
+
+> Using an alias makes a more human readable and memorable key to use for encryption and decryption. Likely this helps make sure the right key is used depending on how use friendly the alias is named.
 
 ## Lesson 10.2: Implementation of KMS Keys in S3
 

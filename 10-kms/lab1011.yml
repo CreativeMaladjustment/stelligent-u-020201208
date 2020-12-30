@@ -51,5 +51,5 @@ Resources:
   LabAlias:          
     Type: AWS::KMS::Alias
     Properties: 
-      AliasName: !Sub "${AWS::StackName}-lab1012"
+      AliasName: !Sub "alias/${AWS::StackName}-lab1012"
       TargetKeyId: !Ref LabKey
