@@ -68,22 +68,22 @@ Resources:
         - Arn: !GetAtt LambdaFunction.Arn
           Id: "lambda-to-dynamoDB"
 
-  RoleCloudWatch:
-    Type: AWS::IAM::Role
-    Properties: 
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
-        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              Service: 
-                - "cloudtrail.amazonaws.com"
-            Action: 
-              - "sts:AssumeRole"
+  # RoleCloudWatch:
+  #   Type: AWS::IAM::Role
+  #   Properties: 
+  #     ManagedPolicyArns:
+  #       - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+  #       - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+  #     AssumeRolePolicyDocument: 
+  #       Version: "2012-10-17"
+  #       Statement: 
+  #         - 
+  #           Effect: "Allow"
+  #           Principal: 
+  #             Service: 
+  #               - "cloudtrail.amazonaws.com"
+  #           Action: 
+  #             - "sts:AssumeRole"
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
@@ -125,7 +125,13 @@ Resources:
                   - dynamodb:*
                 Resource:
                   - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*"
-                  
+              - Sid: "allowlogstream"
+                Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroup}:log-stream:${AWS::AccountId}_CloudTrail_${AWS::Region}*"
+
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
