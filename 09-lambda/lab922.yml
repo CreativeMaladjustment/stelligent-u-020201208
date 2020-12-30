@@ -157,8 +157,10 @@ Resources:
             bodyrecord = json.dumps(event['detail']['resources'][0]['ARN'])
             bucketnamerecord = json.dumps(event['detail']['resources'][-1]['ARN'])
             print("jello164")
-            bodyrecord_str = bodyrecord.replace('"arn:aws:s3:::', '')            
-            bucketnamerecord_str = bucketnamerecord.replace('"arn:aws:s3:::', '')            
+            bodyrecord_str = bodyrecord.replace('arn:aws:s3:::', '')            
+            bucketnamerecord_str = bucketnamerecord.replace('arn:aws:s3:::', '')            
+            bodyrecord_str = bodyrecord.replace_str('"', '')            
+            bucketnamerecord_str = bucketnamerecord_str.replace('"', '')            
             record = {
               'bucketName': bucketnamerecord_str,
               'key': bodyrecord_str
