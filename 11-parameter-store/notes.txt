@@ -1,2 +1,4 @@
 aws cloudformation create-stack --template-body file://./lab1111.yml --parameters file://./lab1111.json --stack-name jmd-020201231-001 --region us-east-1
 
+aws ssm get-parameter --name /jason.davis.labs/stelligent-u/lab11/name
+
