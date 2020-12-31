@@ -121,6 +121,8 @@ entire subtree with a single query.
 _When you look at your stack in the CloudFormation console, can you find
 the values of your parameter resources there?_
 
+> CloudFormation lists the parameter resources under the resources tab. From there one can click the link and open the value in the parameter store rather than having to look for them.
+
 #### Lab 11.1.3: Integration with CloudFormation
 
 CloudFormation can use Parameter Store keys and values as
