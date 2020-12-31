@@ -7,4 +7,8 @@ aws kms decrypt --ciphertext-blob fileb://rabbit.safetosend.base64 --output text
 
 #10.2.1
 
-aws cloudformation create-stack --template-body file://./lab1021.yml --stack-name jmd-020201230-002 --region us-east-1
+aws cloudformation create-stack --template-body file://./lab1021.yml --stack-name jmd-020201231-001 --region us-east-1 
+
+https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/s3-example-client-side-encryption-with-kms-master-key.html
+gem install aws-sdk-s3
+

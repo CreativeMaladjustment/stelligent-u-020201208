@@ -114,6 +114,7 @@ Delete your KMS CFN Stack.
 
 _What happened to your CMK? Why?_
 
+> The key is scheduled for deletion but still avaialble. Currently set for 30 days from now due to the default value in AWS::KMS::Key.  
 ### Retrospective 10.2
 
 Check out the code for [stelligent/crossing](https://github.com/stelligent/crossing)
