@@ -8,8 +8,10 @@ Parameters:
     Type: 'AWS::SSM::Parameter::Value<String>'
     Default: '/jason.davis.labs/stelligent-u/lab11/name'
   EngMiddleName: 
-    Type: 'AWS::SSM::Parameter::Value<String>'
-    Default: '/jason.davis.labs/stelligent-u/lab11/middle-name'
+      Type: String
+      Default: ${{resolve:ssm-secure:/jason.davis.labs/stelligent-u/lab11/middle-name:1}}
+  #   Type: 'AWS::SSM::Parameter::Value<String>'
+  #   Default: '/jason.davis.labs/stelligent-u/lab11/middle-name'
   EngTeam: 
     Type: 'AWS::SSM::Parameter::Value<String>'
     Default: '/jason.davis.labs/stelligent-u/lab11/team'
