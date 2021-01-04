@@ -199,10 +199,17 @@ Read [Using Dynamic References to Specify Template Values](https://docs.aws.amaz
 Why can't you use that feature directly to read "middle-name" and show it
 in your web page?
 
+> From the documentation: Dynamic references for secure values, such as ssm-secure and secretsmanager, are not currently supported in custom resources.
+
+> An error occurred (ValidationError) when calling the CreateStack operation: Parameters [/jason.davis.labs/stelligent-u/lab11/middle-name] referenced by template have types not supported by CloudFormation.
+
+
 #### Question 2
 
 Can you use Secure String as an `AWS::SSM::Parameter::Value` type in a
 CloudFormation stack?
+
+> Secure String is not currently supported in CloudFormation.
 
 ## Further Reading
 
