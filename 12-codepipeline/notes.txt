@@ -8,3 +8,20 @@ role - create or select aws service role
 #12.1.1
 aws cloudformation create-stack --template-body file://./lab1211.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210105-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 ###aws cloudformation create-stack --stack-name S1 --template-body example template --parameters ParameterKey=InstanceType,ParameterValue=myInstanceType
+
+toekn in github checked all five in 'repo' and it worked, just first one and first three failed...
+
+Action execution failed
+User: arn:aws:sts::324320755747:assumed-role/jmd-020210105-001-PipelineExeRole-17NVC44BZED37/1609881978625
+is not authorized to perform: iam:PassRole on resource:
+
+arn:aws:iam::324320755747:role/jmd-020210105-001-PipelineExeRole-17NVC44BZED37 
+(Service: AmazonCloudFormation; Status Code: 403; Error Code: AccessDenied;
+Request ID: baafeded-f976-42cf-a587-551b0a210e06)
+
+Action execution failed
+Role arn:aws:iam::324320755747:role/jmd-020210105-001-PipelineExeRole-18SMT8LLD1OJV
+is invalid or cannot be assumed (Service: AmazonCloudFormation; Status Code: 400; 
+Error Code: ValidationError; Request ID: 10ae959f-82b5-4a59-8eb1-6fdfe32d9543)
+
+aws cloudformation create-stack --template-body file://./bucket.yaml --parameters ParameterKey=BucketNameParameter,ParameterValue=su-jmd-020210105-002-lab1211-DEFAULT --stack-name jmd-020210105-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
