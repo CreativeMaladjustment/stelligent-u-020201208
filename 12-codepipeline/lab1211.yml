@@ -96,52 +96,47 @@ Resources:
               Resource: '*'
               Effect: Allow
 
-    AppPipeline: 
-      Type: AWS::CodePipeline::Pipeline 
-      Properties: 
-        RoleArn: !GetAtt PipelineExeRole.Arn
-        Stages: 
-          - 
-            Name: Lab1211-Source
-            Actions: 
-              - 
-                Name: SourceAction
-                ActionTypeId: 
-                  Category: Source 
-                  Owner: ThirdParty
-                  Version: 1 
-                  Provider: GitHub
-                OutputArtifacts: 
-                  - 
-                    Name: SourceOutput 
-                Configuration: 
-                    Owner: stelligent
-                    Repo: su-jmd-020201208
-                    PollForSourceChanges: true
-                    Branch: DeployPipeline
-                    OAuthToken: !Ref GitHubToken
-                RunOrder: 1 
-          - 
-            Name: Lab1211-Deploy 
-            Actions: 
-              - 
-                Name: DeployAction 
-                InputArtifacts: 
-                  -
-                    Name: SourceOutput 
-                ActionTypeId: 
-                  Category: Deploy 
-                  Owner: AWS 
-                  Version: 1 
-                  Provider: CloudFormation
-                Configuration: 
-                  ActionMode: CREATE_UPDATE
-                  StackName: jmd-020210105-PIPELINE
-                  RoleArn: !GetAtt PipelineExeRole.Arn
-                  TemplatePath: Source::12-automation-pipelines/bucket.yaml
-                  ParameterOverrides: !Sub |
-                    { "BucketNameParameter": "${BucketNameParameter}}
-                RunOrder: 1 
-        ArtifactStore: 
-          Type: S3 
-          Location: !Ref PipelineStateBucket
+  AppPipeline: 
+    Type: AWS::CodePipeline::Pipeline 
+    Properties: 
+      RoleArn: !GetAtt PipelineExeRole.Arn
+      Stages: 
+        - 
+          Name: Lab1211-Source
+          Actions: 
+            - Name: SourceAction
+              ActionTypeId: 
+                Category: Source 
+                Owner: ThirdParty
+                Version: 1 
+                Provider: GitHub
+              OutputArtifacts: 
+                - Name: SourceOutput 
+              Configuration: 
+                  Owner: stelligent
+                  Repo: su-jmd-020201208
+                  PollForSourceChanges: true
+                  Branch: DeployPipeline
+                  OAuthToken: !Ref GitHubToken
+              RunOrder: 1 
+        - 
+          Name: Lab1211-Deploy 
+          Actions: 
+            - Name: DeployAction 
+              InputArtifacts: 
+                - Name: SourceOutput 
+              ActionTypeId: 
+                Category: Deploy 
+                Owner: AWS 
+                Version: '1' 
+                Provider: CloudFormation
+              Configuration: 
+                ActionMode: REPLACE_ON_FAILURE
+                StackName: jmd-020210105-PIPELINE
+                RoleArn: !GetAtt PipelineExeRole.Arn
+                TemplatePath: "Source::12-automation-pipelines/bucket.yaml"
+                ParameterOverrides: '{"BucketNameParameter": "${BucketNameParameter}"}'
+              RunOrder: 2 
+      ArtifactStore: 
+        Type: S3 
+        Location: !Ref PipelineStateBucket
