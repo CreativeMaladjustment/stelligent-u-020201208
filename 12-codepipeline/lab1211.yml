@@ -43,7 +43,7 @@ Resources:
                 - 'logs:*'
               Effect: Allow
               Resource:
-                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackName}/*
+                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-020210105-PIPELINE/*
             - Action:
                 - 'iam:PassRole'
               Effect: Allow
@@ -111,7 +111,7 @@ Resources:
                 Version: 1 
                 Provider: GitHub
               OutputArtifacts: 
-                - Name: SourceOutput 
+                - Name: BucketTemplate 
               Configuration: 
                   Owner: stelligent
                   Repo: su-jmd-020201208
@@ -124,7 +124,7 @@ Resources:
           Actions: 
             - Name: DeployAction 
               InputArtifacts: 
-                - Name: SourceOutput 
+                - Name: BucketTemplate
               ActionTypeId: 
                 Category: Deploy 
                 Owner: AWS 
@@ -133,8 +133,8 @@ Resources:
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
                 StackName: jmd-020210105-PIPELINE
-                RoleArn: !GetAtt PipelineExeRole.Arn
-                TemplatePath: "Source::12-automation-pipelines/bucket.yaml"
+                RoleArn: !GetAtt MakeBucketRole.Arn
+                TemplatePath: "BucketTemplate::12-codepipeline/bucket.yaml"
                 ParameterOverrides: '{"BucketNameParameter": "${BucketNameParameter}"}'
               RunOrder: 2 
       ArtifactStore: 
