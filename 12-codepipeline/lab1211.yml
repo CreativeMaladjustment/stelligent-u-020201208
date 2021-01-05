@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "lab 12.1.1"
+
+Parameters:
+  GitHubToken:
+    Type: String
+    Description: GitHub OAuth Token
+    NoEcho: True
+    
+Resources:
+  PipelineStateBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "stelligent-u-1211-pipelinestate-jason.davis.labs"
+
+  PipelineExeRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - codepipeline.amazonaws.com
+          Action:
+            - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: codepipeline-service
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Action:
+                - 'cloudformation:CreateStack'
+                - 'cloudformation:DescribeStacks'
+                - 'cloudformation:DeleteStack'
+                - 'cloudformation:UpdateStack'
+                - 'cloudformation:SetStackPolicy'
+                - 'logs:*'
+              Effect: Allow
+              Resource:
+                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackName}/*
+            - Action:
+                - 'iam:PassRole'
+              Effect: Allow
+              Resource:
+                - !GetAtt MakeBucketRole.Arn            
+            - 
+              Action:
+                - s3:GetObject
+                - s3:GetObjectVersion
+                - s3:PutObject
+              Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}/*'
+              Effect: Allow
+            - 
+              Action:
+                - s3:GetBucketVersioning
+              Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}'
+              Effect: Allow
+
+  MakeBucketRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action: 
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: 
+                - cloudformation.amazonaws.com
+      Path: /
+      Policies:
+      - PolicyName: cloudformation-service
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - 
+              Action:
+                - 's3:*'
+              Resource: 
+                - !Sub 'arn:aws:s3:::${BucketName}'
+                - !Sub 'arn:aws:s3:::${BucketName}/*'
+              Effect: Allow
+            - 
+              Action:
+                - s3:ListAllMyBuckets
+                - s3:CreateBucket
+                - s3:ListBucket
+                - s3:HeadBucket
+              Resource: '*'
+              Effect: Allow
+
+    AppPipeline: 
+      Type: AWS::CodePipeline::Pipeline 
+      Properties: 
+        RoleArn: !GetAtt PipelineExeRole.Arn
+        Stages: 
+          - 
+            Name: Lab1211-Source
+            Actions: 
+              - 
+                Name: SourceAction
+                ActionTypeId: 
+                  Category: Source 
+                  Owner: ThirdParty
+                  Version: 1 
+                  Provider: GitHub
+                OutputArtifacts: 
+                  - 
+                    Name: SourceOutput 
+                Configuration: 
+                    Owner: stelligent
+                    Repo: su-jmd-020201208
+                    PollForSourceChanges: true
+                    Branch: DeployPipeline
+                    OAuthToken: !Ref GitHubToken
+                RunOrder: 1 
+          - 
+            Name: Beta 
+            Actions: 
+              - 
+                Name: BetaAction 
+                InputArtifacts: 
+                  -
+                    Name: SourceOutput 
+                ActionTypeId: 
+                  Category: Deploy 
+                  Owner: AWS 
+                  Version: 1 
+                  Provider: CodeDeploy
+                Configuration: 
+                  ApplicationName: 
+                    Ref: ApplicationName 
+                  DeploymentGroupName: 
+                    Ref: DeploymentGroupName 
+                RunOrder: 1 
+          - 
+            Name: Release 
+            Actions: 
+              - 
+                Name: ReleaseAction
+                InputArtifacts: 
+                  - 
+                    Name: SourceOutput 
+                ActionTypeId: 
+                  Category: Deploy 
+                  Owner: AWS 
+                  Version: 1
+                  Provider: CodeDeploy 
+                Configuration: 
+                  ApplicationName: 
+                    Ref: ApplicationName
+                  DeploymentGroupName: 
+                    Ref: DeploymentGroupName 
+                RunOrder: 1 
+        ArtifactStore: 
+          Type: S3 
+          Location: !Ref PipelineStateBucket
+#            Ref: ArtifactStoreS3Location 
+        #   EncryptionKey:
+        #     Id: arn:aws:kms:useast-1:ACCOUNT-ID:key/KEY-ID
+        #     Type: KMS
+        # DisableInboundStageTransitions: 
+        #   - 
+        #     StageName: Release 
+        #     Reason: "Disabling the transition until integration tests are completed"
+        # Tags:
+        #   - Key: Project
+        #     Value: ProjectA
+        #   - Key: IsContainerBased
+        #     Value: 'true'

@@ -1,0 +1,11 @@
+# watching linux academy - https://linuxacademy.com/cp/courses/lesson/course/587/lesson/1/module/71
+#need AWSCodePipelineFullAccess IAM policy - to user or role being used.
+
+select source (git hub repo / branch to monitor)
+provider  (no build / solano ci / add jenkins)
+role - create or select aws service role 
+
+#12.1.1
+cloudformation create-stack --template-body file://./lab1211.yml --stack-name jmd-020210105-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+
