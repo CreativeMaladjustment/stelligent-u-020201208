@@ -6,7 +6,7 @@ Parameters:
     Type: String
     Description: GitHub OAuth Token
     NoEcho: True
-  BucketNameParameter:
+  BucketNameParam:
     Type: String
     Description: S3 bucket name to be passed in cnf
     Default: su-jmd-020210105-lab1211
@@ -84,8 +84,8 @@ Resources:
               Action:
                 - 's3:*'
               Resource: 
-                - !Sub 'arn:aws:s3:::${BucketNameParameter}'
-                - !Sub 'arn:aws:s3:::${BucketNameParameter}/*'
+                - !Sub 'arn:aws:s3:::${BucketNameParam}'
+                - !Sub 'arn:aws:s3:::${BucketNameParam}/*'
               Effect: Allow
             - 
               Action:
@@ -135,7 +135,7 @@ Resources:
                 StackName: jmd-020210105-PIPELINE
                 RoleArn: !GetAtt MakeBucketRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/bucket.yaml"
-                ParameterOverrides: '{"BucketNameParameter": "${BucketNameParameter}"}'
+                ParameterOverrides: '{"BucketNameParameter": "${BucketNameParam}"}'
               RunOrder: 2 
       ArtifactStore: 
         Type: S3 
