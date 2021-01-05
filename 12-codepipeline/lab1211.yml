@@ -6,6 +6,10 @@ Parameters:
     Type: String
     Description: GitHub OAuth Token
     NoEcho: True
+  BucketNameParameter:
+    Type: String
+    Description: S3 bucket name to be passed in cnf
+    Default: su-jmd-020210105-lab1211
     
 Resources:
   PipelineStateBucket:
@@ -80,8 +84,8 @@ Resources:
               Action:
                 - 's3:*'
               Resource: 
-                - !Sub 'arn:aws:s3:::${BucketName}'
-                - !Sub 'arn:aws:s3:::${BucketName}/*'
+                - !Sub 'arn:aws:s3:::${BucketNameParameter}'
+                - !Sub 'arn:aws:s3:::${BucketNameParameter}/*'
               Effect: Allow
             - 
               Action:
@@ -118,10 +122,10 @@ Resources:
                     OAuthToken: !Ref GitHubToken
                 RunOrder: 1 
           - 
-            Name: Beta 
+            Name: Lab1211-Deploy 
             Actions: 
               - 
-                Name: BetaAction 
+                Name: DeployAction 
                 InputArtifacts: 
                   -
                     Name: SourceOutput 
@@ -129,45 +133,15 @@ Resources:
                   Category: Deploy 
                   Owner: AWS 
                   Version: 1 
-                  Provider: CodeDeploy
+                  Provider: CloudFormation
                 Configuration: 
-                  ApplicationName: 
-                    Ref: ApplicationName 
-                  DeploymentGroupName: 
-                    Ref: DeploymentGroupName 
-                RunOrder: 1 
-          - 
-            Name: Release 
-            Actions: 
-              - 
-                Name: ReleaseAction
-                InputArtifacts: 
-                  - 
-                    Name: SourceOutput 
-                ActionTypeId: 
-                  Category: Deploy 
-                  Owner: AWS 
-                  Version: 1
-                  Provider: CodeDeploy 
-                Configuration: 
-                  ApplicationName: 
-                    Ref: ApplicationName
-                  DeploymentGroupName: 
-                    Ref: DeploymentGroupName 
+                  ActionMode: CREATE_UPDATE
+                  StackName: jmd-020210105-PIPELINE
+                  RoleArn: !GetAtt PipelineExeRole.Arn
+                  TemplatePath: Source::12-automation-pipelines/bucket.yaml
+                  ParameterOverrides: !Sub |
+                    { "BucketNameParameter": "${BucketNameParameter}}
                 RunOrder: 1 
         ArtifactStore: 
           Type: S3 
           Location: !Ref PipelineStateBucket
-#            Ref: ArtifactStoreS3Location 
-        #   EncryptionKey:
-        #     Id: arn:aws:kms:useast-1:ACCOUNT-ID:key/KEY-ID
-        #     Type: KMS
-        # DisableInboundStageTransitions: 
-        #   - 
-        #     StageName: Release 
-        #     Reason: "Disabling the transition until integration tests are completed"
-        # Tags:
-        #   - Key: Project
-        #     Value: ProjectA
-        #   - Key: IsContainerBased
-        #     Value: 'true'

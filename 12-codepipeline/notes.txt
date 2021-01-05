@@ -6,6 +6,6 @@ provider  (no build / solano ci / add jenkins)
 role - create or select aws service role 
 
 #12.1.1
-cloudformation create-stack --template-body file://./lab1211.yml --stack-name jmd-020210105-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+cloudformation create-stack --template-body file://./lab1211.yml --parameters GitHubToken=$GitHubToken --stack-name jmd-020210105-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 
 
