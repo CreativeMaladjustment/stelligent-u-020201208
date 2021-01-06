@@ -1,0 +1,14 @@
+aws cloudformation create-stack --template-body file://./lab1011.yml --stack-name jmd-020201230-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+#10.1.3
+aws kms encrypt --key-id alias/jmd-020201230-001-lab1012 --plaintext fileb://rabbit.plaintext --output text --query CiphertextBlob | base64 --decode > rabbit.safetosend.base64
+#10.1.4
+aws kms decrypt --ciphertext-blob fileb://rabbit.safetosend.base64 --output text --query Plaintext | base64 --decode > plain.out
+
+#10.2.1
+
+aws cloudformation create-stack --template-body file://./lab1021.yml --stack-name jmd-020201231-001 --region us-east-1 
+
+https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/s3-example-client-side-encryption-with-kms-master-key.html
+gem install aws-sdk-s3
+
