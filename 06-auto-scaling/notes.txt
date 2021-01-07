@@ -41,3 +41,7 @@ stress --cpu 8 --io 4 --vm 2 --vm-bytes 128M --timeout 300s
 stress --cpu 300 --timeout 3000s --backoff 0 -v
 ## switched to M4.large because burst cpu didn't get over 60% on the t2.small
 
+note: 
+CPUUtilization is NOT in AWS/Autoscaling
+make sure name space is AWS/EC2 not AWS/AUTOSCALING, although autoscaling doesn't have this metric cloudformation allows the alarm to be made with it. 
+
