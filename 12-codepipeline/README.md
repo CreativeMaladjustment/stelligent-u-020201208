@@ -122,6 +122,10 @@ them, including the CFN resources you need:
 _Is executing a CloudFormation template a legitimate example of an
 "application"? Provide an explanation._
 
+> Pipelines could execute CloudFormation or other 
+  Infrastructure_as_Code templates such as Terraform. These
+  are valid applications to be deployed.
+
 #### Question: Pipeline Template
 
 _Is your Pipeline template portable? Update and re-create your Pipeline if
@@ -135,6 +139,10 @@ you hard-coded any of the following:_
 
 - anything else that might enhance portability
 
+> Application stack and repo/branch were hardcorded. Need to add
+  vars for these. 
+
+
 #### Task
 
 Delete your pipeline stack and leave your bucket stack alone. Once the
@@ -146,6 +154,8 @@ pipeline stack and use the created roles to recreate the missing role
 for your orphaned bucket stack. To help avoid this in the future it's a
 good idea to define your roles in a separate stack and use the outputs
 in your other stacks.
+
+> I might have removed the wrong stack(s), there were no issues removing the bucket. I can see the reason to have roles and IAM in other template files and agree with this. 
 
 ## Lesson 12.2: Pipelines Support Infrastructure as Code
 
