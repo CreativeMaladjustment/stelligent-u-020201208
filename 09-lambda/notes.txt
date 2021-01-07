@@ -1,0 +1,82 @@
+#hello world code
+print('HelloAWS!')
+
+#take json code - (from blueprint)
+
+import json
+
+print('Loading function')
+
+def lambda_handler(event, context):
+    #print("Received event: " + json.dumps(event, indent=2))
+    print("value1 = " + event['key1'])
+    print("value2 = " + event['key2'])
+    print("value3 = " + event['key3'])
+    return event['key1']  # Echo back the first key value
+    #raise Exception('Something went wrong')
+
+#####
+
+#912
+aws cloudformation create-stack --template-body file://./lab912.yml --stack-name jmd-020201228-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+curl https://d5s6djld3k.execute-api.us-east-1.amazonaws.com/jmd
+
+aws apigateway get-resources --rest-api-id d5s6djld3k
+aws apigateway get-resource --rest-api-id d5s6djld3k --resource-id h0558gylc3
+aws apigateway test-invoke-method --rest-api-id d5s6djld3k --resource-id h0558gylc3 --http-method POST --path-with-query-string '/'
+
+
+aws cloudformation update-stack --template-body file://./lab912a.yml --stack-name jmd-020201228-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://d5s6djld3k.execute-api.us-east-1.amazonaws.com/jmd
+
+#913
+
+aws cloudformation create-stack --template-body file://./lab913.yml --stack-name jmd-020201228-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+cp lab913.py lambda_function.py
+zip deployment-package.zip lambda_function.py
+rm lambda_function.py
+
+aws s3 cp deployment-package.zip s3://stelligent-u-913-jmd/ --sse=aws:kms --sse-kms-key-id=00e5451f-7a92-4cbd-832a-6fd42aa66b54
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://lkxs26gb46.execute-api.us-east-1.amazonaws.com/jmd
+
+mkdir app
+cp lab913.py app/lambda_function.py
+aws cloudformation package --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-package-func.yml --s3-bucket stelligent-u-913-jmd --output-template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml
+#output
+Uploading to 8ab0fcae9d238ebd5634bd2dc3e57cd1  9160 / 9160.0  (100.00%)
+Successfully packaged artifacts and wrote output template to file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml.
+Execute the following command to deploy the packaged template
+aws cloudformation deploy --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml --stack-name <YOUR STACK NAME>
+
+aws cloudformation deploy --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml --stack-name jmd-020201228-003 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation describe-stack-events --stack-name jmd-020201228-003
+
+aws cloudformation deploy --template-file /home/ec2-user/environment/su-jmd-020201208/09-lambda/lab913-packaged-func.yml --stack-name jmd-020201228-005 --capabilities CAPABILITY_NAMED_IAM
+
+
+### had to comment the CodeUri line... 
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://5kalaqvdmh.execute-api.us-east-1.amazonaws.com/jmd
+
+#92
+
+aws cloudformation create-stack --template-body file://./lab921.yml --stack-name jmd-020201229-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"0","key2":"Hello AWS..."}' https://97r1pt0826.execute-api.us-east-1.amazonaws.com/jmd
+
+echo foo > file1
+for i in {001..999}; do aws s3 cp file1 s3://jmd-020201229-002/file$i && sleep 20; done
+
+9.2.2 notes
+needed a second loggroup for the lambda to write to - with the name of the lambda in the loggroup prepended with /aws/lambda
+once that was made was able to work through what the json looked like from cloudwatch being sent to the lambda with a few print statements which logged to cloudwatch.
+the for loop above was useful to keep logs coming in during this work.
+
+#9.2.3
+
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"Hello AWS..."}' https://9n7t8xyxrj.execute-api.us-east-1.amazonaws.com/jmd
+curl --header "Content-Type: application/json" --request POST --data '{"key1":"s3bucket","key2":"HelloAWS4"}' https://9n7t8xyxrj.execute-api.us-east-1.amazonaws.com/jmd
