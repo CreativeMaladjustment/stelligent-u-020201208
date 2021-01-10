@@ -14,7 +14,9 @@ Resources:
       # SourceIp: String
       Tags:
         - Key: Description
-          Value: "check that A can connect to B"          
+          Value: "check that A can connect to B"
+          Key: Name
+          Value: "SiC-AB"
           
   NIPCheckInstanceAC:
     Type: AWS::EC2::NetworkInsightsPath
@@ -28,3 +30,5 @@ Resources:
       Tags:
         - Key: Description
           Value: "check that A can not connect to C"          
+          Key: Name
+          Value: "SiC-AC"
