@@ -18,9 +18,13 @@ aws ec2 start-network-insights-analysis --network-insights-path-id nip-0faa2434e
 
 # "NetworkInsightsAnalysisId": "nia-0e8856bd6ed08c3d4",
 aws ec2 describe-network-insights-analyses --network-insights-analysis-ids nia-0e8856bd6ed08c3d4
+            "Status": "succeeded",
+            "NetworkPathFound": true,
 
 aws ec2 describe-network-insights-analyses --network-insights-path-id nip-0faa2434e273f8139
 
 #A to C
 aws ec2 start-network-insights-analysis --network-insights-path-id nip-068aede974d07a58f
 aws ec2 describe-network-insights-analyses --network-insights-analysis-ids nia-0d268e41594a476cd
+            "Status": "succeeded",
+            "NetworkPathFound": false,
