@@ -12,6 +12,10 @@ Resources:
       Protocol: tcp
       Source: !ImportValue jmd-SiC-020210110-001-InstanceA
       # SourceIp: String
+      Tags:
+        - Key: Description
+          Value: "check that A can connect to B"          
+          
   NIPCheckInstanceAC:
     Type: AWS::EC2::NetworkInsightsPath
     Properties: 
@@ -21,3 +25,6 @@ Resources:
       Protocol: tcp
       Source: !ImportValue jmd-SiC-020210110-001-InstanceA
       # SourceIp: String
+      Tags:
+        - Key: Description
+          Value: "check that A can not connect to C"          
