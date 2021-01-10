@@ -1,0 +1,5 @@
+# following 
+https://aws.amazon.com/blogs/aws/new-vpc-insights-analyzes-reachability-and-visibility-in-vpcs/
+
+aws cloudformation create-stack --template-body file://./SiC-lab.yml --stack-name jmd-SiC-020210110-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --template-body file://./SiC-VPCReachabilityAnalyzer.yml --stack-name jmd-SiC-020210110-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
