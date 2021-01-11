@@ -28,3 +28,6 @@ aws cloudformation create-stack --template-body file://./bucket.yaml --parameter
 
 ###12.1.2
 aws cloudformation create-stack --template-body file://./lab1212.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210111-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+list images that can be used... 
+aws codebuild list-curated-environment-images

@@ -221,7 +221,7 @@ Resources:
       ServiceRole: !Ref CodeBuildRole
       Source:
         Type: CODEPIPELINE
-        BuildSpec: '12-codepipeline/lab1212-validate.yml'
+        BuildSpec: '12-codepipeline/lab1212-test.yml'
 
   CodeBuildRole:
     Type: AWS::IAM::Role
