@@ -38,7 +38,7 @@ Resources:
                 - 'codebuild:BatchGetBuilds'
                 - 'codebuild:StartBuild'
               Resource: 
-                - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/Lab1212-*
+                - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/lab1212*
               Effect: Allow
             - Action:
                 - 'cloudformation:CreateStack'
@@ -181,15 +181,11 @@ Resources:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/python:3.9
-        EnvironmentVariables:
-          - Name: TEMPLATE_TO_VALIDATE
-            Value: 12-automation-pipelines/bucket.yaml
-            Type: PLAINTEXT
       Name: 'lab1212-build'
       ServiceRole: !Ref CodeBuildRole
       Source:
         Type: CODEPIPELINE
-        BuildSpec: '12-automation-pipelines/lab1212-validate.yml'
+        BuildSpec: '12-codepipeline/lab1212-validate.yml'
 
   CodeBuildRole:
     Type: AWS::IAM::Role

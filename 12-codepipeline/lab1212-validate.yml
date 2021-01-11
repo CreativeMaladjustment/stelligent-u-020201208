@@ -8,4 +8,4 @@ phases:
   build:
     commands:
       - echo Entered the build phase... `date`
-      - aws cloudformation validate-template --template-body file://${TEMPLATE_TO_VALIDATE}
+      - aws cloudformation validate-template --template-body file://12-codepipeline/bucket.yaml
