@@ -1,0 +1,11 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - apt update -y
+      - apt -y install python3-pip
+      - pip3 install awscli --upgrade
+  build:
+    commands:
+      - echo Entered the build phase... `date`
+      - aws cloudformation validate-template --template-body file://${TEMPLATE_TO_VALIDATE}

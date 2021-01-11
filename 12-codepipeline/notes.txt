@@ -25,3 +25,6 @@ is invalid or cannot be assumed (Service: AmazonCloudFormation; Status Code: 400
 Error Code: ValidationError; Request ID: 10ae959f-82b5-4a59-8eb1-6fdfe32d9543)
 
 aws cloudformation create-stack --template-body file://./bucket.yaml --parameters ParameterKey=BucketNameParameter,ParameterValue=su-jmd-020210105-002-lab1211-DEFAULT --stack-name jmd-020210105-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+###12.1.2
+aws cloudformation create-stack --template-body file://./lab1212.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210111-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
