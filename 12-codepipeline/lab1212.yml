@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "lab 12.1.1"
+Description: "lab 12.1.2"
 
 Parameters:
   GitHubToken:
@@ -34,6 +34,12 @@ Resources:
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
+            - Action:
+                - 'codebuild:BatchGetBuilds'
+                - 'codebuild:StartBuild'
+              Resource: 
+                - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/Lab1212-*
+              Effect: Allow
             - Action:
                 - 'cloudformation:CreateStack'
                 - 'cloudformation:DescribeStacks'
@@ -102,7 +108,7 @@ Resources:
       RoleArn: !GetAtt PipelineExeRole.Arn
       Stages: 
         - 
-          Name: Lab1211-Source
+          Name: Lab1212-Source
           Actions: 
             - Name: SourceAction
               ActionTypeId: 
@@ -120,7 +126,24 @@ Resources:
                   OAuthToken: !Ref GitHubToken
               RunOrder: 1 
         - 
-          Name: Lab1211-Deploy 
+          Name: Lab1212-Build
+          Actions:
+            -
+              Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              InputArtifacts:
+                - Name: BucketTemplate
+              Configuration:
+                ProjectName: !Ref CodeBuildProject
+              OutputArtifacts:
+                - Name: ValidatedBucketTemplate
+              RunOrder: 2
+        - 
+          Name: Lab1212-Deploy 
           Actions: 
             - Name: DeployAction 
               InputArtifacts: 
@@ -140,7 +163,64 @@ Resources:
                   {
                     "BucketNameParameter": "${BucketNameParam}"
                   }
-              RunOrder: 2 
+              RunOrder: 3
       ArtifactStore: 
         Type: S3 
         Location: !Ref PipelineStateBucket
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Cache:
+        Type: S3
+        Location: !Sub "${PipelineStateBucket}/prefix"
+      Description: "validate application"
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/python:3.9
+        EnvironmentVariables:
+          - Name: TEMPLATE_TO_VALIDATE
+            Value: 12-automation-pipelines/bucket.yaml
+            Type: PLAINTEXT
+      Name: 'lab1212-build'
+      ServiceRole: !Ref CodeBuildRole
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: '12-automation-pipelines/lab1212-validate.yml'
+
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+              - codebuild.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: allow-code-build
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - 
+                Action:
+                  - logs:*
+                  - cloudformation:DescribeStacks
+                  - cloudformation:ValidateTemplate
+                  - iam:PassRole
+                Effect: Allow
+                Resource: "*"
+              - 
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:PutObject
+                Resource: !Sub "arn:aws:s3:::${PipelineStateBucket}/*"
+                Effect: Allow
