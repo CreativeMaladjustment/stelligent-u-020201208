@@ -180,7 +180,9 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/python:3.9
+        Image: aws/codebuild/amazonlinux2-aarch64-standard:1.0
+        # Image: aws/codebuild/python: 3.7
+        # ImagePullCredentialsType: CODEBUILD
       Name: 'lab1212-build'
       ServiceRole: !Ref CodeBuildRole
       Source:
@@ -220,3 +222,22 @@ Resources:
                   - s3:PutObject
                 Resource: !Sub "arn:aws:s3:::${PipelineStateBucket}/*"
                 Effect: Allow
+        # - PolicyName: allow-code-artifact
+        #   PolicyDocument:
+        #     Version: '2012-10-17'
+        #     Statement:
+        #       - 
+        #         Action:
+        #           - codeartifact:GetAuthorizationToken
+        #           - codeartifact:GetRepositoryEndpoint
+        #           - codeartifact:ReadFromRepository
+        #         Effect: Allow
+        #         Resource: "*"
+        #       - 
+        #         Action:
+        #           - sts:GetServiceBearerToken
+        #         Resource: "*"
+        #         # Condition: 
+        #         #   StringEquals: 
+        #         #   - sts:AWSServiceName: codeartifact.amazonaws.com
+        #         Effect: Allow
