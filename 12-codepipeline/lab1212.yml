@@ -138,7 +138,7 @@ Resources:
               InputArtifacts:
                 - Name: BucketTemplate
               Configuration:
-                ProjectName: !Ref CodeBuildProject
+                ProjectName: !Ref CodeBuildValidate
               OutputArtifacts:
                 - Name: ValidatedBucketTemplate
               RunOrder: 2
@@ -158,17 +158,34 @@ Resources:
                 StackName: jmd-020210105-pipeline
                 RoleArn: !GetAtt MakeBucketRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/bucket.yaml"
-                # ParameterOverrides: '{"BucketNameParameter": "${BucketNameParam}"}'
                 ParameterOverrides: !Sub |
                   {
                     "BucketNameParameter": "${BucketNameParam}"
                   }
               RunOrder: 3
+        - 
+          Name: Lab1212-Test
+          Actions:
+            -
+              Name: TestStackStatus
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              InputArtifacts:
+                - Name: BucketTemplate
+              Configuration:
+                ProjectName: !Ref CodeBuildTest
+              OutputArtifacts:
+                - Name: TestStackStatus
+              RunOrder: 4
+
       ArtifactStore: 
         Type: S3 
         Location: !Ref PipelineStateBucket
 
-  CodeBuildProject:
+  CodeBuildValidate:
     Type: AWS::CodeBuild::Project
     Properties:
       Artifacts:
@@ -180,11 +197,27 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        # Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.3.2
-        # Image: aws/codebuild/python: 3.7
-        # ImagePullCredentialsType: CODEBUILD
       Name: 'lab1212-build'
+      ServiceRole: !Ref CodeBuildRole
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: '12-codepipeline/lab1212-validate.yml'
+
+  CodeBuildTest:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Cache:
+        Type: S3
+        Location: !Sub "${PipelineStateBucket}/prefix"
+      Description: "test application"
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.3.2
+      Name: 'lab1212-test'
       ServiceRole: !Ref CodeBuildRole
       Source:
         Type: CODEPIPELINE
@@ -223,22 +256,3 @@ Resources:
                   - s3:PutObject
                 Resource: !Sub "arn:aws:s3:::${PipelineStateBucket}/*"
                 Effect: Allow
-        # - PolicyName: allow-code-artifact
-        #   PolicyDocument:
-        #     Version: '2012-10-17'
-        #     Statement:
-        #       - 
-        #         Action:
-        #           - codeartifact:GetAuthorizationToken
-        #           - codeartifact:GetRepositoryEndpoint
-        #           - codeartifact:ReadFromRepository
-        #         Effect: Allow
-        #         Resource: "*"
-        #       - 
-        #         Action:
-        #           - sts:GetServiceBearerToken
-        #         Resource: "*"
-        #         # Condition: 
-        #         #   StringEquals: 
-        #         #   - sts:AWSServiceName: codeartifact.amazonaws.com
-        #         Effect: Allow

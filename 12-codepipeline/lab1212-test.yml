@@ -1,1 +1,9 @@
-foo
+version: 0.2
+phases:
+  install:
+    commands:
+      - pip3 install awscli --upgrade
+  build:
+    commands:
+      - STATUS="$(aws cloudformation describe-stacks --stack jmd-020210105-pipeline --query 'Stacks[*][StackStatus]' --output text)" 
+      - if [ "$STATUS" != "CREATE_COMPLETE" ] && [ "$STATUS" != "UPDATE_COMPLETE" ] ; then exit 1 ; fi
