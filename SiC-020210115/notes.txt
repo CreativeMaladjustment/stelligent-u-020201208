@@ -1,0 +1,34 @@
+# following 
+https://aws.amazon.com/blogs/aws/new-vpc-insights-analyzes-reachability-and-visibility-in-vpcs/
+
+aws cloudformation create-stack --template-body file://./SiC-lab.yml --stack-name jmd-SiC-020210110-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --template-body file://./SiC-VPCReachabilityAnalyzer.yml --stack-name jmd-SiC-020210110-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+using Type: AWS::EC2::NetworkInsightsPath creates the check but doesn't execute it.
+
+Name in the console is set via Tag of Name
+          Key: Name
+          Value: "SiC-example"
+          
+          
+###AWS CLI
+aws ec2 describe-network-insights-paths
+
+aws ec2 start-network-insights-analysis --network-insights-path-id nip-0faa2434e273f8139
+
+# "NetworkInsightsAnalysisId": "nia-0e8856bd6ed08c3d4",
+aws ec2 describe-network-insights-analyses --network-insights-analysis-ids nia-0e8856bd6ed08c3d4
+            "Status": "succeeded",
+            "NetworkPathFound": true,
+
+aws ec2 describe-network-insights-analyses --network-insights-path-id nip-0faa2434e273f8139
+
+#A to C
+aws ec2 start-network-insights-analysis --network-insights-path-id nip-068aede974d07a58f
+aws ec2 describe-network-insights-analyses --network-insights-analysis-ids nia-0d268e41594a476cd
+            "Status": "succeeded",
+            "NetworkPathFound": false,
+            
+
+Search docs for Insights under ec2            
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-network-insights-analyses.html
