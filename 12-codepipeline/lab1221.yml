@@ -23,7 +23,7 @@ Resources:
   appRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub "${AWS::StackName}"
+      RoleName: !Sub "${AWS::StackName}-approle"
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
