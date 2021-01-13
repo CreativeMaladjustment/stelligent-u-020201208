@@ -95,6 +95,7 @@ Resources:
                 - 'iam:CreateRole'
                 - 'iam:PutRolePolicy'
                 - 'iam:DeleteRolePolicy'
+                - 'iam:GetRolePolicy'
               Effect: Allow
               Resource:
                 - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-001'
