@@ -76,27 +76,27 @@ Resources:
                   Branch: DeployPipeline
                   OAuthToken: !Ref GitHubToken
               RunOrder: 1 
-        # - 
-        #   Name: Lab1222-Deploy 
-        #   Actions: 
-        #     - Name: DeployAction 
-        #       InputArtifacts: 
-        #         - Name: BucketTemplate
-        #       ActionTypeId: 
-        #         Category: Deploy 
-        #         Owner: AWS 
-        #         Version: '1' 
-        #         Provider: CloudFormation
-        #       Configuration: 
-        #         ActionMode: REPLACE_ON_FAILURE
-        #         StackName: jmd-lab1222-pipeline
-        #         RoleArn: !GetAtt MakeBucketRole.Arn
-        #         TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
-        #         # ParameterOverrides: !Sub |
-        #         #   {
-        #         #     "BucketNameParameter": "${BucketNameParam}"
-        #         #   }
-        #       RunOrder: 2 
+        - 
+          Name: Lab1222-Deploy 
+          Actions: 
+            - Name: DeployAction 
+              InputArtifacts: 
+                - Name: BucketTemplate
+              ActionTypeId: 
+                Category: Deploy 
+                Owner: AWS 
+                Version: '1' 
+                Provider: CloudFormation
+              Configuration: 
+                ActionMode: REPLACE_ON_FAILURE
+                StackName: jmd-lab1222-pipeline
+                RoleArn: !GetAtt MakeBucketRole.Arn
+                TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
+                # ParameterOverrides: !Sub |
+                #   {
+                #     "BucketNameParameter": "${BucketNameParam}"
+                #   }
+              RunOrder: 2 
       ArtifactStore: 
         Type: S3 
         Location: !Ref PipelineStateBucket
