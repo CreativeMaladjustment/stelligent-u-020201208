@@ -52,6 +52,41 @@ Resources:
                 - s3:GetBucketVersioning
               Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}'
               Effect: Allow
+  MakeDBRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action: 
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: 
+                - cloudformation.amazonaws.com
+      Path: /
+      Policies:
+      - PolicyName: cloudformation-service
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - 
+              Action:
+                - 'dynamodb:CreateTable'
+                - 'dynamodb:Delete*'
+                - 'dynamodb:Update*'
+                - 'dynamodb:PutItem'
+              Resource: 
+                - !Sub 'arn:aws:dynamodb:::table/lab1221-bicycle'
+              Effect: Allow
+            - 
+              Action:
+                - s3:ListAllMyBuckets
+                - s3:CreateBucket
+                - s3:ListBucket
+                - s3:HeadBucket
+              Resource: '*'
+              Effect: Allow
 
   AppPipeline: 
     Type: AWS::CodePipeline::Pipeline 
@@ -90,7 +125,7 @@ Resources:
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
                 StackName: jmd-lab1222-pipeline
-                # RoleArn: !GetAtt MakeBucketRole.Arn
+                RoleArn: !GetAtt MakeDBRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
                 # ParameterOverrides: !Sub |
                 #   {
