@@ -90,7 +90,7 @@ Resources:
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
                 StackName: jmd-lab1222-pipeline
-                RoleArn: !GetAtt MakeBucketRole.Arn
+                # RoleArn: !GetAtt MakeBucketRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
                 # ParameterOverrides: !Sub |
                 #   {
