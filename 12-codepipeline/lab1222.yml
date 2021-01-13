@@ -47,11 +47,17 @@ Resources:
                 - s3:PutObject
               Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}/*'
               Effect: Allow
+            - Action:
+                - 'iam:PassRole'
+              Effect: Allow
+              Resource:
+                - !GetAtt MakeDBRole.Arn            
             - 
               Action:
                 - s3:GetBucketVersioning
               Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}'
               Effect: Allow
+
   MakeDBRole:
     Type: AWS::IAM::Role
     Properties: 
