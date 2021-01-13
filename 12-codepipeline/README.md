@@ -155,7 +155,11 @@ for your orphaned bucket stack. To help avoid this in the future it's a
 good idea to define your roles in a separate stack and use the outputs
 in your other stacks.
 
-> I might have removed the wrong stack(s), there were no issues removing the bucket. I can see the reason to have roles and IAM in other template files and agree with this. 
+> I might have removed the wrong stack(s), there were no issues removing the 
+  bucket. I can see the reason to have roles and IAM in other template files
+  and agree with this. Had an opportunity to repeat this, found that if the
+  stack which created the bucket is removed 2nd that it errors on not having
+  the permissions availbale to do so. 
 
 ## Lesson 12.2: Pipelines Support Infrastructure as Code
 
