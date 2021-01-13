@@ -33,6 +33,6 @@ list images that can be used...
 aws codebuild list-curated-environment-images
 
 #12.2.1
-aws cloudformation create-stack --template-body file://./lab1221.yml --stack-name jmd-020210111-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --template-body file://./lab1221.yml --stack-name jmd-020210113-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 aws cloudformation delete-stack --stack-name jmd-020210111-002
 
