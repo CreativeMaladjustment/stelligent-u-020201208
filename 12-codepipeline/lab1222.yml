@@ -31,6 +31,7 @@ Resources:
           Version: '2012-10-17'
           Statement:
             - Action:
+                - 'iam:GetRole'
                 - 'cloudformation:CreateStack'
                 - 'cloudformation:DescribeStacks'
                 - 'cloudformation:DeleteStack'
@@ -95,12 +96,6 @@ Resources:
                 - 'dynamodb:PutItem'
               Resource: 
                 - !Sub 'arn:aws:dynamodb:us-east-1:324320755747:table/lab1221-bicycle'
-              Effect: Allow
-            - 
-              Action:
-                - 'iam:GetRole'
-              Resource: 
-                - !Sub 'arn:aws:sts:::assumed-role/jmd-lab1222-pipeline'
               Effect: Allow
             - 
               Action:
