@@ -39,7 +39,7 @@ Resources:
                 - 'logs:*'
               Effect: Allow
               Resource:
-                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline/*
+                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline-001/*
             - Action:
                 - s3:GetObject
                 - s3:GetObjectVersion
@@ -97,7 +97,7 @@ Resources:
                 - 'iam:DeleteRolePolicy'
               Effect: Allow
               Resource:
-                - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-approle'
+                - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-001'
 
   AppPipeline: 
     Type: AWS::CodePipeline::Pipeline 
@@ -136,7 +136,7 @@ Resources:
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities:  CAPABILITY_NAMED_IAM
-                StackName: jmd-lab1222-pipeline
+                StackName: jmd-lab1222-pipeline-001
                 RoleArn: !GetAtt MakeDBRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
                 # ParameterOverrides: !Sub |
