@@ -130,6 +130,7 @@ Resources:
                 Provider: CloudFormation
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_IAM
                 StackName: jmd-lab1222-pipeline
                 RoleArn: !GetAtt MakeDBRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
