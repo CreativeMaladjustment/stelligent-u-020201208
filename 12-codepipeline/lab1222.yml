@@ -88,6 +88,12 @@ Resources:
               Effect: Allow
             - 
               Action:
+                - 'iam:GetRole'
+              Resource: 
+                - !Sub 'arn:aws:sts:::assumed-role/jmd-0202101*'
+              Effect: Allow
+            - 
+              Action:
                 - s3:ListAllMyBuckets
                 - s3:CreateBucket
                 - s3:ListBucket
