@@ -88,9 +88,19 @@ Resources:
               Effect: Allow
             - 
               Action:
+                - 'dynamodb:CreateTable'
+                - 'dynamodb:DescribeTable'
+                - 'dynamodb:Delete*'
+                - 'dynamodb:Update*'
+                - 'dynamodb:PutItem'
+              Resource: 
+                - !Sub 'arn:aws:dynamodb:us-east-1:324320755747:table/lab1221-bicycle'
+              Effect: Allow
+            - 
+              Action:
                 - 'iam:GetRole'
               Resource: 
-                - !Sub 'arn:aws:sts:::assumed-role/jmd-0202101*'
+                - !Sub 'arn:aws:sts:::assumed-role/jmd-lab1222-pipeline'
               Effect: Allow
             - 
               Action:
