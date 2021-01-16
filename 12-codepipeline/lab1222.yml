@@ -137,7 +137,7 @@ Resources:
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities:  CAPABILITY_NAMED_IAM
-                StackName: jmd-lab1222-pipeline-001
+                StackName: jmd-lab1222-pipeline-002
                 RoleArn: !GetAtt MakeDBRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
                 # ParameterOverrides: !Sub |
