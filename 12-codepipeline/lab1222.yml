@@ -39,19 +39,23 @@ Resources:
                 - 'logs:*'
               Effect: Allow
               Resource:
-                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline/*
-            - 
-              Action:
+                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline-001/*
+            - Action:
                 - s3:GetObject
                 - s3:GetObjectVersion
                 - s3:PutObject
               Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}/*'
               Effect: Allow
-            - 
-              Action:
+            - Action:
+                - 'iam:PassRole'
+              Effect: Allow
+              Resource:
+                - !GetAtt MakeDBRole.Arn            
+            - Action:
                 - s3:GetBucketVersioning
               Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}'
               Effect: Allow
+
   MakeDBRole:
     Type: AWS::IAM::Role
     Properties: 
@@ -70,23 +74,31 @@ Resources:
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
-            - 
-              Action:
+            - Action:
                 - 'dynamodb:CreateTable'
+                - 'dynamodb:DescribeTable'
                 - 'dynamodb:Delete*'
                 - 'dynamodb:Update*'
                 - 'dynamodb:PutItem'
               Resource: 
-                - !Sub 'arn:aws:dynamodb:::table/lab1221-bicycle'
+                - !Sub 'arn:aws:dynamodb:us-east-1:324320755747:table/lab1221-bicycle'
               Effect: Allow
-            - 
-              Action:
+            - Action:
                 - s3:ListAllMyBuckets
                 - s3:CreateBucket
                 - s3:ListBucket
                 - s3:HeadBucket
               Resource: '*'
               Effect: Allow
+            - Action:
+                - 'iam:GetRole'
+                - 'iam:CreateRole'
+                - 'iam:PutRolePolicy'
+                - 'iam:DeleteRolePolicy'
+                - 'iam:GetRolePolicy'
+              Effect: Allow
+              Resource:
+                - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-001'
 
   AppPipeline: 
     Type: AWS::CodePipeline::Pipeline 
@@ -117,14 +129,15 @@ Resources:
             - Name: DeployAction 
               InputArtifacts: 
                 - Name: BucketTemplate
-              ActionTypeId: 
+              ActionTypeId:     
                 Category: Deploy 
                 Owner: AWS 
                 Version: '1' 
                 Provider: CloudFormation
               Configuration: 
                 ActionMode: REPLACE_ON_FAILURE
-                StackName: jmd-lab1222-pipeline
+                Capabilities:  CAPABILITY_NAMED_IAM
+                StackName: jmd-lab1222-pipeline-001
                 RoleArn: !GetAtt MakeDBRole.Arn
                 TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
                 # ParameterOverrides: !Sub |

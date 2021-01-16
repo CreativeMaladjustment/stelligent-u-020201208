@@ -37,3 +37,29 @@ aws cloudformation create-stack --template-body file://./lab1221.yml --stack-nam
 aws cloudformation delete-stack --stack-name jmd-020210113-001
 
 aws cloudformation update-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210113-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+
+Latest action execution message
+User: arn:aws:sts::324320755747:assumed-role/jmd-020210113-002-PipelineExeRole-1MDJHN08MTCR1/1610566886830 is not authorized to perform: iam:PassRole on
+resource: arn:aws:iam::324320755747:role/jmd-020210113-002-MakeDBRole-1OYEYF537FDI0 
+(Service: AmazonCloudFormation; Status Code: 403; Error Code: AccessDenied; Request ID: cdbc6907-a98d-4ac1-9a33-89b866e9ae9e)
+
+Requires capabilities : [CAPABILITY_NAMED_IAM] (Service: AmazonCloudFormation; Status Code: 400; Error Code: InsufficientCapabilitiesException; Request ID: fea79768-d6bb-425e-ac3a-d487f0430965)
+
+
+User: arn:aws:sts::324320755747:assumed-role/jmd-020210113-002-MakeDBRole-1OYEYF537FDI0/AWSCloudFormation is not authorized to perform: 
+dynamodb:DescribeTable on resource: arn:aws:dynamodb:us-east-1:324320755747:table/lab1221-bicycle (Service: AmazonDynamoDBv2; Status Code: 400; Error Code: 
+AccessDeniedException; Request ID: S0CN1H9U932GT58DIBJ2HOGRHBVV4KQNSO5AEMVJF66Q9ASUAAJG; Proxy: null)
+
+
+### change set 
+
+aws cloudformation create-change-set --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-lab1222-pipeline-001/edd6b320-55e3-11eb-9287-0e6bd0a701a5
+--change-set-name DB0changeset-001 --use-previous-template --parameters ParameterKey="InstanceType",UsePreviousValue=true ParameterKey="KeyPairName",UsePreviousValue=true ParameterKey="Purpose",ParameterValue="production"
+
+
+aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBField1,ParameterValue=orig1 ParameterKey=DBField2,ParameterValue=orig2 ParameterKey=DBField3,ParameterValue=orig3 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBField1,ParameterValue=orig1 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+### not working with more than 1 ... attributes list and keyschema have to match?
