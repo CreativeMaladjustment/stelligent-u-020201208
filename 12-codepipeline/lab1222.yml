@@ -39,7 +39,7 @@ Resources:
                 - 'logs:*'
               Effect: Allow
               Resource:
-                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline-001/*
+                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline-002/*
             - Action:
                 - s3:GetObject
                 - s3:GetObjectVersion
@@ -98,7 +98,7 @@ Resources:
                 - 'iam:GetRolePolicy'
               Effect: Allow
               Resource:
-                - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-001'
+                - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-002'
 
   AppPipeline: 
     Type: AWS::CodePipeline::Pipeline 

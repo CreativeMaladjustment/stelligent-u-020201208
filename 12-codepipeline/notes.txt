@@ -63,3 +63,5 @@ aws cloudformation create-stack --template-body file://./lab1221.yml --parameter
 aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBField1,ParameterValue=orig1 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
 
 ### not working with more than 1 ... attributes list and keyschema have to match?
+
+aws cloudformation create-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210115-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
