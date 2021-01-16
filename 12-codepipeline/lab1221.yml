@@ -6,15 +6,6 @@ Parameters:
     Type: String
     Description: database field as a param
     Default: field1
-  DBField2:
-    Type: String
-    Description: database field as a param
-    Default: field2
-  DBField3:
-    Type: String
-    Description: database field as a param
-    Default: field3
-
 
 Resources:
   DynamoDBTable:
@@ -35,30 +26,6 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 
-  # DDBTable:
-  #   Type: AWS::DynamoDB::Table
-  #   Properties:
-  #     AttributeDefinitions:
-  #       -
-  #         AttributeName: "ArtistId"
-  #         AttributeType: "S"
-  #       -
-  #         AttributeName: "Concert"
-  #         AttributeType: "S"
-  #       -
-  #         AttributeName: "TicketSales"
-  #         AttributeType: "S"
-  #     KeySchema:
-  #       -
-  #         AttributeName: "ArtistId"
-  #         KeyType: "HASH"
-  #       -
-  #         AttributeName: "Concert"
-  #         KeyType: "RANGE"
-  #     ProvisionedThroughput:
-  #       ReadCapacityUnits: 5
-  #       WriteCapacityUnits: 5
-        
   appRole:
     Type: AWS::IAM::Role
     Properties:
