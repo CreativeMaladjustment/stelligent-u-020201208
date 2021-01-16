@@ -50,3 +50,16 @@ Requires capabilities : [CAPABILITY_NAMED_IAM] (Service: AmazonCloudFormation; S
 User: arn:aws:sts::324320755747:assumed-role/jmd-020210113-002-MakeDBRole-1OYEYF537FDI0/AWSCloudFormation is not authorized to perform: 
 dynamodb:DescribeTable on resource: arn:aws:dynamodb:us-east-1:324320755747:table/lab1221-bicycle (Service: AmazonDynamoDBv2; Status Code: 400; Error Code: 
 AccessDeniedException; Request ID: S0CN1H9U932GT58DIBJ2HOGRHBVV4KQNSO5AEMVJF66Q9ASUAAJG; Proxy: null)
+
+
+### change set 
+
+aws cloudformation create-change-set --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-lab1222-pipeline-001/edd6b320-55e3-11eb-9287-0e6bd0a701a5
+--change-set-name DB0changeset-001 --use-previous-template --parameters ParameterKey="InstanceType",UsePreviousValue=true ParameterKey="KeyPairName",UsePreviousValue=true ParameterKey="Purpose",ParameterValue="production"
+
+
+aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBField1,ParameterValue=orig1 ParameterKey=DBField2,ParameterValue=orig2 ParameterKey=DBField3,ParameterValue=orig3 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBField1,ParameterValue=orig1 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+### not working with more than 1 ... attributes list and keyschema have to match?
