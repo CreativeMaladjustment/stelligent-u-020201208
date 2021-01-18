@@ -6,6 +6,14 @@ Parameters:
     Type: String
     Description: GitHub OAuth Token
     NoEcho: True
+  ChangeSetPipeline:
+    Type: String
+    Description: stack name for the pipeline to manage
+    Default: "jmd-DB1-001"
+  PipeTableName:
+    Type: String
+    Description: table name to pass into code pipeline
+    Default: "lab1222-defaultpipeline"
 
 Resources:
   PipelineStateBucket:
@@ -31,6 +39,12 @@ Resources:
           Version: '2012-10-17'
           Statement:
             - Action:
+                - 'codebuild:BatchGetBuilds'
+                - 'codebuild:StartBuild'
+              Resource: 
+                - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/lab1222*
+              Effect: Allow
+            - Action:
                 - 'cloudformation:CreateStack'
                 - 'cloudformation:DescribeStacks'
                 - 'cloudformation:DeleteStack'
@@ -39,7 +53,7 @@ Resources:
                 - 'logs:*'
               Effect: Allow
               Resource:
-                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/jmd-lab1222-pipeline-002/*
+                - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${ChangeSetPipeline}/*
             - Action:
                 - s3:GetObject
                 - s3:GetObjectVersion
@@ -81,7 +95,7 @@ Resources:
                 - 'dynamodb:Update*'
                 - 'dynamodb:PutItem'
               Resource: 
-                - !Sub 'arn:aws:dynamodb:us-east-1:324320755747:table/lab1221-bicycle'
+                - !Sub 'arn:aws:dynamodb:us-east-1:324320755747:table/${PipeTableName}'
               Effect: Allow
             - Action:
                 - s3:ListAllMyBuckets
@@ -98,7 +112,7 @@ Resources:
                 - 'iam:GetRolePolicy'
               Effect: Allow
               Resource:
-                - !Sub 'arn:aws:iam::324320755747:role/jmd-lab1222-pipeline-002'
+                - !Sub 'arn:aws:iam::324320755747:role/${ChangeSetPipeline}'
 
   AppPipeline: 
     Type: AWS::CodePipeline::Pipeline 
@@ -115,7 +129,7 @@ Resources:
                 Version: 1 
                 Provider: GitHub
               OutputArtifacts: 
-                - Name: BucketTemplate 
+                - Name: ScriptsNSuch 
               Configuration: 
                   Owner: stelligent
                   Repo: su-jmd-020201208
@@ -124,27 +138,111 @@ Resources:
                   OAuthToken: !Ref GitHubToken
               RunOrder: 1 
         - 
-          Name: Lab1222-Deploy 
-          Actions: 
-            - Name: DeployAction 
-              InputArtifacts: 
-                - Name: BucketTemplate
-              ActionTypeId:     
-                Category: Deploy 
-                Owner: AWS 
-                Version: '1' 
-                Provider: CloudFormation
-              Configuration: 
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities:  CAPABILITY_NAMED_IAM
-                StackName: jmd-lab1222-pipeline-001
-                RoleArn: !GetAtt MakeDBRole.Arn
-                TemplatePath: "BucketTemplate::12-codepipeline/lab1221.yml"
-                # ParameterOverrides: !Sub |
-                #   {
-                #     "BucketNameParameter": "${BucketNameParam}"
-                #   }
-              RunOrder: 2 
+          Name: Lab1222-CU-Stack 
+          Actions:
+            -
+              Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              InputArtifacts:
+                - Name: ScriptsNSuch
+              Configuration:
+                ProjectName: !Ref CodeBuildCUStack
+              OutputArtifacts:
+                - Name: CUStack
+              RunOrder: 2
+        - 
+          Name: Lab1222-Exe
+          Actions:
+            -
+              Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              InputArtifacts:
+                - Name: ScriptsNSuch
+              Configuration:
+                ProjectName: !Ref CodeBuildExe
+              OutputArtifacts:
+                - Name: ExeStack
+              RunOrder: 3
       ArtifactStore: 
         Type: S3 
         Location: !Ref PipelineStateBucket
+
+  CodeBuildCUStack:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Cache:
+        Type: S3
+        Location: !Sub "${PipelineStateBucket}/prefix"
+      Description: "Create or Update changeset and stack"
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.3.2
+      Name: 'lab1222-CUStack'
+      ServiceRole: !Ref CodeBuildRole
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: '12-codepipeline/lab1222-linuxcontainer-CU.yml'
+
+  CodeBuildExe:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Cache:
+        Type: S3
+        Location: !Sub "${PipelineStateBucket}/prefix"
+      Description: "Execute the ChangeSet"
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.3.2
+      Name: 'lab1222-Exe'
+      ServiceRole: !Ref CodeBuildRole
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: '12-codepipeline/lab1222-linuxcontainer-CU.yml'
+
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+              - codebuild.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: allow-code-build
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - 
+                Action:
+                  - logs:*
+                  - cloudformation:DescribeStacks
+                  - cloudformation:ValidateTemplate
+                  - iam:PassRole
+                Effect: Allow
+                Resource: "*"
+              - 
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:PutObject
+                Resource: !Sub "arn:aws:s3:::${PipelineStateBucket}/*"
+                Effect: Allow

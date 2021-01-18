@@ -6,21 +6,25 @@ Parameters:
     Type: String
     Description: database field as a param
     Default: field1
+  DBTableN:
+    Type: String
+    Description: database table name as a param
+    Default: lab1221-bicycle
 
 Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "lab1221-bicycle"
+      TableName: !Ref DBTableN
       AttributeDefinitions:
       - AttributeName: "id"
         AttributeType: "N"
-      - AttributeName: !Ref DBField1
+      - AttributeName: "rabbit"
         AttributeType: "S"
       KeySchema:
       - AttributeName: "id"
         KeyType: HASH
-      - AttributeName: !Ref DBField1
+      - AttributeName: "rabbit"
         KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5

@@ -65,3 +65,64 @@ aws cloudformation create-stack --template-body file://./lab1221.yml --parameter
 ### not working with more than 1 ... attributes list and keyschema have to match?
 
 aws cloudformation create-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210115-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBTableN,ParameterValue=lab1222-orig1 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-change-set --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-001/eb022620-59a3-11eb-85de-0ea1b88f1a89 --change-set-name DB0changeset-001 --use-previous-template --parameters ParameterKey="DBTableN",ParameterValue="lab1222-changeset001" --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation execute-change-set --change-set-name DB0changeset-001 --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-001/eb022620-59a3-11eb-85de-0ea1b88f1a89
+
+aws cloudformation create-change-set --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-001/eb022620-59a3-11eb-85de-0ea1b88f1a89 --change-set-name DB0changeset-001 --use-previous-template --parameters ParameterKey="DBTableN",ParameterValue="lab1222-changeset001" --capabilities CAPABILITY_NAMED_IAM
+
+--change-set-type
+CREATE
+UPDATE
+IMPORT
+
+aws cloudformation create-change-set --change-set-name DB1changeset-001 --stack-name jmd-020210118-DB1-001 --template-body file://./lab1221.yml --change-set-type CREATE --capabilities CAPABILITY_NAMED_IAM
+
+sudo yum install jq #for cloud9
+
+aws cloudformation describe-stacks --stack-name jmd-020210118-DB1-001 | jq .Stacks[].StackId | tr -d '"'
+###"StackStatus": "REVIEW_IN_PROGRESS",
+#An error occurred (ValidationError) when calling the DescribeStacks operation: Stack with id jmd-020210118-DB1-002 does not exist
+
+aws cloudformation list-change-sets --stack-name jmd-020210118-DB1-001 | jq .Summaries[].StackId | tr -d '"'
+#            "ChangeSetName": "DB1changeset-001",
+#            "ExecutionStatus": "AVAILABLE",
+#            "Status": "CREATE_COMPLETE",
+
+
+
+### update to existing stack with a new change set? / or same change set name... 
+aws cloudformation create-change-set --change-set-name DB1changeset-002 --stack-name jmd-020210118-DB1-002 --template-body file://./lab1221.yml --change-set-type UPDATE --capabilities CAPABILITY_NAMED_IAM                                                                                                         
+An error occurred (ValidationError) when calling the CreateChangeSet operation: Stack [jmd-020210118-DB1-001] does not exist
+
+export STACKARN=`aws cloudformation describe-stacks --stack-name jmd-020210118-DB1-001 | jq .Stacks[].StackId | tr -d '"'`
+#jason.davis.labs:~/environment/su-jmd-020201208/12-codepipeline (wip/12) $ echo $STACKARN
+#arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-DB1-001/c1f44990-59bf-11eb-a966-0e1c3468127d
+aws cloudformation execute-change-set --change-set-name DB1changeset-001 --stack-name $STACKARN
+
+
+
+aws cloudformation create-change-set --change-set-name DB1changeset-001 --stack-name jmd-020210118-DB1-001 --template-body file://./lab1221.yml --change-set-type UPDATE --parameters ParameterKey=DBTableN,ParameterValue=lab1222-CS001 --capabilities CAPABILITY_NAMED_IAM                                                                                                         
+aws cloudformation execute-change-set --change-set-name DB1changeset-001 --stack-name $STACKARN
+
+
+#bash script
+check if stack-name exists
+if so get arn
+- do an update
+if not do a create
+
+next script or - execute change set
+- get arn for stack
+do execute
+
+aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type CREATE --parameters ParameterKey=DBTableN,ParameterValue=lab1222-CS001 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type UPDATE --parameters ParameterKey=DBTableN,ParameterValue=lab1222-CS001 --capabilities CAPABILITY_NAMED_IAM
+
+
+####
+aws cloudformation create-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210118-005 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
