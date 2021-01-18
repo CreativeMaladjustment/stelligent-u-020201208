@@ -103,6 +103,8 @@ export STACKARN=`aws cloudformation describe-stacks --stack-name jmd-020210118-D
 #arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-DB1-001/c1f44990-59bf-11eb-a966-0e1c3468127d
 aws cloudformation execute-change-set --change-set-name DB1changeset-001 --stack-name $STACKARN
 
+
+
 aws cloudformation create-change-set --change-set-name DB1changeset-001 --stack-name jmd-020210118-DB1-001 --template-body file://./lab1221.yml --change-set-type UPDATE --parameters ParameterKey=DBTableN,ParameterValue=lab1222-CS001 --capabilities CAPABILITY_NAMED_IAM                                                                                                         
 aws cloudformation execute-change-set --change-set-name DB1changeset-001 --stack-name $STACKARN
 
@@ -116,3 +118,5 @@ if not do a create
 next script or - execute change set
 - get arn for stack
 do execute
+
+aws cloudformation create-change-set --change-set-name DB1changeset-002 --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type UPDATE --capabilities CAPABILITY_NAMED_IAM                                                                                                         
