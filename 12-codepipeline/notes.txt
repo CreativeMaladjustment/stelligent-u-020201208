@@ -125,4 +125,4 @@ aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-na
 
 
 ####
-aws cloudformation update-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210118-005 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210118-005 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
