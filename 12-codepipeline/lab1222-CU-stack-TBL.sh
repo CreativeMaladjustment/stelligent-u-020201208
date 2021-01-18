@@ -8,10 +8,10 @@ export STACKARN=`aws cloudformation describe-stacks --stack-name $STACKNAME | jq
 
 if [[ "$STACKARN" == *"cloudformation"* ]]; then
   echo "update $STACKARN"
-  aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type UPDATE --parameters ParameterKey=DBTableN,ParameterValue=$DBTABLENAME --capabilities CAPABILITY_NAMED_IAM
+  aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./12-codepipeline/lab1221.yml --change-set-type UPDATE --parameters ParameterKey=DBTableN,ParameterValue=$DBTABLENAME --capabilities CAPABILITY_NAMED_IAM
 else 
   echo "create $STACKNAME"
-  aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type CREATE --parameters ParameterKey=DBTableN,ParameterValue=$DBTABLENAME --capabilities CAPABILITY_NAMED_IAM
+  aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./12-codepipeline/lab1221.yml --change-set-type CREATE --parameters ParameterKey=DBTableN,ParameterValue=$DBTABLENAME --capabilities CAPABILITY_NAMED_IAM
 fi
 
 
