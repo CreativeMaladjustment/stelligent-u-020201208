@@ -3,15 +3,15 @@ set -e
 
 export STACKNAME=${STACKNAME:-jmd-020210118-DB1-001}
 export CHANGESETNAME=${CHANGESETNAME:-DB1-001}
-export DBTABLENAME=${DBTABLENAME:-lab1222-CS001}
 export STACKARN=`aws cloudformation describe-stacks --stack-name $STACKNAME | jq .Stacks[].StackId | tr -d '"'`
 
 if [[ "$STACKARN" == *"cloudformation"* ]]; then
   echo "update $STACKARN"
-  aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type UPDATE --parameters ParameterKey=DBTableN,ParameterValue=$DBTABLENAME --capabilities CAPABILITY_NAMED_IAM
+  aws cloudformation execute-change-set --change-set-name $CHANGESETNAME --stack-name $STACKARN
+  exit 0
 else 
-  echo "create $STACKNAME"
-  aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-name $STACKNAME --template-body file://./lab1221.yml --change-set-type CREATE --parameters ParameterKey=DBTableN,ParameterValue=$DBTABLENAME --capabilities CAPABILITY_NAMED_IAM
+  echo "Stack Arn could not be found $STACKNAME $CHANGESETNAME"
+  exit 1
 fi
 
 
