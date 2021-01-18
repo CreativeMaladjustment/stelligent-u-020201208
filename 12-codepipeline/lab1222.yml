@@ -71,6 +71,15 @@ Resources:
                 - s3:GetBucketVersioning
               Resource: !Sub 'arn:aws:s3:::${PipelineStateBucket}'
               Effect: Allow
+            - Action:
+                - 'iam:GetRole'
+                - 'iam:CreateRole'
+                - 'iam:PutRolePolicy'
+                - 'iam:DeleteRolePolicy'
+                - 'iam:GetRolePolicy'
+              Effect: Allow
+              Resource:
+                - !GetAtt CodeBuildRole.Arn
 
   MakeDBRole:
     Type: AWS::IAM::Role
