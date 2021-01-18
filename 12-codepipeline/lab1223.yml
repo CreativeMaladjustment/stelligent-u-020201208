@@ -211,7 +211,7 @@ Resources:
       ServiceRole: !Ref CodeBuildRole
       Source:
         Type: CODEPIPELINE
-        BuildSpec: '12-codepipeline/lab1222-linuxcontainer-CU.yml'
+        BuildSpec: '12-codepipeline/lab1223-linuxcontainer-CU.yml'
 
   CodeBuildExe:
     Type: AWS::CodeBuild::Project
