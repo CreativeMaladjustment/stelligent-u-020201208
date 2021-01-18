@@ -13,7 +13,7 @@ Parameters:
   PipeTableName:
     Type: String
     Description: table name to pass into code pipeline
-    Default: "lab1222-defaultpipeline"
+    Default: "lab1222-CS001"
 
 Resources:
   PipelineStateBucket:
@@ -233,8 +233,7 @@ Resources:
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-              - 
-                Action:
+              - Action:
                   - logs:*
                   - cloudformation:DescribeStacks
                   - cloudformation:ValidateTemplate
@@ -243,19 +242,28 @@ Resources:
                   - iam:PassRole
                 Effect: Allow
                 Resource: "*"
-              - 
-                Action:
+              - Action:
                   - s3:GetObject
                   - s3:GetObjectVersion
                   - s3:PutObject
                 Resource: !Sub "arn:aws:s3:::${PipelineStateBucket}/*"
                 Effect: Allow
               - Action:
-                  - 'iam:GetRole'
-                  - 'iam:CreateRole'
-                  - 'iam:PutRolePolicy'
-                  - 'iam:DeleteRolePolicy'
-                  - 'iam:GetRolePolicy'
+                  - iam:GetRole
+                  - iam:CreateRole
+                  - iam:DeleteRole
+                  - iam:PutRolePolicy
+                  - iam:DeleteRolePolicy
+                  - iam:GetRolePolicy
                 Effect: Allow
                 Resource:
-                  - 'arn:aws:iam::324320755747:role/jmd-DB1-001'
+                  - arn:aws:iam::324320755747:role/jmd-DB1-001
+              - Action:
+                  - dynamodb:CreateTable
+                  - dynamodb:DescribeTable
+                  - dynamodb:Delete*
+                  - dynamodb:Update*
+                  - dynamodb:PutItem
+                Effect: Allow
+                Resource: 
+                  - !Sub 'arn:aws:dynamodb:us-east-1:324320755747:table/${PipeTableName}'
