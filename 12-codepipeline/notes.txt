@@ -65,3 +65,9 @@ aws cloudformation create-stack --template-body file://./lab1221.yml --parameter
 ### not working with more than 1 ... attributes list and keyschema have to match?
 
 aws cloudformation create-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210115-002 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-stack --template-body file://./lab1221.yml --parameters ParameterKey=DBTableN,ParameterValue=lab1222-orig1 --stack-name jmd-020210115-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-change-set --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-001/eb022620-59a3-11eb-85de-0ea1b88f1a89 --change-set-name DB0changeset-001 --use-previous-template --parameters ParameterKey="DBTableN",ParameterValue="lab1222-changeset001" --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation execute-change-set --change-set-name DB0changeset-001 --stack-name arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-020210118-001/eb022620-59a3-11eb-85de-0ea1b88f1a89
