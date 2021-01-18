@@ -79,7 +79,7 @@ Resources:
                 - 'iam:GetRolePolicy'
               Effect: Allow
               Resource:
-                - !GetAtt CodeBuildRole.Arn
+                - 'arn:aws:iam::324320755747:role/jmd-DB1-001'
 
   MakeDBRole:
     Type: AWS::IAM::Role

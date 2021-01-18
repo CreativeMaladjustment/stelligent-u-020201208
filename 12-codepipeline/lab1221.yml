@@ -38,7 +38,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: codebuild.amazonaws.com
+              Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies: 
         - 
