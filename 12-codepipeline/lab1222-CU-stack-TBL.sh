@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export STACKNAME=${STACKNAME:-jmd-020210118-DB1-001}
+export STACKNAME=${STACKNAME:-jmd-DB1-001}
 export CHANGESETNAME=${CHANGESETNAME:-DB1-001}
 export DBTABLENAME=${DBTABLENAME:-lab1222-CS001}
 export STACKARN=`aws cloudformation describe-stacks --stack-name $STACKNAME | jq .Stacks[].StackId | tr -d '"'`

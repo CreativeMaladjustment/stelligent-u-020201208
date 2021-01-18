@@ -3,6 +3,7 @@ phases:
   install:
     commands:
       - pip3 install awscli --upgrade
+      - yum install -y jq
   build:
     commands:
       - sh 12-codepipeline/lab1222-Execute-ChangeSet.sh

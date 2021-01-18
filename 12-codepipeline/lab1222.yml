@@ -50,6 +50,8 @@ Resources:
                 - 'cloudformation:DeleteStack'
                 - 'cloudformation:UpdateStack'
                 - 'cloudformation:SetStackPolicy'
+                - 'cloudformation:CreateChangeSet'
+                - 'cloudformation:ExecuteChangeSet'
                 - 'logs:*'
               Effect: Allow
               Resource:

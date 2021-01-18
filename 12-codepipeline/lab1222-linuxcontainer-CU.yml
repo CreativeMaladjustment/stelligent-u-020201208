@@ -3,9 +3,7 @@ phases:
   install:
     commands:
       - pip3 install awscli --upgrade
+      - yum install -y jq
   build:
     commands:
-      - pwd
-      - ls
-      - ls 12-codepipeline
       - sh 12-codepipeline/lab1222-CU-stack-TBL.sh
