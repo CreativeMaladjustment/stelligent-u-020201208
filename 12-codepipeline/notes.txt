@@ -126,3 +126,8 @@ aws cloudformation create-change-set --change-set-name $CHANGESETNAME --stack-na
 
 ####
 aws cloudformation create-stack --template-body file://./lab1222.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210118-005 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+
+
+An error occurred (AccessDenied) when calling the CreateChangeSet operation: U
+ser: arn:aws:sts::324320755747:assumed-role/jmd-020210118-005-CodeBuildRole-18QYKKWM74EZS/AWSCodeBuild-ebad777e-cc02-47c1-b2af-0f830088a3dc 
+is not authorized to perform: cloudformation:CreateChangeSet on resource: arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-DB1-001/*
