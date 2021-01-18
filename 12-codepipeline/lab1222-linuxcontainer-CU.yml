@@ -1,0 +1,8 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - pip3 install awscli --upgrade
+  build:
+    commands:
+      - sh 12-codepipeline/lab1222-CU-stack-TBL.sh
