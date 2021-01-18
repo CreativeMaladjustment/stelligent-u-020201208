@@ -1,0 +1,10 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - pip3 install awscli --upgrade
+      - yum install -y jq
+  build:
+    commands:
+#      - export DBTABLENAME=lab1222-CS001
+      - sh 12-codepipeline/lab1222-CU-stack-TBL.sh

@@ -157,6 +157,23 @@ Resources:
                 - Name: CUStack
               RunOrder: 2
         - 
+          Name: Lab1222-Approval
+          Actions:
+            -
+              Name: ApprovalAction
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: '1'
+              # InputArtifacts:
+              #   - Name: ScriptsNSuch
+              # Configuration:
+              #   ProjectName: !Ref CodeBuildExe
+              # OutputArtifacts:
+              #   - Name: ExeStack
+              RunOrder: 3
+        - 
           Name: Lab1222-Exe
           Actions:
             -
@@ -172,7 +189,7 @@ Resources:
                 ProjectName: !Ref CodeBuildExe
               OutputArtifacts:
                 - Name: ExeStack
-              RunOrder: 3
+              RunOrder: 4
       ArtifactStore: 
         Type: S3 
         Location: !Ref PipelineStateBucket
@@ -194,7 +211,7 @@ Resources:
       ServiceRole: !Ref CodeBuildRole
       Source:
         Type: CODEPIPELINE
-        BuildSpec: '12-codepipeline/lab1222-linuxcontainer-CU.yml'
+        BuildSpec: '12-codepipeline/lab1223-linuxcontainer-CU.yml'
 
   CodeBuildExe:
     Type: AWS::CodeBuild::Project

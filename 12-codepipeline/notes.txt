@@ -131,3 +131,9 @@ aws cloudformation create-stack --template-body file://./lab1222.yml --parameter
 An error occurred (AccessDenied) when calling the CreateChangeSet operation: U
 ser: arn:aws:sts::324320755747:assumed-role/jmd-020210118-005-CodeBuildRole-18QYKKWM74EZS/AWSCodeBuild-ebad777e-cc02-47c1-b2af-0f830088a3dc 
 is not authorized to perform: cloudformation:CreateChangeSet on resource: arn:aws:cloudformation:us-east-1:324320755747:stack/jmd-DB1-001/*
+
+API: iam:GetRole User: arn:aws:sts::324320755747:assumed-role/jmd-020210118-005-CodeBuildRole-16ERCM0LZJ5HR/AWSCodeBuild-b046a64b-87c0-4d37-9a82-1e295f1999ad
+is not authorized to perform: iam:GetRole on resource: role jmd-DB1-001
+
+#1223
+aws cloudformation create-stack --template-body file://./lab1223.yml --parameters ParameterKey=GitHubToken,ParameterValue=$GitHubToken --stack-name jmd-020210118-006 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM 
