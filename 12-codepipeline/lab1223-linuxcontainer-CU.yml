@@ -6,5 +6,5 @@ phases:
       - yum install -y jq
   build:
     commands:
-#      - export DBTABLENAME=lab1222-CS001
+      - export DBTABLENAME=lab1222-CS002
       - sh 12-codepipeline/lab1222-CU-stack-TBL.sh
