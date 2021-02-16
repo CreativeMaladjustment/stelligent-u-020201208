@@ -20,6 +20,12 @@ def l_p():
     #   print(response["pipelines"][0]["name"])
       for i in response["pipelines"]:
           print (i["name"])
+          response = codepipeline.list_pipeline_executions(pipelineName=i["name"],maxResults=99)
+        #   print (response)
+          for i_lpe in response["pipelineExecutionSummaries"]:
+            #   print (i_lpe["name"])
+              print ("exe id and status: ", i_lpe["pipelineExecutionId"], i_lpe["status"])
+            #   print (i_lpe)
     #   logger.debug(response)
   except Exception as error:
       logger.exception(error)
