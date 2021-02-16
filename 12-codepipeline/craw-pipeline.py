@@ -38,23 +38,6 @@ def l_p():
     #   )
     #   logger.debug(response)
 
-def list_pipelines():
-    session= boto3.client("sts")
-    # session = boto3.Session(
-    #     aws_access_key_id="AKIAJMO63R4OAY6HMXUQ",
-    #     aws_secret_access_key="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"
-    # )
-    # credentials = session.get_credentials()
-    # print credentials
-    code_pipeline = boto3.client('codepipeline')
-    # pipelines = code_pipeline.list_pipelines(nextToken=credentials.token)
-    pipelines = code_pipeline.list_pipelines()
-    while pipelines['hasMoreResults']:
-        pipelines = code_pipeline.list_pipelines(nextToken=pipelines['marker'])
-        for i in pipelines:
-            print (i)
-
-
 def main():
     # list_pipelines()
     l_p()
