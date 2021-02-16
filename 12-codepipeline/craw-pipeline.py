@@ -1,7 +1,7 @@
 import boto3
-import json
+# import json
 import logging
-import pprint
+# import pprint
 
 def l_p():
 #   logger = logging.getLogger()
@@ -13,8 +13,6 @@ def l_p():
 #   job_id = event['CodePipeline.job']['id']
 
   try:
-    #   user_parameters = event['CodePipeline.job']['data']['actionConfiguration']['configuration']['UserParameters']
-    #   logger.info(f'User parameters: {user_parameters}')
       response = codepipeline.list_pipelines()
     #   pp = pprint.PrettyPrinter(indent=2)
     #   pp.pprint(response)
@@ -22,24 +20,12 @@ def l_p():
     #   print(response["pipelines"][0]["name"])
       for i in response["pipelines"]:
           print (i["name"])
-    #   json_object = json.loads(response)
-    #   json_formatted_str = json.dumps(json_object, indent=2)
-    #   print(json_formatted_str)
-    #   print (response)
     #   logger.debug(response)
   except Exception as error:
       logger.exception(error)
-    #   response = codepipeline.put_job_failure_result(
-    #       jobId=job_id,
-    #       failureDetails={
-    #         'type': 'JobFailed',
-    #         'message': f'{error.__class__.__name__}: {str(error)}'
-    #       }
-    #   )
     #   logger.debug(response)
 
 def main():
-    # list_pipelines()
     l_p()
     
 if __name__ == "__main__":
