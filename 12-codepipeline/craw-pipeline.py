@@ -19,24 +19,25 @@ def l_p():
     #   print(response["pipelines"]["name"][0])
     #   print(response["pipelines"][0]["name"])
       for i in response["pipelines"]:
-        #   print (i["name"])
           response = codepipeline.list_pipeline_executions(pipelineName=i["name"],maxResults=99)
-        #   print (response)
           for i_lpe in response["pipelineExecutionSummaries"]:
-            #   print (i_lpe["name"])
+              print ("pipeline execution summaries")
               print (i["name"], "id:", i_lpe["pipelineExecutionId"], i_lpe["status"])
-            #   print (i_lpe)
-    #   logger.debug(response)
+              pipelineduration=(i_lpe["lastUpdateTime"] - i_lpe["startTime"]).microseconds
+              print (pipelineduration, "??-- duration_millis = IntField()")
+              print (i_lpe["sourceRevisions"][0]["revisionUrl"], "??--commit_id = StringField(max_length=50)")
+
           response_lae = codepipeline.list_action_executions(pipelineName=i["name"],maxResults=99)
-        #   print (response)
           for i_lae in response_lae["actionExecutionDetails"]:
-            #   print (i_lpe["name"])
               print ("===pipelinename:",i["name"])
               print ("===pipeline exe id:", i_lae["pipelineExecutionId"])
               print ("pipeline events")
               print (i_lae["stageName"], "name = StringField(max_length=120, required=True)")
               print (i_lae["pipelineExecutionId"], "number = IntField()")
-              print ("repo = StringField(max_length=200)")
+              try:
+                  print (i_lae["output"]["executionResult"]["externalExecutionUrl"], "repo = StringField(max_length=200)")
+              except:
+                  print ("not available", "repo = StringField(max_length=200)")
               print ("branch = StringField(max_length=50)")
               print ("sha = StringField(max_length=50)")
               print ("commit_id = StringField(max_length=50)")
