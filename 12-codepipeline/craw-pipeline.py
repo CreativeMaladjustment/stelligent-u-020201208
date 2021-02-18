@@ -31,16 +31,38 @@ def l_p():
         #   print (response)
           for i_lae in response_lae["actionExecutionDetails"]:
             #   print (i_lpe["name"])
-              print (i["name"], "action id:", i_lae["pipelineExecutionId"], i_lae["actionExecutionId"], i_lae["status"])
-#              print (i_lae)
-              #, i_lae["status"], i_lae["output"]["executionResult"]["externalExecutionSummary"])
+              print ("===pipelinename:",i["name"])
+              print ("===pipeline exe id:", i_lae["pipelineExecutionId"])
+              print ("pipeline events")
+              print (i_lae["stageName"], "name = StringField(max_length=120, required=True)")
+              print (i_lae["pipelineExecutionId"], "number = IntField()")
+              print ("repo = StringField(max_length=200)")
+              print ("branch = StringField(max_length=50)")
+              print ("sha = StringField(max_length=50)")
+              print ("commit_id = StringField(max_length=50)")
+
+              print ("build_files = ListField(StringField(max_length=128))")
+              print ("file_count = IntField()")
+
+              print (i_lae["actionExecutionId"], "buildnumber = IntField(required=True)")
+              print ("building = BooleanField(required=True)")
+              actionduration=(i_lae["lastUpdateTime"] - i_lae["startTime"]).microseconds
+              print (actionduration, "duration_millis = IntField()")
+              print (i_lae["status"], "result = StringField(max_length=50)")
+              print (i_lae["startTime"], "timestamp = DateTimeField()")
+              print ("url = StringField(max_length=256)")
+
+              print ("fail_stage = StringField(max_length=50)")
+              print ("fail_logs = StringField(max_length=10000)")
+    
               try:
                   print ("rawr", i_lae["output"]["executionResult"]["externalExecutionSummary"])
               except:
                   print ("no summary")
 
   except Exception as error:
-      logger.exception(error)
+    print("had an error:", error)
+      # logger.exception(error)
     #   logger.debug(response)
 
 def main():
