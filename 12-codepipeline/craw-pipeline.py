@@ -18,6 +18,21 @@ def l_p():
     #   pp.pprint(response)
     #   print(response["pipelines"]["name"][0])
     #   print(response["pipelines"][0]["name"])
+
+### from mongo db - a pipeline_run record/document
+# {
+#     _id: ObjectId('5f73a4f8e6a5ccfdadef1c31'),
+#     name: 'archive-mono-pr',
+#     buildnumber: 1,
+#     building: false,
+#     durationMillis: 10843522,
+#     result: 'SUCCESS',
+#     timestamp: ISODate('2020-03-18T16:38:31.402Z'),
+#     url: 'https://jenkins.mono-project.com/job/archive-mono-pr/1/',
+#     tags: []
+# }
+
+
       for i in response["pipelines"]:
           response = codepipeline.list_pipeline_executions(pipelineName=i["name"],maxResults=99)
           for i_lpe in response["pipelineExecutionSummaries"]:
