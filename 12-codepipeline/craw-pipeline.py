@@ -32,6 +32,15 @@ def l_p():
 #     tags: []
 # }
 
+# pipelines name
+# ??? a git pr number ??? or an lae value? a guid execution id.... 
+# based on status
+# pipeline lastupdate - starttime
+# status
+# lastupdate 
+# latest source revision - (in gui/console) / didn't see in lpe will be in some lae's 
+# tags?
+
 
       for i in response["pipelines"]:
           response = codepipeline.list_pipeline_executions(pipelineName=i["name"],maxResults=99)
