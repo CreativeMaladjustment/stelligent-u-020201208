@@ -2,3 +2,21 @@ aws cloudformation create-stack --template-body file://./lab1111.yml --parameter
 
 aws ssm get-parameter --name /jason.davis.labs/stelligent-u/lab11/name
 
+aws cloudformation create-stack --template-body file://./lab1113.yml --stack-name jmd-020201231-002 --region us-east-1
+
+#need a new key
+aws ec2 create-key-pair --key-name lab1113-su-jmd --query 'KeyMaterial' --output text > lab1113-su-jmd.pem
+chmod 400 lab1113-su-jmd.pem
+ssh-keygen -y -f lab1113-su-jmd.pem
+
+curl http://AutomationForThePeople-660226242.us-east-1.elb.amazonaws.com
+<p>jason DAE MT CO 020201207</p>
+
+#1114
+
+aws ssm put-parameter --name "/jason.davis.labs/stelligent-u/lab11/middle-name" --value "Michael" --type "SecureString"
+#rerun the lab1111.yml if params have been removed. 
+aws cloudformation create-stack --template-body file://./lab1114.yml --stack-name jmd-020210104-001 --region us-east-1
+#fails due to secure string, as expected.
+
+
