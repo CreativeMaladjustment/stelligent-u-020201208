@@ -121,6 +121,8 @@ entire subtree with a single query.
 _When you look at your stack in the CloudFormation console, can you find
 the values of your parameter resources there?_
 
+> CloudFormation lists the parameter resources under the resources tab. From there one can click the link and open the value in the parameter store rather than having to look for them.
+
 #### Lab 11.1.3: Integration with CloudFormation
 
 CloudFormation can use Parameter Store keys and values as
@@ -197,10 +199,17 @@ Read [Using Dynamic References to Specify Template Values](https://docs.aws.amaz
 Why can't you use that feature directly to read "middle-name" and show it
 in your web page?
 
+> From the documentation: Dynamic references for secure values, such as ssm-secure and secretsmanager, are not currently supported in custom resources.
+
+> An error occurred (ValidationError) when calling the CreateStack operation: Parameters [/jason.davis.labs/stelligent-u/lab11/middle-name] referenced by template have types not supported by CloudFormation.
+
+
 #### Question 2
 
 Can you use Secure String as an `AWS::SSM::Parameter::Value` type in a
 CloudFormation stack?
+
+> Secure String is not currently supported in CloudFormation.
 
 ## Further Reading
 
