@@ -6,6 +6,7 @@ aws cloudformation create-stack --stack-name jmd-cloud9-env --region us-east-1 -
 # in cloud9 generate ssh key for github and add it in settings
 ssh-keygen -t rsa
 cat ~/.ssh/id_rsa.pub
-git clone git@github.com:stelligent/su-jmd-020201208.git
+#git clone git@github.com:stelligent/su-jmd-020201208.git
+git clone git@github.com:CreativeMaladjustment/stelligent-u-020201208.git
 git config --global user.name "jason.davis"
 git config --global user.email "jason.davis@stelligent.com"
