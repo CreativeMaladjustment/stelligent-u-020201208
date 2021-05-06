@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-ENVSPATH ?= ~/.env-aws-image-builder-poc
+ENVSPATH ?= ~/.env-aws-image-builder-poc/bin/activate
 
 help: 
 	@egrep -h '##' $(MAKEFILE_LIST) | grep -v '@egrep' | awk 'BEGIN {FS = "## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'
@@ -20,3 +20,7 @@ cdksynth: ## provide cloudformation yml from code for these changes
 	
 cdkdeploy: ## deploy the changes
 	cdk deploy
+	
+initvevn: ## starting in a new cloud9 or environment make the venv
+	python3 -m venv ~/.env-aws-image-builder-poc
+
