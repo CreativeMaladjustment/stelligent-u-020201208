@@ -1,0 +1,12 @@
+### init new cdk folder
+cdk init --language python
+### setup new virtual environment
+python3 -m venv ~/.env-aws-image-builder-poc
+
+### source it
+source ~/.env-aws-image-builder-poc
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+pip freeze | grep -v "pkg-resources" > requirements.txt
