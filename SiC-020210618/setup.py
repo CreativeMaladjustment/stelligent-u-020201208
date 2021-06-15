@@ -6,7 +6,7 @@ with open("README.md") as fp:
 
 
 setuptools.setup(
-    name="si_c_020210618",
+    name="sic_020210618",
     version="0.0.1",
 
     description="An empty CDK Python app",
@@ -15,8 +15,8 @@ setuptools.setup(
 
     author="author",
 
-    package_dir={"": "si_c_020210618"},
-    packages=setuptools.find_packages(where="si_c_020210618"),
+    package_dir={"": "sic_020210618"},
+    packages=setuptools.find_packages(where="sic_020210618"),
 
     install_requires=[
         "aws-cdk.core==1.108.1",

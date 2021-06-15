@@ -10,7 +10,7 @@ from aws_cdk import core as cdk
 from aws_cdk import core
 
 from sic_020210618.sic_020210618_stack import SiC020210618Stack
-
+from sic_020210618.sic_020210618_codecommit_stack import SiC020210618CodeCommitStack
 
 app = core.App()
 SiC020210618Stack(app, "SiC020210618Stack",
@@ -31,4 +31,5 @@ SiC020210618Stack(app, "SiC020210618Stack",
     # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
     )
 
+codecommit = SiC020210618CodeCommitStack(app, "sic-020210618-codecommit-stack")
 app.synth()
