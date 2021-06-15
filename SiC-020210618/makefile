@@ -11,6 +11,8 @@ updateenvs: ## pip install and upgrade pip for the venv
 	source $(ENVSPATH)/bin/activate && pip install --upgrade pip;
 	source $(ENVSPATH)/bin/activate && pip install -r requirements.txt;
 	echo source $(ENVSPATH)/bin/activate;
+# per each new package will have to do an install like
+# pip install aws_cdk.aws_codecommit
 
 freezeenvs: ## update the requirements.txt file and remove pkg-resources if in an env
 	source $(ENVSPATH)/bin/activate && pip freeze | grep -v "pkg-resources" > requirements.txt
@@ -23,3 +25,6 @@ cdkinit: ## setup inital cdk application only needs to be run once
 	cdk init --language python
 # this also has to be done in an empty directory so move this make file up a dir and 
 # make -f ../makefile cdkinit # or something
+
+deploycodecommit: ## use cdk to deploy code commit
+	cdk deploy sic-020210618-codecommit-stack

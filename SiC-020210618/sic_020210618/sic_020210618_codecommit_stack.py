@@ -13,4 +13,4 @@ class SiC020210618CodeCommitStack(cdk.Stack):
     def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        sic020210618 = codecommit.Repository(self, "sic020210618", repository_name="sic020210618" description="spot to place cdk code to execute with a pipeline")
+        sic020210618 = codecommit.Repository(self, "sic020210618", repository_name="sic020210618", description="spot to place cdk code to execute with a pipeline")
