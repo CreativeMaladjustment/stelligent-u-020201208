@@ -9,7 +9,7 @@ from aws_cdk import core as cdk
 # being updated to use `cdk`.  You may delete this import if you don't need it.
 from aws_cdk import core
 
-from si_c_020210618.si_c_020210618_stack import SiC020210618Stack
+from sic_020210618.sic_020210618_stack import SiC020210618Stack
 
 
 app = core.App()
