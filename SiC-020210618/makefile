@@ -27,4 +27,7 @@ cdkinit: ## setup inital cdk application only needs to be run once
 # make -f ../makefile cdkinit # or something
 
 deploycodecommit: ## use cdk to deploy code commit
-	cdk deploy sic-020210618-codecommit-stack
+	cdk deploy sic-020210618-codecommit-stack --profile temp
+
+clonesic020210618: ## clone the new repo
+	git clone codecommit::us-east-1://temp@sic020210618 ~/git/sic020210618

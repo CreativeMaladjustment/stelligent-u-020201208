@@ -11,6 +11,5 @@ constructs==3.3.81
 jsii==1.30.0
 publication==0.0.3
 python-dateutil==2.8.1
--e git+git@github.com:CreativeMaladjustment/stelligent-u-020201208.git@3bd8760442538e479f833fc411f3758640000eb3#egg=sic_020210618&subdirectory=SiC-020210618
 six==1.16.0
 typing-extensions==3.10.0.0
