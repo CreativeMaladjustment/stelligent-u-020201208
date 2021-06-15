@@ -31,3 +31,6 @@ deploycodecommit: ## use cdk to deploy code commit
 
 clonesic020210618: ## clone the new repo
 	git clone codecommit::us-east-1://temp@sic020210618 ~/git/sic020210618
+
+clonesicpipeline: ## clone the new pipeline repo
+	git clone codecommit::us-east-1://temp@sic-020210618-pipeline ~/git/sic-020210618-pipeline
