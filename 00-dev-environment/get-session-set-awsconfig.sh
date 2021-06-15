@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eu
 while true; do
   read -p "MFA token:" mfa_token
   case $mfa_token in
