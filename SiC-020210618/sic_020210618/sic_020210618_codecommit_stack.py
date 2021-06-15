@@ -14,3 +14,4 @@ class SiC020210618CodeCommitStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         sic020210618 = codecommit.Repository(self, "sic020210618", repository_name="sic020210618", description="spot to place cdk code to execute with a pipeline")
+        sicpipeline = codecommit.Repository(self, "sicpipeline", repository_name="sic-020210618-pipeline", description="following https://docs.aws.amazon.com/cdk/latest/guide/codepipeline_example.html")
