@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -eu
 while true; do
   read -p "MFA token:" mfa_token
   case $mfa_token in
@@ -11,4 +11,4 @@ done
 aws configure set aws_access_key_id $(echo "$creds_json" | jq .Credentials.AccessKeyId |tr -d '"') --profile temp
 aws configure set aws_secret_access_key $(echo "$creds_json" | jq .Credentials.SecretAccessKey| tr -d '"') --profile temp
 aws configure set aws_session_token $(echo "$creds_json" | jq .Credentials.SessionToken|tr -d '"') --profile temp
-set +e
+#set +eu
