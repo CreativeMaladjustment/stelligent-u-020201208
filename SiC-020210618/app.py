@@ -11,6 +11,7 @@ from aws_cdk import core
 
 from sic_020210618.sic_020210618_stack import SiC020210618Stack
 from sic_020210618.sic_020210618_codecommit_stack import SiC020210618CodeCommitStack
+from sic_020210618.cloud9_stack import Cloud9Stack
 
 app = core.App()
 SiC020210618Stack(app, "SiC020210618Stack",
@@ -32,4 +33,6 @@ SiC020210618Stack(app, "SiC020210618Stack",
     )
 
 codecommit = SiC020210618CodeCommitStack(app, "sic-020210618-codecommit-stack")
+cloud9_stack = Cloud9Stack(app, "sic020210618Cloud9")
+
 app.synth()

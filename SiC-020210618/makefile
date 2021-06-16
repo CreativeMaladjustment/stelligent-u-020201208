@@ -18,7 +18,8 @@ freezeenvs: ## update the requirements.txt file and remove pkg-resources if in a
 	source $(ENVSPATH)/bin/activate && pip freeze | grep -v "pkg-resources" > requirements.txt
 
 installcdk: ## onetime thing (also use npm to update cdk)
-	sudo npm install -g aws-cdk
+	sudo npm install -g aws-cdk;
+	pip install aws_cdk.aws_codecommit aws_cdk.aws_cloud9 aws_cdk.aws_codecommit
 # this assumes something like sudo apt install nodejs npm has been run
 
 cdkinit: ## setup inital cdk application only needs to be run once
