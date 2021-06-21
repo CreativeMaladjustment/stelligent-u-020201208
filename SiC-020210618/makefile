@@ -35,3 +35,6 @@ clonesic020210618: ## clone the new repo
 
 clonesicpipeline: ## clone the new pipeline repo
 	git clone codecommit::us-east-1://temp@sic-020210618-pipeline ~/git/sic-020210618-pipeline
+
+deploycloud9: ## cdk deploy the cloud9 stack
+	cdk deploy sic020210618Cloud9 --profile temp
