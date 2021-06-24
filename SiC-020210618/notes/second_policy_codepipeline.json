@@ -1,0 +1,163 @@
+// Requested on2021/6/24 16:51 (MDT)
+// Time period of activity2021/6/23 14:50 (MDT) - 2021/6/24 16:50 (MDT)
+// after adding a code pipeline stack...
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:CreateTags",
+				"ec2:DescribeAccountAttributes",
+				"ec2:DescribeAvailabilityZones",
+				"ec2:DescribeImages",
+				"ec2:DescribeInstances",
+				"ec2:DescribeInternetGateways",
+				"ec2:DescribeRouteTables",
+				"ec2:DescribeSecurityGroups",
+				"ec2:DescribeSubnets",
+				"ec2:DescribeVpcs",
+				"ec2:DisassociateRouteTable",
+				"kms:CreateKey",
+				"ssm:StartSession",
+				"sts:GetCallerIdentity"
+			],
+			"Resource": "*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:RunInstances",
+				"ec2:TerminateInstances"
+			],
+			"Resource": "arn:aws:ec2:${Region}:${Account}:instance/${InstanceId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:AttachInternetGateway",
+				"ec2:CreateInternetGateway",
+				"ec2:DeleteInternetGateway",
+				"ec2:DetachInternetGateway"
+			],
+			"Resource": "arn:aws:ec2:${Region}:${Account}:internet-gateway/${InternetGatewayId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "ec2:RunInstances",
+			"Resource": "arn:aws:ec2:${Region}:${Account}:network-interface/${NetworkInterfaceId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:AssociateRouteTable",
+				"ec2:CreateRoute",
+				"ec2:CreateRouteTable",
+				"ec2:DeleteRoute",
+				"ec2:DeleteRouteTable"
+			],
+			"Resource": "arn:aws:ec2:${Region}:${Account}:route-table/${RouteTableId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:AuthorizeSecurityGroupEgress",
+				"ec2:CreateSecurityGroup",
+				"ec2:DeleteSecurityGroup",
+				"ec2:RevokeSecurityGroupEgress",
+				"ec2:RunInstances"
+			],
+			"Resource": "arn:aws:ec2:${Region}:${Account}:security-group/${SecurityGroupId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:CreateSubnet",
+				"ec2:DeleteSubnet",
+				"ec2:ModifySubnetAttribute",
+				"ec2:RunInstances"
+			],
+			"Resource": "arn:aws:ec2:${Region}:${Account}:subnet/${SubnetId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "ec2:RunInstances",
+			"Resource": "arn:aws:ec2:${Region}:${Account}:volume/${VolumeId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:AttachInternetGateway",
+				"ec2:CreateRouteTable",
+				"ec2:CreateSubnet",
+				"ec2:CreateVpc",
+				"ec2:DeleteVpc",
+				"ec2:DetachInternetGateway",
+				"ec2:ModifyVpcAttribute"
+			],
+			"Resource": "arn:aws:ec2:${Region}:${Account}:vpc/${VpcId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "ec2:RunInstances",
+			"Resource": "arn:aws:ec2:${Region}::image/${ImageId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"iam:AddRoleToInstanceProfile",
+				"iam:CreateInstanceProfile",
+				"iam:DeleteInstanceProfile",
+				"iam:RemoveRoleFromInstanceProfile"
+			],
+			"Resource": "arn:aws:iam::${Account}:instance-profile/${InstanceProfileNameWithPath}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"iam:AttachRolePolicy",
+				"iam:CreateRole",
+				"iam:DeleteRole",
+				"iam:DetachRolePolicy",
+				"iam:GetRole",
+				"iam:GetRolePolicy",
+				"iam:PassRole",
+				"iam:PutRolePolicy"
+			],
+			"Resource": "arn:aws:iam::${Account}:role/${RoleNameWithPath}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "kms:CreateAlias",
+			"Resource": "arn:aws:kms:${Region}:${Account}:alias/${Alias}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"kms:CreateAlias",
+				"kms:Decrypt",
+				"kms:DescribeKey",
+				"kms:GenerateDataKey",
+				"kms:GetKeyPolicy",
+				"kms:GetKeyRotationStatus",
+				"kms:ListResourceTags"
+			],
+			"Resource": "arn:aws:kms:${Region}:${Account}:key/${KeyId}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:CreateBucket",
+				"s3:PutBucketPublicAccessBlock",
+				"s3:PutBucketTagging",
+				"s3:PutEncryptionConfiguration"
+			],
+			"Resource": "arn:aws:s3:::${BucketName}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "ssm:GetParameters",
+			"Resource": "arn:aws:ssm:${Region}:${Account}:parameter/${ParameterNameWithoutLeadingSlash}"
+		}
+	]
+}
