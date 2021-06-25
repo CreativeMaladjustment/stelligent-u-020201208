@@ -1,3 +1,13 @@
 // arn:aws:iam::324320755747:role/sic020210618-pipeline-PipelineRoleD68726F7-L1Y1VOGANHMH
 // code pipeline doing its thing creating two stacks failing at one.
-deleted before generated.... 
+//deleted before generated.... 
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": "sts:AssumeRole",
+			"Resource": "arn:aws:iam::${Account}:role/${RoleNameWithPath}"
+		}
+	]
+}
