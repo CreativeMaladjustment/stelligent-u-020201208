@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   chase: 
-    Type: 'AWS::SSM::Parameters::Value</env/rabbit>'
-#    Default: /env/rabbit
+    Type: 'AWS::SSM::Parameters::Value<String>'
+    # Default: /env/rabbit
 Resources:
   makebucket:
     Type: 'AWS::S3::Bucket'
