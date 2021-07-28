@@ -1,0 +1,2 @@
+aws cloudformation create-stack --template-body file://./setparam.yml --stack-name jmd-020210727-000 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --template-body file://./accessparam.yml --stack-name jmd-020210727-001 --region us-east-1 --capabilities CAPABILITY_NAMED_IAM

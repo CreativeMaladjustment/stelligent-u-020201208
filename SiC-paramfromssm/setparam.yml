@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  rabbit:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: /env/rabbit
+      Type: String
+      Value: "rawr"
